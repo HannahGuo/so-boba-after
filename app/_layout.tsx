@@ -1,45 +1,29 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
 
-import { useColorScheme } from '@/hooks/useColorScheme';
-import { View, type ViewProps } from 'react-native';
+import { ThemedText } from '@/components/ThemedText';
 import { Colors } from '@/constants/Colors';
-// Prevent the splash screen from auto-hiding before asset loading is complete.
+import { StyleSheet, View } from 'react-native';
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  // const [loaded] = useFonts({
-  //   LondrinaSolid: require('../assets/fonts/LondrinaSolid-Regular.ttf'),
-  // })
-
-  // useEffect(() => {
-  //   if (loaded) {
-  //     SplashScreen.hideAsync();
-  //   }
-  // }, [loaded]);
-
-  // if (!loaded) {
-  //   return null;
-  // }
+  const [loaded] = useFonts({
+    LondrinaSolid: require('../assets/fonts/LondrinaSolid-Regular.ttf'),
+    CourierPrime: require('../assets/fonts/CourierPrime-Regular.ttf'),
+    CourierPrimeBold: require('../assets/fonts/CourierPrime-Bold.ttf'),
+    CourierPrimeItalic: require('../assets/fonts/CourierPrime-Italic.ttf'),
+  })
 
   return (
-    <View style={{backgroundColor: Colors.light.background, height: '100%'}}>Hello</View>
-
-    // <ThemeProvider value={colorScheme == 'dark' ? DarkTheme : DefaultTheme}>
-    //   <Stack>
-    //     <Stack.Screen name="(tabs)"  
-    //       options={{
-    //         headerShown: false,
-    //       }}
-    //     />
-    //     <Stack.Screen name="+not-found" />
-    //   </Stack>
-    //   <StatusBar style="auto" /> 
-    // </ThemeProvider>
+    <View style={styles.mainContainer}>
+      <ThemedText type='title'>...so boba after?</ThemedText>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  mainContainer: {
+    height: '100%',
+    backgroundColor: Colors.light.background,
+  },
+});
