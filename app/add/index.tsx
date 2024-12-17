@@ -1,10 +1,10 @@
-import { ThemedText } from "@/components/ThemedText";
+import Header from "@/components/Header";
 import { View } from "react-native";
 
 export default function Add() {
     return (
         <View>
-            <ThemedText>Hellooooo World!</ThemedText>
+            <Header page='add'/>
         </View>
     );
 }
