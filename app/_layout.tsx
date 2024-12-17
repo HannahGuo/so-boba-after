@@ -16,7 +16,10 @@ export default function RootLayout() {
 
   return (
     <View style={styles.mainContainer}>
-      <ThemedText type='title'>...so boba after?</ThemedText>
+      <View style={styles.titleContainer}>
+        <ThemedText type='title'>...so boba after?</ThemedText>
+      </View>
+      
     </View>
   );
 }
@@ -26,4 +29,8 @@ const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: Colors.light.background,
   },
+  titleContainer: {
+    marginTop: 36,
+    marginLeft: 20,
+  }
 });
