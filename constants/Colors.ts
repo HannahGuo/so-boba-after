@@ -26,6 +26,7 @@ export const Colors = {
     bobaBlue: '#7BB0FF',
     bobaPurple: '#DDADFF',
     bobaPink: '#F3A5DC',
-    bobaBrown: 'D9AF71',
+    bobaBrown: '#D9AF71',
+    bobaBrownLight: '#F3D4A6',
   }
 };

@@ -1,6 +1,7 @@
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 
+import DealsList from '@/components/DealsList';
 import { ThemedText } from '@/components/ThemedText';
 import { Colors } from '@/constants/Colors';
 import { StyleSheet, View } from 'react-native';
@@ -19,7 +20,7 @@ export default function RootLayout() {
       <View style={styles.titleContainer}>
         <ThemedText type='title'>...so boba after?</ThemedText>
       </View>
-      
+      <DealsList/>
     </View>
   );
 }
@@ -28,9 +29,10 @@ const styles = StyleSheet.create({
   mainContainer: {
     height: '100%',
     backgroundColor: Colors.light.background,
+    display: 'flex',
   },
   titleContainer: {
-    marginTop: 36,
+    marginTop: 10,
     marginLeft: 20,
   }
 });

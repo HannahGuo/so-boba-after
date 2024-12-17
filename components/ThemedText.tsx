@@ -5,7 +5,7 @@ import { useThemeColor } from '@/hooks/useThemeColor';
 export type ThemedTextProps = TextProps & {
   lightColor?: string;
   darkColor?: string;
-  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link';
+  type?: 'default' | 'title' | 'defaultBold' | 'subtitle' | 'link';
 };
 
 export function ThemedText({
@@ -23,7 +23,7 @@ export function ThemedText({
         { color },
         type === 'default' ? styles.default : undefined,
         type === 'title' ? styles.title : undefined,
-        type === 'defaultSemiBold' ? styles.defaultSemiBold : undefined,
+        type === 'defaultBold' ? styles.defaultBold : undefined,
         type === 'subtitle' ? styles.subtitle : undefined,
         type === 'link' ? styles.link : undefined,
         style,
@@ -35,29 +35,24 @@ export function ThemedText({
 
 const styles = StyleSheet.create({
   default: {
-    fontSize: 22,
-    lineHeight: 24,
-    fontFamily: 'CourierPrime-Regular',
+    fontSize: 18,
+    fontFamily: 'CourierPrime',
   },
-  defaultSemiBold: {
+  defaultBold: {
     fontSize: 22,
-    lineHeight: 24,
-    fontWeight: '600',
-    fontFamily: 'CourierPrime-Bold',
+    fontFamily: 'CourierPrimeBold',
   },
   title: {
     fontSize: 80,
-    lineHeight: 32,
     fontFamily: 'LondrinaSolid',
   },
   subtitle: {
-    fontSize: 40,
+    fontSize: 36,
     fontFamily: 'LondrinaSolid',
   },
   link: {
-    lineHeight: 22,
     fontSize: 16,
     color: '#0a7ea4',
-    fontFamily: 'CourierPrime-Regular',
+    fontFamily: 'CourierPrime',
   },
 });
