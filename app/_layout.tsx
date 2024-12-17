@@ -4,7 +4,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import DealsList from '@/components/DealsList';
 import { ThemedText } from '@/components/ThemedText';
 import { Colors } from '@/constants/Colors';
-import { StyleSheet, View } from 'react-native';
+import { ImageBackground, StyleSheet, View } from 'react-native';
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -17,6 +17,7 @@ export default function RootLayout() {
 
   return (
     <View style={styles.mainContainer}>
+      <ImageBackground source={require('../assets/images/bobaHeader.svg')} style={styles.headerImage}/>
       <View style={styles.titleContainer}>
         <ThemedText type='title'>...so boba after?</ThemedText>
       </View>
@@ -34,5 +35,10 @@ const styles = StyleSheet.create({
   titleContainer: {
     marginTop: 10,
     marginLeft: 20,
+  },
+  headerImage: {
+    position: 'absolute',
+    top: -40,
+    left: -20,
   }
 });

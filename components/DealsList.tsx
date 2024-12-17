@@ -104,6 +104,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         margin: 10,
+        marginTop: 120,
         justifyContent: 'space-between',
         alignContent: 'space-between',
     },
