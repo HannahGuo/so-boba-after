@@ -1,8 +1,8 @@
+import { BobaColors } from "@/constants/BobaColors";
 import { Colors } from "@/constants/Colors";
 import { StyleSheet, View } from "react-native";
 import { ThemedText } from "./ThemedText";
 import { isDateCondition, isDayCondition } from "./helpers/typeHelpers";
-
 
 type DealProps = {
     deal: BobaDeal
@@ -32,8 +32,19 @@ function makeSizeText(size: string) {
 
 function chooseBackgroundColor(drinkName: string) {
     const normalizeDrinkName = drinkName.toLowerCase()
-    if(normalizeDrinkName.includes('milk')) {
-        return `linear-gradient(to top, ${Colors.shared.bobaBrown}, 95%, ${Colors.shared.bobaBrownLight})`
+
+    for(const color in BobaColors) {
+        const keywordTier = BobaColors[color]
+        if(keywordTier.primary.some((keyword) => normalizeDrinkName.includes(keyword))) {
+            return `linear-gradient(to top, ${Colors.shared.bobaBrown}, 95%, ${Colors.shared.bobaBrownLight})`
+        }
+    }
+
+    for(const color in BobaColors) {
+        const keywordTier = BobaColors[color]
+        if(keywordTier.secondary.some((keyword) => normalizeDrinkName.includes(keyword))) {
+            return `linear-gradient(to top, ${Colors.shared.bobaBrown}, 95%, ${Colors.shared.bobaBrownLight})`
+        }
     }
 
     return Colors.shared.bobaPurple
