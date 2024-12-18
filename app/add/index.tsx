@@ -1,9 +1,11 @@
 import Header from "@/components/Header";
 import { ThemedText } from "@/components/ThemedText";
 import { Colors } from "@/constants/Colors";
+import { db } from "@/firebase/app/firebaseConfig";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
-import { useState } from "react";
+import { collection, getDocs } from "firebase/firestore";
+import { useEffect, useState } from "react";
 import { Button, Platform, StyleSheet, TextInput, View } from "react-native";
 
 function makeDrinkHolderPlaceholder(drinkNumber: number, dealType: BobaDealType | undefined) {
@@ -35,6 +37,18 @@ export default function Add() {
 
     const [notes, setNotes] = useState<string>();
 
+    const [storesList, setStoresList] = useState<Store[]>([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const querySnapshot = await getDocs(collection(db, "stores"));
+            const storesList = querySnapshot.docs.map(doc => doc.data() as Store);
+            storesList.sort((a, b) => a.name.localeCompare(b.name));
+            setStoresList(storesList);
+        };
+        fetchData();
+    }, []);
+
     return (
         <View>
             <Header page='add'/>
@@ -45,6 +59,9 @@ export default function Add() {
                         style={styles.picker}
                         selectedValue={storeName}
                         onValueChange={(itemValue) => setStoreName(itemValue)}>
+                        {storesList.map(store => (
+                            <Picker.Item label={store.name} value={store.name} key={store.name} />
+                        ))}
                     </Picker>
                 </View>
                 <View style={styles.inputContainer}>
@@ -163,7 +180,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        width: 500,
+        width: 560,
     },
     dateInputContainer: {
         display: 'flex',
@@ -220,7 +237,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     picker: {
-        width: 260,
+        width: 300,
         height: 50,
         fontFamily: 'CourierPrime',
         fontSize: 18,
