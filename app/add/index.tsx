@@ -20,7 +20,6 @@ function makeDrinkHolderPlaceholder(drinkNumber: number, dealType: BobaDealType 
     return `Drink Name`;
 }
 
-
 export default function Add() {
     const [storeName, setStoreName] = useState<string>();
     const [dealType, setDealType] = useState<BobaDealType>('single');
@@ -84,20 +83,23 @@ export default function Add() {
                             placeholder={makeDrinkHolderPlaceholder(1, dealType)}
                             value={drinkNameOne}
                             onChangeText={setDrinkNameOne}
+                            placeholderTextColor={'lightgray'}
                         />
                         <TextInput
-                            style={{...styles.textInput && (!allowDrinkTwo && styles.disabledTextInput)}}
+                            style={{...(!allowDrinkTwo ? styles.disabledTextInput : styles.textInput)}}
                             placeholder={makeDrinkHolderPlaceholder(2, dealType)}
                             value={drinkNameTwo}
                             onChangeText={setDrinkNameTwo}
                             editable={allowDrinkTwo}
+                            placeholderTextColor={!allowDrinkTwo ? 'white' : 'lightgray'}
                         />
                         <TextInput
-                            style={{...styles.textInput && (!allowDrinkThree && styles.disabledTextInput)}}
+                            style={{...(!allowDrinkThree ? styles.disabledTextInput : styles.textInput)}}
                             placeholder={makeDrinkHolderPlaceholder(3, dealType)}
                             value={drinkNameThree}
                             onChangeText={setDrinkNameThree}
                             editable={allowDrinkThree}
+                            placeholderTextColor={!allowDrinkThree ? 'white' : 'lightgray'}
                         />
                     </View>
                     <ThemedText style={styles.inputNote}>If the deal is for “one of XYZ” input all drinks in one box.</ThemedText>
@@ -150,6 +152,7 @@ export default function Add() {
                         placeholder="..."
                         value={notes}
                         onChangeText={setNotes}
+                        placeholderTextColor={'lightgray'}
                     />
                     <ThemedText style={styles.inputNote}>Limits, conditions, etc.</ThemedText>
                 </View>
