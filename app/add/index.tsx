@@ -45,11 +45,12 @@ export default function Add() {
             storesList.sort((a, b) => a.name.localeCompare(b.name));
             setStoresList(storesList);
         };
+        document.title = "add boba deal";      
         fetchData();
     }, []);
 
     return (
-        <View>
+        <View style={styles.mainContainer}>
             <Header page='add'/>
             <View style={styles.formContainer}>
                 <View style={styles.inputContainer}>
@@ -170,6 +171,11 @@ export default function Add() {
 }
 
 const styles = StyleSheet.create({
+    mainContainer: {
+        height: '100%',
+        backgroundColor: Colors.light.background,
+        display: 'flex',
+    },
     formContainer: {
         display: 'flex',
         backgroundImage: `linear-gradient(to top, ${Colors.shared.bobaBrown}, 95%, ${Colors.shared.bobaBrownLight})`,
