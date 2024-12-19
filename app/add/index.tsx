@@ -6,18 +6,31 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
 import { collection, getDocs } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { Button, Platform, StyleSheet, TextInput, View } from "react-native";
+import { Button, Platform, ScrollView, StyleSheet, TextInput, View } from "react-native";
 
-function makeDrinkHolderPlaceholder(drinkNumber: number, dealType: BobaDealType | undefined) {
+function makeDrinkHolderPlaceholder(drinkNumber: number, dealType: BobaDealType | undefined): string {
     if (dealType === 'single' && drinkNumber > 1) {
         return 'Only one drink for single deals';
     }
 
     if (dealType === 'bogo' && drinkNumber === 3) {
-        return 'Only two drinks for bogo';
+        return 'Only two drinks for BOGO';
     }
 
     return `Drink Name`;
+}
+
+function makeDiscountInfoString(dealType: BobaDealType | undefined): string {
+    switch(dealType) {
+        case 'single':
+            return 'For Single, this is the discount on any one drink.';
+        case 'bogo':
+            return 'For BOGO, this is the discount on second drink (first is assumed to be full-price)';
+        case 'buyXforY':
+            return 'For Buy X for Y, this is the discount on all drinks.';
+        default: 
+            return 'Discount on total';
+    }
 }
 
 export default function Add() {
@@ -25,8 +38,13 @@ export default function Add() {
     const [dealType, setDealType] = useState<BobaDealType>('single');
     
     const [drinkNameOne, setDrinkNameOne] = useState<string>();
+    const [drinkSizeOne, setDrinkSizeOne] = useState<DrinkSize>('any'); 
+
     const [drinkNameTwo, setDrinkNameTwo] = useState<string>();
+    const [drinkSizeTwo, setDrinkSizeTwo] = useState<DrinkSize>('any');
+
     const [drinkNameThree, setDrinkNameThree] = useState<string>();
+    const [drinkSizeThree, setDrinkSizeThree] = useState<DrinkSize>('any');
 
     const allowDrinkTwo = dealType !== 'single';
     const allowDrinkThree = dealType !== 'single' && dealType !== 'bogo';
@@ -36,6 +54,9 @@ export default function Add() {
     const [dayCondition, setDayCondition] = useState<DayCondition | null>(null);
 
     const [notes, setNotes] = useState<string>();
+
+    const [discountType, setDiscountType] = useState<DiscountType>('percentage');
+    const [discountValue, setDiscountValue] = useState<number>(NaN);
 
     const [storesList, setStoresList] = useState<Store[]>([]);
 
@@ -51,7 +72,7 @@ export default function Add() {
     }, []);
 
     return (
-        <View style={styles.mainContainer}>
+        <ScrollView style={styles.mainContainer}>
             <Header page='add'/>
             <View style={styles.formContainer}>
                 <View style={styles.inputContainer}>
@@ -80,31 +101,99 @@ export default function Add() {
                 <View style={styles.textInputContainer}>
                     <ThemedText type="subtitle">Drink Name(s):</ThemedText>
                     <View style={styles.textInputRow}>
+                        <View style={styles.inputCol}>
+                            <TextInput
+                                style={{...styles.textInput, height: 46}}
+                                placeholder={makeDrinkHolderPlaceholder(1, dealType)}
+                                value={drinkNameOne}
+                                onChangeText={setDrinkNameOne}
+                                placeholderTextColor={'lightgray'}
+                            />
+                            <Picker 
+                                style={styles.thinPicker}
+                                selectedValue={drinkSizeOne}
+                                onValueChange={(itemValue) => setDrinkSizeOne(itemValue)}>
+                                <Picker.Item label="Any Size" value="any" />
+                                <Picker.Item label="Regular" value="regular" />
+                                <Picker.Item label="Large" value="large" />
+                            </Picker>
+                        </View>
+                        <View style={styles.inputCol}>
+                            <TextInput
+                                style={{...(!allowDrinkTwo ? styles.disabledTextInput : styles.textInput), height: 46}}
+                                placeholder={makeDrinkHolderPlaceholder(2, dealType)}
+                                value={drinkNameTwo}
+                                onChangeText={setDrinkNameTwo}
+                                editable={allowDrinkTwo}
+                                placeholderTextColor={!allowDrinkTwo ? 'white' : 'lightgray'}
+                            />
+                            <Picker 
+                                enabled={allowDrinkTwo}
+                                style={styles.thinPicker}
+                                selectedValue={drinkSizeTwo}
+                                onValueChange={(itemValue) => setDrinkSizeTwo(itemValue)}>
+                                <Picker.Item label="Any Size" value="any" />
+                                <Picker.Item label="Regular" value="regular" />
+                                <Picker.Item label="Large" value="large" />
+                            </Picker>
+                            </View>
+                        <View style={styles.inputCol}>
+                            <TextInput
+                                style={{...(!allowDrinkThree ? styles.disabledTextInput : styles.textInput), height: 46}}
+                                placeholder={makeDrinkHolderPlaceholder(3, dealType)}
+                                value={drinkNameThree}
+                                onChangeText={setDrinkNameThree}
+                                editable={allowDrinkThree}
+                                placeholderTextColor={!allowDrinkThree ? 'white' : 'lightgray'}
+                            />
+                            <Picker 
+                                enabled={allowDrinkThree}
+                                style={styles.thinPicker}
+                                selectedValue={drinkSizeThree}
+                                onValueChange={(itemValue) => setDrinkSizeThree(itemValue)}>
+                                <Picker.Item label="Any Size" value="any" />
+                                <Picker.Item label="Regular" value="regular" />
+                                <Picker.Item label="Large" value="large" />
+                            </Picker>
+                            </View>
+                        </View>
+                    <ThemedText style={styles.inputNote}>If the deal is for “one of XYZ” input all drinks in one box.</ThemedText>
+                </View>
+                <View style={{marginTop: 12}}>
+                    <ThemedText type="subtitle">Drink Promotion:</ThemedText>
+                    <View style={styles.inputRow}>
+                    {Platform.OS === 'web' ? (
+                        <input
+                            type="number"
+                            value={discountValue}
+                            onChange={(e) => {
+                            const value = parseFloat(e.target.value);
+                            setDiscountValue(value);
+                            }}
+                            style={{...styles.picker, height: 34}}
+                        />
+                        ) : (
                         <TextInput
                             style={styles.textInput}
-                            placeholder={makeDrinkHolderPlaceholder(1, dealType)}
-                            value={drinkNameOne}
-                            onChangeText={setDrinkNameOne}
-                            placeholderTextColor={'lightgray'}
+                            value={discountValue.toString()}
+                            onChangeText={(text) => {
+                            const value = parseFloat(text);
+                            setDiscountValue(value);
+                            }}
+                            keyboardType="decimal-pad"
+                            placeholderTextColor="lightgray"
                         />
-                        <TextInput
-                            style={{...(!allowDrinkTwo ? styles.disabledTextInput : styles.textInput)}}
-                            placeholder={makeDrinkHolderPlaceholder(2, dealType)}
-                            value={drinkNameTwo}
-                            onChangeText={setDrinkNameTwo}
-                            editable={allowDrinkTwo}
-                            placeholderTextColor={!allowDrinkTwo ? 'white' : 'lightgray'}
-                        />
-                        <TextInput
-                            style={{...(!allowDrinkThree ? styles.disabledTextInput : styles.textInput)}}
-                            placeholder={makeDrinkHolderPlaceholder(3, dealType)}
-                            value={drinkNameThree}
-                            onChangeText={setDrinkNameThree}
-                            editable={allowDrinkThree}
-                            placeholderTextColor={!allowDrinkThree ? 'white' : 'lightgray'}
-                        />
+                        )}
+                    <Picker
+                        style={styles.picker}
+                        selectedValue={discountType}
+                        onValueChange={(itemValue) => setDiscountType(itemValue)}>
+                        <Picker.Item label="Percentage" value="percentage" />
+                        <Picker.Item label="Flat Off" value="flatoff" />
+                        <Picker.Item label="Total" value="total" />
+                    </Picker>
                     </View>
-                    <ThemedText style={styles.inputNote}>If the deal is for “one of XYZ” input all drinks in one box.</ThemedText>
+                    <ThemedText style={styles.inputNote}>{makeDiscountInfoString(dealType)}</ThemedText>
                 </View>
                 <View style={styles.dateInputContainer}>
                     <ThemedText type="subtitle">Deal Dates:</ThemedText>
@@ -157,7 +246,6 @@ export default function Add() {
                             <Picker.Item label="Saturday" value="saturday" />
                             <Picker.Item label="Sunday" value="sunday" />
                         </Picker>
-
                     </View>
                 </View>
                 <View style={styles.notesInputContainer}>
@@ -171,9 +259,8 @@ export default function Add() {
                         onChangeText={setNotes}
                         placeholderTextColor={'lightgray'}
                     />
-                    <ThemedText style={styles.inputNote}>Limits, conditions, etc.</ThemedText>
+                    <ThemedText style={styles.inputNote}>Limits, restrictions, etc.</ThemedText>
                 </View>
-                
                 <View style={styles.submitButtonContainer}>
                     {Platform.OS === 'web' ? (
                         <button style={styles.submitButton} onClick={() => console.log('submit')}>Submit</button>
@@ -182,13 +269,12 @@ export default function Add() {
                     )}
                 </View>
             </View>
-        </View>
+        </ScrollView>
     );
 }
 
 const styles = StyleSheet.create({
     mainContainer: {
-        height: '100%',
         backgroundColor: Colors.light.background,
         display: 'flex',
     },
@@ -200,6 +286,7 @@ const styles = StyleSheet.create({
         margin: 'auto',
         marginTop: 120,
         borderRadius: 20,
+        marginBottom: 40,
     },
     inputContainer: {
         display: 'flex',
@@ -218,7 +305,20 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        width: '80%',
+        width: '85%',
+    },
+    inputCol: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        height: 110,
+        width: '32%',
+    },
+    inputRow: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '46%',
     },
     textInput: {
         backgroundColor: 'white',  
@@ -227,7 +327,6 @@ const styles = StyleSheet.create({
         paddingLeft: 12,
         fontFamily: 'CourierPrime',
         fontSize: 18,
-        width: '32%',
     },
     notesInput: {
         backgroundColor: 'white',
@@ -246,15 +345,13 @@ const styles = StyleSheet.create({
         paddingLeft: 12,
         fontFamily: 'CourierPrime',
         fontSize: 18,
-        width: '32%',
+        height: 46,
     },
     textInputRow: {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
         width: '100%',
-        marginTop: 10,
-        height: 50,
     },
     dateInputRow: {
         display: 'flex',
@@ -272,7 +369,6 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     thinPicker: {
-        width: 300,
         height: 40,
         fontFamily: 'CourierPrime',
         fontSize: 18,

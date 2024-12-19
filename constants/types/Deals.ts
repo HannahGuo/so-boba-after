@@ -24,11 +24,12 @@ type Discount = {
 // DEALS FOR DRINKS
 type BobaDealType = "single" | "bogo" | "buyXforY" | "other";
 type DrinkType = "milktea" | "fruittea" | "slush" | "other";
+type DrinkSize = "regular" | "large" | "any";
 
 type Drink = {
     name: string,
     type: DrinkType,
-    size: "regular" | "large" | "any"
+    size: DrinkSize
 }
 
 type BobaDeal = {
