@@ -1,5 +1,7 @@
+type Weekday = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday'; // 7 days a week
+
 type DayCondition = {
-    day: 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday'; // 7 days a week
+    day: Weekday
 }
 
 type DateCondition = {

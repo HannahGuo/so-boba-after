@@ -33,6 +33,7 @@ export default function Add() {
 
     const [startDate, setStartDate] = useState<Date>(new Date());
     const [endDate, setEndDate] = useState<Date>(new Date());
+    const [dayCondition, setDayCondition] = useState<DayCondition | null>(null);
 
     const [notes, setNotes] = useState<string>();
 
@@ -142,6 +143,21 @@ export default function Add() {
                                 />
                             )}
                         </View>
+                        <ThemedText type="subsubtitle">Day Condition:</ThemedText>
+                        <Picker
+                            style={styles.thinPicker}
+                            selectedValue={dayCondition}
+                            onValueChange={(itemValue) => setDayCondition(itemValue)}>
+                            <Picker.Item label="None" value={null} />
+                            <Picker.Item label="Monday" value="monday" />
+                            <Picker.Item label="Tuesday" value="tuesday" />
+                            <Picker.Item label="Wednesday" value="wednesday" />
+                            <Picker.Item label="Thursday" value="thursday" />
+                            <Picker.Item label="Friday" value="friday" />
+                            <Picker.Item label="Saturday" value="saturday" />
+                            <Picker.Item label="Sunday" value="sunday" />
+                        </Picker>
+
                     </View>
                 </View>
                 <View style={styles.notesInputContainer}>
@@ -196,7 +212,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'space-between',
         marginTop: 20,
-        width: '55%',
+        width: '85%',
     },
     textInputContainer: {
         display: 'flex',
@@ -248,6 +264,16 @@ const styles = StyleSheet.create({
     picker: {
         width: 300,
         height: 50,
+        fontFamily: 'CourierPrime',
+        fontSize: 18,
+        borderRadius: 10,
+        borderColor: 'white',
+        padding: 6,
+        marginBottom: 10,
+    },
+    thinPicker: {
+        width: 300,
+        height: 40,
         fontFamily: 'CourierPrime',
         fontSize: 18,
         borderRadius: 10,
