@@ -4,7 +4,7 @@ import { Colors } from "@/constants/Colors";
 import { db } from "@/firebase/app/firebaseConfig";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
-import { collection, getDocs } from "firebase/firestore";
+import { collection, doc, getDocs, setDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { Button, Platform, ScrollView, StyleSheet, TextInput, View } from "react-native";
 
@@ -23,13 +23,25 @@ function makeDrinkHolderPlaceholder(drinkNumber: number, dealType: BobaDealType 
 function makeDiscountInfoString(dealType: BobaDealType | undefined): string {
     switch(dealType) {
         case 'single':
-            return 'For Single, this is the discount on any one drink.';
+            return 'For Single deal type, this is the discount on any one drink.';
         case 'bogo':
-            return 'For BOGO, this is the discount on second drink (first is assumed to be full-price)';
+            return 'For BOGO deal type, this is the discount on second drink (first is assumed to be full-price)';
         case 'buyXforY':
-            return 'For Buy X for Y, this is the discount on all drinks.';
+            return 'For Buy X for Y deal type, this is the discount on all drinks.';
         default: 
             return 'Discount on total';
+    }
+}
+
+function determineDrinkTypeFromName(drinkName: string): DrinkType {
+    if (drinkName.toLowerCase().includes('milk')) {
+        return 'milktea';
+    } else if (drinkName.toLowerCase().includes('fruit tea')) {
+        return 'fruittea';
+    } else if (drinkName.toLowerCase().includes('slush')) {
+        return 'slush';
+    } else {
+        return 'other';
     }
 }
 
@@ -59,6 +71,71 @@ export default function Add() {
     const [discountValue, setDiscountValue] = useState<number>(NaN);
 
     const [storesList, setStoresList] = useState<Store[]>([]);
+
+    function validateForm(): boolean {
+        if (!storeName || !dealType || !drinkNameOne || !drinkSizeOne || !discountType || isNaN(discountValue)) {
+            console.log('missing required fields');
+            return false;
+        }
+
+        if (allowDrinkTwo && (!drinkNameTwo || !drinkSizeTwo)) {
+            return false;
+        }
+
+        if (allowDrinkThree && (!drinkNameThree || !drinkSizeThree)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    async function submitDeal() {
+        const dealID = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+        const drinksList = []
+
+        if (drinkNameOne) {
+            drinksList.push({
+                name: drinkNameOne,
+                type: determineDrinkTypeFromName(drinkNameOne),
+                size: drinkSizeOne,
+            });
+        }
+
+        if (drinkNameTwo) {
+            drinksList.push({
+                name: drinkNameTwo,
+                type: determineDrinkTypeFromName(drinkNameTwo),
+                size: drinkSizeTwo,
+            });
+        }
+
+        if (drinkNameThree) {
+            drinksList.push({
+                name: drinkNameThree,
+                type: determineDrinkTypeFromName(drinkNameThree),
+                size: drinkSizeThree,
+            });
+        }
+
+        const constructedDeal: BobaDeal = {
+            id: dealID,
+            storeID: storesList.find(store => store.name === storeName)?.id ?? '',
+            dealType: dealType,
+            drinks: drinksList,
+            promoPeriod: {
+                startDate: startDate,
+                endDate: endDate,
+                condition: dayCondition!,
+            },
+            discounts: [{
+                discountType: discountType,
+                discountValue: discountValue,
+            }],
+            notes: ""
+        }
+
+        await setDoc(doc(db, "boba-deals", dealID), constructedDeal); 
+    }
 
     useEffect(() => {
         const fetchData = async () => {
@@ -263,9 +340,9 @@ export default function Add() {
                 </View>
                 <View style={styles.submitButtonContainer}>
                     {Platform.OS === 'web' ? (
-                        <button style={styles.submitButton} onClick={() => console.log('submit')}>Submit</button>
+                        <button style={styles.submitButton} onClick={submitDeal}>Submit</button>
                     ) : (
-                        <Button title="Submit" color={Colors.shared.bobaOrange} onPress={() => console.log('submit')} />
+                        <Button title="Submit" color={Colors.shared.bobaOrange} onPress={submitDeal} />
                     )}
                 </View>
             </View>
