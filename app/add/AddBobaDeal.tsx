@@ -13,8 +13,8 @@ import {
 import { db } from "@/firebase/app/firebaseConfig"
 import DateTimePicker from "@react-native-community/datetimepicker"
 import { Picker } from "@react-native-picker/picker"
-import { Timestamp, collection, doc, getDocs, setDoc } from "firebase/firestore"
-import React, { useEffect, useState } from "react"
+import { Timestamp, doc, setDoc } from "firebase/firestore"
+import React, { useState } from "react"
 import { Button, Platform, StyleSheet, TextInput, View } from "react-native"
 
 function makeDrinkHolderPlaceholder(
@@ -56,7 +56,7 @@ function determineDrinkTypeFromName(drinkName: string): DrinkType {
 		return "other"
 	}
 }
-export default function AddBobaDeal() {
+export default function AddBobaDeal({ storesList }: { storesList: Store[] }) {
 	const [storeName, setStoreName] = useState<string>()
 	const [dealType, setDealType] = useState<BobaDealType>("single")
 
@@ -80,8 +80,6 @@ export default function AddBobaDeal() {
 
 	const [discountType, setDiscountType] = useState<DiscountType>("total")
 	const [discountValue, setDiscountValue] = useState<number>(NaN)
-
-	const [storesList, setStoresList] = useState<Store[]>([])
 
 	function validateForm(): boolean {
 		if (
@@ -145,21 +143,6 @@ export default function AddBobaDeal() {
 
 		await setDoc(doc(db, "boba-deals", dealID), constructedDeal)
 	}
-
-	useEffect(() => {
-		const fetchData = async () => {
-			const querySnapshot = await getDocs(collection(db, "stores"))
-			const storesList = querySnapshot.docs.map((doc) => {
-				const data = doc.data() as Store
-				return { ...data, id: doc.id }
-			})
-
-			storesList.sort((a, b) => a.name.localeCompare(b.name))
-			setStoresList(storesList)
-		}
-		document.title = "add boba deal"
-		fetchData()
-	}, [])
 
 	return (
 		<>
@@ -429,20 +412,6 @@ export default function AddBobaDeal() {
 }
 
 const styles = StyleSheet.create({
-	mainContainer: {
-		backgroundColor: Colors.light.background,
-		display: "flex",
-	},
-	formContainer: {
-		display: "flex",
-		backgroundImage: `linear-gradient(to top, ${Colors.shared.bobaBrown}, 95%, ${Colors.shared.bobaBrownLight})`,
-		padding: 40,
-		width: "90%",
-		margin: "auto",
-		marginTop: 120,
-		borderRadius: 20,
-		marginBottom: 40,
-	},
 	inputContainer: {
 		display: "flex",
 		flexDirection: "row",

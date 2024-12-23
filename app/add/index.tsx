@@ -1,7 +1,10 @@
 import Header from "@/components/Header"
 import { ThemedText } from "@/components/ThemedText"
 import { Colors } from "@/constants/Colors"
-import React from "react"
+import { Store } from "@/constants/types/Deals"
+import { db } from "@/firebase/app/firebaseConfig"
+import { collection, getDocs } from "firebase/firestore"
+import React, { useEffect } from "react"
 import { ScrollView, StyleSheet, View } from "react-native"
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs"
 import "react-tabs/style/react-tabs.css"
@@ -10,6 +13,22 @@ import AddStoreDeal from "./AddStoreDeal"
 
 export default function Add() {
 	const [tabIndex, setTabIndex] = React.useState(0)
+	const [storesList, setStoresList] = React.useState<Store[]>([])
+
+	useEffect(() => {
+		const fetchData = async () => {
+			const querySnapshot = await getDocs(collection(db, "stores"))
+			const storesList = querySnapshot.docs.map((doc) => {
+				const data = doc.data() as Store
+				return { ...data, id: doc.id }
+			})
+
+			storesList.sort((a, b) => a.name.localeCompare(b.name))
+			setStoresList(storesList)
+		}
+		document.title = "add boba deal"
+		fetchData()
+	}, [])
 
 	return (
 		<ScrollView style={styles.mainContainer}>
@@ -50,10 +69,10 @@ export default function Add() {
 
 				<View style={styles.formContainer}>
 					<TabPanel>
-						<AddBobaDeal />
+						<AddBobaDeal storesList={storesList} />
 					</TabPanel>
 					<TabPanel>
-						<AddStoreDeal />
+						<AddStoreDeal storesList={storesList} />
 					</TabPanel>
 				</View>
 			</Tabs>
