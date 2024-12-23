@@ -104,8 +104,21 @@ function makePromoPeriodText(promoPeriod: PromoPeriod): string {
 		return "Always"
 	}
 
-	const startDate: string = promoPeriod.startDate.toDate().toDateString()
-	const endDate: string = promoPeriod.endDate.toDate().toDateString()
+	const startDate: string = promoPeriod.startDate
+		.toDate()
+		.toLocaleDateString("en-US", {
+			weekday: "long", // e.g. "Sunday"
+			month: "short", // e.g. "Dec"
+			day: "numeric", // e.g. "22"
+		})
+
+	const endDate: string = promoPeriod.endDate
+		.toDate()
+		.toLocaleDateString("en-US", {
+			weekday: "long", // e.g. "Sunday"
+			month: "short", // e.g. "Dec"
+			day: "numeric", // e.g. "22"
+		})
 
 	return `${startDate} to ${endDate}`
 }

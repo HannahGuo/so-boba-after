@@ -1,10 +1,20 @@
 import Header from "@/components/Header"
 import { ThemedText } from "@/components/ThemedText"
 import { Colors } from "@/constants/Colors"
+import {
+	BobaDeal,
+	BobaDealType,
+	DayCondition,
+	DiscountType,
+	Drink,
+	DrinkSize,
+	DrinkType,
+	Store,
+} from "@/constants/types/Deals"
 import { db } from "@/firebase/app/firebaseConfig"
 import DateTimePicker from "@react-native-community/datetimepicker"
 import { Picker } from "@react-native-picker/picker"
-import { collection, doc, getDocs, setDoc } from "firebase/firestore"
+import { collection, doc, getDocs, setDoc, Timestamp } from "firebase/firestore"
 import { useEffect, useState } from "react"
 import {
 	Button,
@@ -131,8 +141,8 @@ export default function Add() {
 			dealType: dealType,
 			drinks: drinksList,
 			promoPeriod: {
-				startDate: startDate,
-				endDate: endDate,
+				startDate: Timestamp.fromDate(startDate),
+				endDate: Timestamp.fromDate(endDate),
 				condition: dayCondition!,
 			},
 			discount: {
