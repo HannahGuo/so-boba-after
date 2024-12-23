@@ -105,12 +105,13 @@ const styles = StyleSheet.create({
 	},
 	listContainer: {
 		display: "flex",
-		flexDirection: "row",
 		flexWrap: "wrap",
-		justifyContent: "space-between",
+		flexDirection: "row",
 		alignContent: "space-between",
+		alignItems: "flex-start",
 		marginTop: 20,
 		marginBottom: 20,
+		gap: 20,
 	},
 	dealsContainer: {
 		display: "flex",

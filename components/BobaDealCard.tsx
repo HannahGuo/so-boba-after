@@ -1,4 +1,4 @@
-import { BobaColors } from "@/constants/BobaColors"
+import { BobaColors, BobaGradientColors } from "@/constants/BobaColors"
 import { BobaEmojis } from "@/constants/BobaEmojis"
 import { Colors } from "@/constants/Colors"
 import { BobaDeal, Drink, Store, StoreDeal } from "@/constants/types/Deals"
@@ -23,7 +23,7 @@ function chooseBackgroundColor(drinkName: string) {
 				normalizeDrinkName.includes(keyword),
 			)
 		) {
-			return `linear-gradient(to top, ${Colors.shared.bobaBrown}, 95%, ${Colors.shared.bobaBrownLight})`
+			return BobaGradientColors[color]
 		}
 	}
 
@@ -34,11 +34,11 @@ function chooseBackgroundColor(drinkName: string) {
 				normalizeDrinkName.includes(keyword),
 			)
 		) {
-			return `linear-gradient(to top, ${Colors.shared.bobaBrown}, 95%, ${Colors.shared.bobaBrownLight})`
+			return BobaGradientColors[color]
 		}
 	}
 
-	return Colors.shared.bobaPurple
+	return `linear-gradient(to top, ${Colors.shared.bobaBrown}, 95%, ${Colors.shared.bobaBrownLight})`
 }
 
 function makeDrinkList(drinks: Drink[]): Drink[] {
@@ -92,12 +92,7 @@ export default function BobaDealCard({
 			<ThemedText type="subtitle">{store?.name}</ThemedText>
 			<ThemedText type="defaultBold">{makeDealText(deal)}</ThemedText>
 			<ThemedText type="default">
-				<ul
-					style={{
-						listStyleType: "none",
-						paddingLeft: 10,
-					}}
-				>
+				<ul style={{ ...styles.drinkList, listStyleType: "none" }}>
 					{drinksList.map((drink) => {
 						return (
 							<li>
@@ -132,5 +127,10 @@ const styles = StyleSheet.create({
 		borderBottomWidth: StyleSheet.hairlineWidth,
 		marginBottom: 10,
 		marginTop: 10,
+	},
+	drinkList: {
+		paddingLeft: 10,
+		marginTop: 8,
+		marginBottom: 5,
 	},
 })

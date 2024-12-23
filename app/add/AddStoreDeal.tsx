@@ -31,6 +31,16 @@ export default function AddStoreDeal({ storesList }: { storesList: Store[] }) {
 		[],
 	)
 
+	function resetForm() {
+		setStoreName("")
+		setStartDate(new Date())
+		setEndDate(new Date())
+		setDiscountType("percentage")
+		setDiscountValue(NaN)
+		setDiscountAlwaysActive(true)
+		setCondition("")
+	}
+
 	async function submitStoreDeal() {
 		const dealID =
 			Math.random().toString(36).substring(2, 15) +
@@ -76,6 +86,7 @@ export default function AddStoreDeal({ storesList }: { storesList: Store[] }) {
 		}
 
 		await setDoc(doc(db, "store-deals", dealID), constructedDeal)
+		resetForm()
 	}
 
 	useEffect(() => {

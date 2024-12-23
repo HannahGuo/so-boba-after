@@ -56,7 +56,10 @@ export function makePromoPeriodText(promoPeriod: PromoPeriod): string {
 		}
 
 		if ("day" in promoPeriod.condition) {
-			return `Every ${promoPeriod.condition.day}`
+			return `Every ${
+				promoPeriod.condition.day[0].toLocaleUpperCase() +
+				promoPeriod.condition.day.substring(1)
+			}`
 		}
 	}
 

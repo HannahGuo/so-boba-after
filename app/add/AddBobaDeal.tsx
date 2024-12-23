@@ -3,16 +3,19 @@ import { Colors } from "@/constants/Colors"
 import {
 	BobaDeal,
 	BobaDealType,
+	DateCondition,
 	DayCondition,
 	DiscountType,
 	Drink,
 	DrinkSize,
 	DrinkType,
 	Store,
+	Weekday,
 } from "@/constants/types/Deals"
 import { db } from "@/firebase/app/firebaseConfig"
 import DateTimePicker from "@react-native-community/datetimepicker"
 import { Picker } from "@react-native-picker/picker"
+import Checkbox from "expo-checkbox"
 import { Timestamp, doc, setDoc } from "firebase/firestore"
 import React, { useState } from "react"
 import { Button, Platform, StyleSheet, TextInput, View } from "react-native"
@@ -74,7 +77,10 @@ export default function AddBobaDeal({ storesList }: { storesList: Store[] }) {
 
 	const [startDate, setStartDate] = useState<Date>(new Date())
 	const [endDate, setEndDate] = useState<Date>(new Date())
-	const [dayCondition, setDayCondition] = useState<DayCondition | null>(null)
+	const [dayCondition, setDayCondition] = useState<Weekday | null>(null)
+	const [dateCondition, setDateCondition] = useState<number | null>(null)
+
+	const [isDiscountAlwaysActive, setDiscountAlwaysActive] = useState(true)
 
 	const [notes, setNotes] = useState<string>()
 
@@ -95,6 +101,24 @@ export default function AddBobaDeal({ storesList }: { storesList: Store[] }) {
 		}
 
 		return true
+	}
+
+	function resetForm() {
+		setStoreName("")
+		setDealType("single")
+		setDrinkNameOne("")
+		setDrinkSizeOne("any")
+		setDrinkNameTwo("")
+		setDrinkSizeTwo("any")
+		setDrinkNameThree("")
+		setDrinkSizeThree("any")
+		setStartDate(new Date())
+		setEndDate(new Date())
+		setDayCondition(null)
+		setDateCondition(null)
+		setDiscountType("total")
+		setDiscountValue(NaN)
+		setNotes("")
 	}
 
 	async function submitDeal() {
@@ -123,6 +147,15 @@ export default function AddBobaDeal({ storesList }: { storesList: Store[] }) {
 			}))
 		})
 
+		let chosenCondition: DayCondition | DateCondition | undefined =
+			undefined
+
+		if (dayCondition) {
+			chosenCondition = { day: dayCondition }
+		} else if (dateCondition) {
+			chosenCondition = { date: dateCondition }
+		}
+
 		const constructedDeal: BobaDeal = {
 			id: dealID,
 			storeID:
@@ -132,7 +165,7 @@ export default function AddBobaDeal({ storesList }: { storesList: Store[] }) {
 			promoPeriod: {
 				startDate: Timestamp.fromDate(startDate),
 				endDate: Timestamp.fromDate(endDate),
-				condition: dayCondition!,
+				condition: chosenCondition,
 			},
 			discount: {
 				discountType: discountType,
@@ -142,6 +175,8 @@ export default function AddBobaDeal({ storesList }: { storesList: Store[] }) {
 		}
 
 		await setDoc(doc(db, "boba-deals", dealID), constructedDeal)
+
+		resetForm()
 	}
 
 	return (
@@ -315,6 +350,16 @@ export default function AddBobaDeal({ storesList }: { storesList: Store[] }) {
 			<View style={styles.dateInputContainer}>
 				<ThemedText type="subtitle">Deal Dates:</ThemedText>
 				<View style={styles.dateInputRow}>
+					<View style={styles.checkboxRow}>
+						<ThemedText type="subsubtitle">
+							Always Active:
+						</ThemedText>
+						<Checkbox
+							value={isDiscountAlwaysActive}
+							onValueChange={setDiscountAlwaysActive}
+						/>
+					</View>
+
 					<ThemedText type="subsubtitle">Start Date:</ThemedText>
 					<View>
 						{Platform.OS === "web" ? (
@@ -325,6 +370,7 @@ export default function AddBobaDeal({ storesList }: { storesList: Store[] }) {
 								onChange={(e) =>
 									setStartDate(new Date(e.target.value))
 								}
+								disabled={isDiscountAlwaysActive}
 							/>
 						) : (
 							<DateTimePicker
@@ -333,6 +379,7 @@ export default function AddBobaDeal({ storesList }: { storesList: Store[] }) {
 								onChange={(_, selectedDate) =>
 									selectedDate && setStartDate(selectedDate)
 								}
+								disabled={isDiscountAlwaysActive}
 							/>
 						)}
 					</View>
@@ -346,6 +393,7 @@ export default function AddBobaDeal({ storesList }: { storesList: Store[] }) {
 								onChange={(e) =>
 									setEndDate(new Date(e.target.value))
 								}
+								disabled={isDiscountAlwaysActive}
 							/>
 						) : (
 							<DateTimePicker
@@ -354,6 +402,7 @@ export default function AddBobaDeal({ storesList }: { storesList: Store[] }) {
 								onChange={(_, selectedDate) =>
 									selectedDate && setEndDate(selectedDate)
 								}
+								disabled={isDiscountAlwaysActive}
 							/>
 						)}
 					</View>
@@ -366,16 +415,31 @@ export default function AddBobaDeal({ storesList }: { storesList: Store[] }) {
 						}
 					>
 						<Picker.Item label="None" value={null} />
-						<Picker.Item label="Every Monday" value="monday" />
-						<Picker.Item label="Every Tuesday" value="tuesday" />
-						<Picker.Item
-							label="Every Wednesday"
-							value="wednesday"
-						/>
-						<Picker.Item label="Every Thursday" value="thursday" />
-						<Picker.Item label="Every Friday" value="friday" />
-						<Picker.Item label="Every Saturday" value="saturday" />
-						<Picker.Item label="Every Sunday" value="sunday" />
+						<Picker.Item label="Monday" value="monday" />
+						<Picker.Item label="Tuesday" value="tuesday" />
+						<Picker.Item label="Wednesday" value="wednesday" />
+						<Picker.Item label="Thursday" value="thursday" />
+						<Picker.Item label="Friday" value="friday" />
+						<Picker.Item label="Saturday" value="saturday" />
+						<Picker.Item label="Sunday" value="sunday" />
+					</Picker>
+					<ThemedText>or...</ThemedText>
+					<ThemedText type="subsubtitle">Date Condition:</ThemedText>
+					<Picker
+						style={styles.thinPicker}
+						selectedValue={dateCondition}
+						onValueChange={(itemValue) =>
+							setDateCondition(itemValue)
+						}
+					>
+						<Picker.Item label="None" value={null} />
+						{Array.from({ length: 31 }, (_, i) => (
+							<Picker.Item
+								label={(i + 1).toString()}
+								value={i + 1}
+								key={`date-condition-${i + 1}`}
+							/>
+						))}
 					</Picker>
 				</View>
 			</View>
@@ -423,7 +487,6 @@ const styles = StyleSheet.create({
 		flexDirection: "column",
 		justifyContent: "space-between",
 		marginTop: 20,
-		width: "85%",
 	},
 	textInputContainer: {
 		display: "flex",
@@ -481,6 +544,8 @@ const styles = StyleSheet.create({
 		display: "flex",
 		flexDirection: "row",
 		justifyContent: "space-between",
+		alignItems: "center",
+		alignContent: "center",
 	},
 	picker: {
 		width: 300,
@@ -535,5 +600,12 @@ const styles = StyleSheet.create({
 		fontSize: 24,
 		borderColor: Colors.shared.bobaOrange,
 		cursor: "pointer",
+	},
+	checkboxRow: {
+		display: "flex",
+		flexDirection: "row",
+		justifyContent: "space-between",
+		alignItems: "center",
+		width: 200,
 	},
 })

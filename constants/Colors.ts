@@ -13,7 +13,7 @@ export const Colors = {
 	// TODO: make these different
 	dark: {
 		text: "white",
-		background: "#3B2A0F", // '#FFEFD7',
+		background: "#FFEFD7",
 		primaryColor: "#DEB26F",
 		tabIconDefault: "white",
 	},
@@ -27,6 +27,7 @@ export const Colors = {
 		bobaPurple: "#DDADFF",
 		bobaPink: "#F3A5DC",
 		bobaBrown: "#D9AF71",
+		bobaBrownDark: "#AB792F",
 		bobaBrownLight: "#F3D4A6",
 	},
 }
