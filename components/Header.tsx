@@ -46,6 +46,10 @@ export default function Header({ page }: { page: HeaderPage }) {
 						</Link>
 					)}
 				</Pressable>
+
+				<View style={{ marginLeft: 20 }}>
+					<ThemedText>Showing deals for...</ThemedText>
+				</View>
 			</View>
 		</View>
 	)
@@ -73,6 +77,8 @@ const styles = StyleSheet.create({
 		position: "absolute",
 		top: 26,
 		left: "69.8%",
+		display: "flex",
+		flexDirection: "row",
 	},
 	underlineOnHover: {
 		textDecorationLine: "underline",

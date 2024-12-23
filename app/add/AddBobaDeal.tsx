@@ -164,9 +164,15 @@ export default function AddBobaDeal({ storesList }: { storesList: Store[] }) {
 			dealType: dealType,
 			drinks: drinksList,
 			promoPeriod: {
-				startDate: Timestamp.fromDate(startDate),
-				endDate: Timestamp.fromDate(endDate),
-				condition: chosenCondition,
+				startDate: isDiscountAlwaysActive
+					? "always"
+					: Timestamp.fromDate(startDate),
+				endDate: isDiscountAlwaysActive
+					? "always"
+					: Timestamp.fromDate(endDate),
+				...(chosenCondition !== undefined && {
+					condition: chosenCondition,
+				}),
 			},
 			discount: {
 				discountType: discountType,
@@ -370,7 +376,9 @@ export default function AddBobaDeal({ storesList }: { storesList: Store[] }) {
 								style={styles.dateInput}
 								value={startDate.toISOString().substr(0, 10)}
 								onChange={(e) =>
-									setStartDate(new Date(e.target.value))
+									setStartDate(
+										new Date(e.target.value + " EST"),
+									)
 								}
 								placeholder="Start Date"
 								disabled={isDiscountAlwaysActive}
@@ -395,7 +403,9 @@ export default function AddBobaDeal({ storesList }: { storesList: Store[] }) {
 								placeholder="End Date"
 								value={endDate.toISOString().substr(0, 10)}
 								onChange={(e) =>
-									setEndDate(new Date(e.target.value))
+									setEndDate(
+										new Date(e.target.value + " EST"),
+									)
 								}
 								disabled={isDiscountAlwaysActive}
 							/>

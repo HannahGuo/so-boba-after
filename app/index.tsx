@@ -1,5 +1,6 @@
 import DealsList from "@/components/DealsList"
 import Header from "@/components/Header"
+import SortAndFilterBar from "@/components/SortAndFilterBar"
 import { Colors } from "@/constants/Colors"
 import { useEffect } from "react"
 import { ScrollView, StyleSheet } from "react-native"
@@ -13,6 +14,7 @@ export default function Home() {
 		<ScrollView style={styles.mainContainer}>
 			<Header page="home" />
 			<DealsList />
+			<SortAndFilterBar />
 		</ScrollView>
 	)
 }

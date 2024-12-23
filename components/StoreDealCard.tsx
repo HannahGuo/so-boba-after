@@ -7,14 +7,9 @@ import { makeDealText, makePromoPeriodText } from "./helpers/dealHelpers"
 type StoreDealProps = {
 	deal: StoreDeal
 	store: Store | undefined
-	storeDeals?: StoreDeal[]
 }
 
-export default function StoreDealCard({
-	deal,
-	store,
-	storeDeals,
-}: StoreDealProps) {
+export default function StoreDealCard({ deal, store }: StoreDealProps) {
 	const notes = deal.condition.notes
 	return (
 		<View

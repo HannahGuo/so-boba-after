@@ -1,7 +1,14 @@
 import { Colors } from "@/constants/Colors"
-import { BobaDeal, Store, StoreDeal } from "@/constants/types/Deals"
+import { BobaDeal, Store, StoreDeal, weekdayMap } from "@/constants/types/Deals"
 import { db } from "@/firebase/app/firebaseConfig"
-import { collection, doc, getDoc, getDocs, query } from "firebase/firestore"
+import {
+	collection,
+	doc,
+	getDoc,
+	getDocs,
+	query,
+	Timestamp,
+} from "firebase/firestore"
 import React, { useEffect, useState } from "react"
 import { StyleSheet, View } from "react-native"
 import BobaDealCard from "./BobaDealCard"
@@ -9,6 +16,7 @@ import StoreDealCard from "./StoreDealCard"
 import { ThemedText } from "./ThemedText"
 
 const getStoreFromID = async (id: string): Promise<Store> => {
+	console.log("Getting store from ID", id)
 	const querySnapshot = await getDoc(doc(db, "stores", id))
 	return querySnapshot.data() as Store
 }
@@ -62,12 +70,54 @@ export default function DealsList() {
 		retrieveStoreDeals()
 	}, [])
 
+	const filteredBobaDeals = bobaDeals.filter((deal) => {
+		const today = Timestamp.now()
+
+		if (
+			!(
+				deal.promoPeriod.startDate === "always" ||
+				deal.promoPeriod.endDate === "always"
+			)
+		) {
+			if (
+				today < deal.promoPeriod.startDate ||
+				today > deal.promoPeriod.endDate
+			) {
+				return false
+			}
+		}
+
+		if (deal.promoPeriod.condition) {
+			if ("day" in deal.promoPeriod.condition) {
+				if (
+					weekdayMap[deal.promoPeriod.condition.day] !==
+					Timestamp.fromDate(new Date()).toDate().getDay()
+				) {
+					console.log(
+						weekdayMap[deal.promoPeriod.condition.day],
+						Timestamp.fromDate(new Date()).toDate().getDay(),
+					)
+					return false
+				}
+			} else if ("date" in deal.promoPeriod.condition) {
+				if (
+					deal.promoPeriod.condition.date !==
+					Timestamp.fromDate(new Date()).toDate().getDate()
+				) {
+					return false
+				}
+			}
+		}
+
+		return true
+	})
+
 	return (
 		<View style={styles.allDealsContainer}>
 			<View style={styles.dealsContainer}>
 				<ThemedText type="subtitle">🧋 Boba Deals</ThemedText>
 				<View style={styles.listContainer}>
-					{bobaDeals.map((deal) => {
+					{filteredBobaDeals.map((deal) => {
 						return (
 							<BobaDealCard
 								key={deal.id}
