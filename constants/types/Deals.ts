@@ -62,6 +62,7 @@ export type Store = {
 export type Condition = {
 	id: string
 	clause: string
+	notes?: string
 }
 
 export type StoreDeal = {

@@ -1,61 +1,16 @@
 import { BobaColors } from "@/constants/BobaColors"
 import { BobaEmojis } from "@/constants/BobaEmojis"
 import { Colors } from "@/constants/Colors"
-import {
-	BobaDeal,
-	Discount,
-	Drink,
-	PromoPeriod,
-	Store,
-	StoreDeal,
-} from "@/constants/types/Deals"
+import { BobaDeal, Drink, Store, StoreDeal } from "@/constants/types/Deals"
 import { StyleSheet, View } from "react-native"
 import { ThemedText } from "./ThemedText"
 import { drinkArraysEqual } from "./helpers/arrayHelpers"
+import { makeDealText, makePromoPeriodText } from "./helpers/dealHelpers"
 
-type DealProps = {
+type BobaDealProps = {
 	deal: BobaDeal
 	store: Store | undefined
 	storeDeals?: StoreDeal[]
-}
-
-function makeDealText(deal: BobaDeal): string {
-	function makeDiscountText(discount: Discount) {
-		switch (discount.discountType) {
-			case "percentage":
-				return `${discount.discountValue}% off`
-			case "flatoff":
-				return `$${discount.discountValue} off`
-			case "total":
-				return `for $${discount.discountValue}`
-			default:
-				return "Unknown discount type"
-		}
-	}
-
-	switch (deal.dealType) {
-		case "single":
-			return makeDiscountText(deal.discount)
-		case "bogo":
-			return "Buy one get one " + makeDealText(deal)
-		case "buyXforY":
-			return (
-				"Buy any 2 " +
-				makeSizeText(deal.drinks[0].size) +
-				" " +
-				makeDiscountText(deal.discount)
-			)
-		case "other":
-			return "Other"
-	}
-}
-
-function makeSizeText(size: string) {
-	if (size === "any") {
-		return "any size"
-	}
-
-	return size
 }
 
 function chooseBackgroundColor(drinkName: string) {
@@ -86,43 +41,6 @@ function chooseBackgroundColor(drinkName: string) {
 	return Colors.shared.bobaPurple
 }
 
-function makePromoPeriodText(promoPeriod: PromoPeriod): string {
-	if (promoPeriod.condition) {
-		if ("date" in promoPeriod.condition) {
-			return `Every ${promoPeriod.condition.date}th of the month`
-		}
-
-		if ("day" in promoPeriod.condition) {
-			return `Every ${promoPeriod.condition.day}`
-		}
-	}
-
-	if (
-		promoPeriod.startDate === "always" ||
-		promoPeriod.endDate === "always"
-	) {
-		return "Always"
-	}
-
-	const startDate: string = promoPeriod.startDate
-		.toDate()
-		.toLocaleDateString("en-US", {
-			weekday: "long", // e.g. "Sunday"
-			month: "short", // e.g. "Dec"
-			day: "numeric", // e.g. "22"
-		})
-
-	const endDate: string = promoPeriod.endDate
-		.toDate()
-		.toLocaleDateString("en-US", {
-			weekday: "long", // e.g. "Sunday"
-			month: "short", // e.g. "Dec"
-			day: "numeric", // e.g. "22"
-		})
-
-	return `${startDate} to ${endDate}`
-}
-
 function makeDrinkList(drinks: Drink[]): Drink[] {
 	const drinkNumToList: Record<number, Drink[]> = {}
 
@@ -133,8 +51,6 @@ function makeDrinkList(drinks: Drink[]): Drink[] {
 
 		drinkNumToList[drink.drinkIndex].push(drink)
 	}
-
-	console.log(drinkNumToList)
 
 	// TODO: hardcoding 2 for now
 	if (Object.keys(drinkNumToList).length == 2) {
@@ -159,7 +75,11 @@ function chooseBobaListEmoji(drinkName: string) {
 	return "🧋"
 }
 
-export default function Deal({ deal, store, storeDeals }: DealProps) {
+export default function BobaDealCard({
+	deal,
+	store,
+	storeDeals,
+}: BobaDealProps) {
 	const drinksList = makeDrinkList(deal.drinks)
 
 	return (
