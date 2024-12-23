@@ -95,7 +95,7 @@ export default function BobaDealCard({
 				<ul style={{ ...styles.drinkList, listStyleType: "none" }}>
 					{drinksList.map((drink) => {
 						return (
-							<li>
+							<li key={deal.id + drink.name}>
 								{chooseBobaListEmoji(drink.name)} {drink.name}
 							</li>
 						)

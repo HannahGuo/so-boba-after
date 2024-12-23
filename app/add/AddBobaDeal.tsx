@@ -60,7 +60,7 @@ function determineDrinkTypeFromName(drinkName: string): DrinkType {
 	}
 }
 export default function AddBobaDeal({ storesList }: { storesList: Store[] }) {
-	const [storeName, setStoreName] = useState<string>()
+	const [storeName, setStoreName] = useState<string | undefined>(undefined)
 	const [dealType, setDealType] = useState<BobaDealType>("single")
 
 	const [drinkNameOne, setDrinkNameOne] = useState<string>()
@@ -69,6 +69,7 @@ export default function AddBobaDeal({ storesList }: { storesList: Store[] }) {
 	const [drinkNameTwo, setDrinkNameTwo] = useState<string>()
 	const [drinkSizeTwo, setDrinkSizeTwo] = useState<DrinkSize>("any")
 
+	// i actually dont know if we need this third field...
 	const [drinkNameThree, setDrinkNameThree] = useState<string>()
 	const [drinkSizeThree, setDrinkSizeThree] = useState<DrinkSize>("any")
 
@@ -187,6 +188,7 @@ export default function AddBobaDeal({ storesList }: { storesList: Store[] }) {
 					style={styles.picker}
 					selectedValue={storeName}
 					onValueChange={(itemValue) => setStoreName(itemValue)}
+					placeholder="Select a store"
 				>
 					{storesList.map((store) => (
 						<Picker.Item
@@ -370,6 +372,7 @@ export default function AddBobaDeal({ storesList }: { storesList: Store[] }) {
 								onChange={(e) =>
 									setStartDate(new Date(e.target.value))
 								}
+								placeholder="Start Date"
 								disabled={isDiscountAlwaysActive}
 							/>
 						) : (
@@ -389,6 +392,7 @@ export default function AddBobaDeal({ storesList }: { storesList: Store[] }) {
 							<input
 								style={styles.dateInput}
 								type="date"
+								placeholder="End Date"
 								value={endDate.toISOString().substr(0, 10)}
 								onChange={(e) =>
 									setEndDate(new Date(e.target.value))
@@ -406,7 +410,18 @@ export default function AddBobaDeal({ storesList }: { storesList: Store[] }) {
 							/>
 						)}
 					</View>
-					<ThemedText type="subsubtitle">Day Condition:</ThemedText>
+				</View>
+				<View
+					style={{
+						...styles.dateInputRow,
+						marginTop: 30,
+						display: "flex",
+					}}
+				>
+					<ThemedText type="subsubtitle">
+						Condition (optional):
+					</ThemedText>
+					<ThemedText type="defaultBold">Day:</ThemedText>
 					<Picker
 						style={styles.thinPicker}
 						selectedValue={dayCondition}
@@ -415,16 +430,19 @@ export default function AddBobaDeal({ storesList }: { storesList: Store[] }) {
 						}
 					>
 						<Picker.Item label="None" value={null} />
-						<Picker.Item label="Monday" value="monday" />
-						<Picker.Item label="Tuesday" value="tuesday" />
-						<Picker.Item label="Wednesday" value="wednesday" />
-						<Picker.Item label="Thursday" value="thursday" />
-						<Picker.Item label="Friday" value="friday" />
-						<Picker.Item label="Saturday" value="saturday" />
-						<Picker.Item label="Sunday" value="sunday" />
+						<Picker.Item label="Every Monday" value="monday" />
+						<Picker.Item label="Every Tuesday" value="tuesday" />
+						<Picker.Item
+							label="Every Wednesday"
+							value="wednesday"
+						/>
+						<Picker.Item label="Every Thursday" value="thursday" />
+						<Picker.Item label="Every Friday" value="friday" />
+						<Picker.Item label="Every Saturday" value="saturday" />
+						<Picker.Item label="Every Sunday" value="sunday" />
 					</Picker>
-					<ThemedText>or...</ThemedText>
-					<ThemedText type="subsubtitle">Date Condition:</ThemedText>
+					<ThemedText>or</ThemedText>
+					<ThemedText type="defaultBold">Date:</ThemedText>
 					<Picker
 						style={styles.thinPicker}
 						selectedValue={dateCondition}
@@ -487,6 +505,7 @@ const styles = StyleSheet.create({
 		flexDirection: "column",
 		justifyContent: "space-between",
 		marginTop: 20,
+		width: "60%",
 	},
 	textInputContainer: {
 		display: "flex",
