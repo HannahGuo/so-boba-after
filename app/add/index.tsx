@@ -91,7 +91,7 @@ export default function Add() {
 			!discountType ||
 			isNaN(discountValue)
 		) {
-			console.log("missing required fields")
+			alert("Please fill out all required fields")
 			return false
 		}
 
@@ -100,7 +100,6 @@ export default function Add() {
 
 	async function submitDeal() {
 		if (!validateForm()) {
-			alert("Please fill out all required fields")
 			return
 		}
 
