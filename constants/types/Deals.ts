@@ -1,4 +1,6 @@
-type Weekday =
+import { Timestamp } from "firebase/firestore"
+
+export type Weekday =
 	| "monday"
 	| "tuesday"
 	| "wednesday"
@@ -7,40 +9,40 @@ type Weekday =
 	| "saturday"
 	| "sunday" // 7 days a week
 
-type DayCondition = {
+export type DayCondition = {
 	day: Weekday
 }
 
-type DateCondition = {
+export type DateCondition = {
 	date: number
 }
 
-type PromoPeriod = {
-	startDate: Date | "always"
-	endDate: Date | "always"
+export type PromoPeriod = {
+	startDate: Timestamp | "always"
+	endDate: Timestamp | "always"
 	condition?: DayCondition | DateCondition
 }
 
-type DiscountType = "percentage" | "flatoff" | "total"
+export type DiscountType = "percentage" | "flatoff" | "total"
 
-type Discount = {
+export type Discount = {
 	discountType: DiscountType
 	discountValue: number
 }
 
 // DEALS FOR DRINKS
-type BobaDealType = "single" | "bogo" | "buyXforY" | "other"
-type DrinkType = "milktea" | "fruittea" | "slush" | "other"
-type DrinkSize = "regular" | "large" | "any"
+export type BobaDealType = "single" | "bogo" | "buyXforY" | "other"
+export type DrinkType = "milktea" | "fruittea" | "slush" | "other"
+export type DrinkSize = "regular" | "large" | "any"
 
-type Drink = {
+export type Drink = {
 	name: string
 	type: DrinkType
 	size: DrinkSize
 	drinkIndex: number // index of the drink in the deal
 }
 
-type BobaDeal = {
+export type BobaDeal = {
 	id: string
 	storeID: string
 	dealType: BobaDealType
@@ -51,18 +53,18 @@ type BobaDeal = {
 }
 
 // DEALS FOR STORES
-type Store = {
+export type Store = {
 	id: string
 	name: string
 	address: string
 }
 
-type Condition = {
+export type Condition = {
 	id: string
 	clause: string
 }
 
-type StoreDeal = {
+export type StoreDeal = {
 	id: string
 	storeID: string
 	condition: Condition
