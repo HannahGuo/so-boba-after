@@ -12,6 +12,7 @@ export type ThemedTextProps = TextProps & {
 		| "subtitle"
 		| "subsubtitle"
 		| "link"
+		| "tiny"
 }
 
 export function ThemedText({
@@ -33,6 +34,7 @@ export function ThemedText({
 				type === "subtitle" ? styles.subtitle : undefined,
 				type === "subsubtitle" ? styles.subsubtitle : undefined,
 				type === "link" ? styles.link : undefined,
+				type === "tiny" ? styles.tiny : undefined,
 				style,
 			]}
 			{...rest}
@@ -64,6 +66,10 @@ const styles = StyleSheet.create({
 	link: {
 		fontSize: 16,
 		color: "#0a7ea4",
+		fontFamily: "CourierPrime",
+	},
+	tiny: {
+		fontSize: 12,
 		fontFamily: "CourierPrime",
 	},
 })
