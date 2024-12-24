@@ -13,7 +13,8 @@
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.anonymous.sobobaafter"
     },
     "web": {
       "bundler": "metro",
@@ -29,13 +30,28 @@
           "backgroundColor": "#ffffff"
         }
       ],
-      ["expo-font", {
-        "fonts": ["./assets/fonts/CourierPrime-Bold.ttf","./assets/fonts/CourierPrime-Italic.ttf", 
-          "./assets/fonts/CourierPrime-Regular.ttf", "./assets/fonts/LodrinaSolid-Regular.ttf"]
-      }]
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/CourierPrime-Bold.ttf",
+            "./assets/fonts/CourierPrime-Italic.ttf",
+            "./assets/fonts/CourierPrime-Regular.ttf",
+            "./assets/fonts/LodrinaSolid-Regular.ttf"
+          ]
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "d1fb353b-04f6-444b-b074-e9191a652cec"
+      }
     }
   }
 }
