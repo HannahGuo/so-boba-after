@@ -11,7 +11,7 @@ import {
 	Timestamp,
 } from "firebase/firestore"
 import React, { useContext, useEffect, useState } from "react"
-import { StyleSheet, View } from "react-native"
+import { Platform, StyleSheet, View } from "react-native"
 import BobaDealCard from "./BobaDealCard"
 import StoreDealCard from "./StoreDealCard"
 import { ThemedText } from "./ThemedText"
@@ -127,6 +127,76 @@ export default function DealsList() {
 		}
 		return 0
 	})
+
+	// On desktop, we'll have 3 columns. and because i like grid layouts and flex is being a pain, i'm hacking it.
+	// this avoids the problem of different card heights causing the cards to not line up properly
+	if (Platform.OS === "web") {
+		const COLUMN_COUNT = 3
+		const bobaDealsCols: BobaDeal[][] = Array.from(
+			{ length: COLUMN_COUNT },
+			() => [],
+		)
+
+		for (let i = 0; i < filteredBobaDeals.length; i++) {
+			const columnIndex = i % COLUMN_COUNT
+			bobaDealsCols[columnIndex].push(filteredBobaDeals[i])
+		}
+
+		return (
+			<View style={styles.allDealsContainer}>
+				<View style={styles.dealsContainer}>
+					<ThemedText type="subtitle">🧋 Boba Deals</ThemedText>
+					<View
+						style={{
+							display: "flex",
+							flexDirection: "row",
+							rowGap: 20,
+						}}
+					>
+						{bobaDealsCols.map((row, index) => {
+							return (
+								<View
+									key={index}
+									style={{
+										display: "flex",
+										flexDirection: "column",
+										width: "29%",
+									}}
+								>
+									{row.map((deal) => {
+										return (
+											<BobaDealCard
+												key={deal.id}
+												deal={deal}
+												store={storeIDToObjMap.get(
+													deal.storeID,
+												)}
+											/>
+										)
+									})}
+								</View>
+							)
+						})}
+					</View>
+				</View>
+				<View style={styles.dividerLine} />
+				<View style={styles.dealsContainer}>
+					<ThemedText type="subtitle">🏪 Store Deals</ThemedText>
+					<View style={styles.listContainer}>
+						{storeDeals.map((deal) => {
+							return (
+								<StoreDealCard
+									key={deal.id}
+									deal={deal}
+									store={storeIDToObjMap.get(deal.storeID)}
+								/>
+							)
+						})}
+					</View>
+				</View>
+			</View>
+		)
+	}
 
 	return (
 		<View style={styles.allDealsContainer}>
