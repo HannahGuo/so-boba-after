@@ -75,6 +75,10 @@ export default function DealsList() {
 	}, [])
 
 	const filteredBobaDeals = bobaDeals.filter((deal) => {
+		if (showDealsForDate === null) {
+			return true
+		}
+
 		if (
 			!(
 				deal.promoPeriod.startDate === "always" ||
@@ -170,10 +174,11 @@ const styles = StyleSheet.create({
 		flexWrap: "wrap",
 		flexDirection: "row",
 		alignContent: "space-between",
+		justifyContent: "flex-start",
 		alignItems: "flex-start",
 		marginTop: 20,
 		marginBottom: 20,
-		gap: 20,
+		gap: 0,
 	},
 	dealsContainer: {
 		display: "flex",

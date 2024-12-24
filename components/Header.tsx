@@ -1,5 +1,6 @@
 import { ShowDealsForDateContext } from "@/contexts/ShowDealsForDateContext"
 import DateTimePicker from "@react-native-community/datetimepicker"
+import Checkbox from "expo-checkbox"
 import { Link } from "expo-router"
 import React, { useContext, useState } from "react"
 import {
@@ -20,6 +21,8 @@ export default function Header({ page }: { page: HeaderPage }) {
 	const { showDealsForDate, setShowDealsForDate } = useContext(
 		ShowDealsForDateContext,
 	)
+
+	const [showAllDeals, setShowAllDeals] = useState(false)
 
 	return (
 		<View style={styles.headerContainer}>
@@ -67,33 +70,65 @@ export default function Header({ page }: { page: HeaderPage }) {
 						alignItems: "center",
 						rowGap: 4,
 						width: 320,
+						top: -8,
 					}}
 				>
-					<ThemedText>Showing Deals for</ThemedText>
-					{Platform.OS === "web" ? (
-						<input
-							type="date"
-							style={styles.dateInput}
-							value={showDealsForDate.toISOString().substr(0, 10)}
-							onChange={(e) =>
-								setShowDealsForDate(
-									new Date(e.target.value + " EST"),
-								)
-							}
+					<View style={styles.checkboxRow}>
+						<ThemedText type="defaultBold">
+							Show All Deals:
+						</ThemedText>
+						<Checkbox
+							value={showAllDeals}
+							onValueChange={(val) => {
+								setShowAllDeals(val)
+								if (val) {
+									setShowDealsForDate(null)
+								} else {
+									setShowDealsForDate(new Date())
+								}
+							}}
 						/>
-					) : (
-						<DateTimePicker
-							value={showDealsForDate}
-							mode="date"
-							onChange={(_) => {}}
-						/>
+					</View>
+					<View style={styles.dividerLine} />
+					{showDealsForDate && (
+						<>
+							<ThemedText>Showing Deals for</ThemedText>
+							{Platform.OS === "web" ? (
+								<input
+									type="date"
+									style={styles.dateInput}
+									value={showDealsForDate
+										.toISOString()
+										.substr(0, 10)}
+									onChange={(e) =>
+										setShowDealsForDate(
+											new Date(e.target.value + " EST"),
+										)
+									}
+									disabled={showAllDeals}
+								/>
+							) : (
+								<DateTimePicker
+									value={showDealsForDate}
+									mode="date"
+									onChange={(_) => {}}
+									disabled={showAllDeals}
+								/>
+							)}
+							<ThemedText
+								style={{ marginTop: 8, marginLeft: 10 }}
+							>
+								(which is{" "}
+								{getRelativeDateString(showDealsForDate)})
+							</ThemedText>
+							<ThemedText style={{ marginTop: 8 }}>
+								in{" "}
+								<ThemedText type="defaultBold">
+									Waterloo
+								</ThemedText>
+							</ThemedText>
+						</>
 					)}
-					<ThemedText style={{ marginTop: 8, marginLeft: 10 }}>
-						(which is {getRelativeDateString(showDealsForDate)})
-					</ThemedText>
-					<ThemedText style={{ marginTop: 8 }}>
-						in <ThemedText type="defaultBold">Waterloo</ThemedText>
-					</ThemedText>
 				</View>
 			</View>
 		</View>
@@ -115,7 +150,7 @@ const styles = StyleSheet.create({
 	},
 	headerImageRight: {
 		position: "absolute",
-		top: -20,
+		top: 0,
 		left: "68%",
 	},
 	rightContainer: {
@@ -139,5 +174,19 @@ const styles = StyleSheet.create({
 		borderColor: "white",
 		boxShadow: "none",
 		width: 150,
+	},
+	checkboxRow: {
+		display: "flex",
+		flexDirection: "row",
+		justifyContent: "space-around",
+		alignItems: "center",
+		width: 200,
+	},
+	dividerLine: {
+		borderBottomColor: "white",
+		borderBottomWidth: StyleSheet.hairlineWidth,
+		marginBottom: 10,
+		marginTop: 10,
+		width: "100%",
 	},
 })
