@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
 		fontFamily: "CourierPrime",
 	},
 	defaultBold: {
-		fontSize: 22,
+		fontSize: 18,
 		fontFamily: "CourierPrimeBold",
 	},
 	title: {

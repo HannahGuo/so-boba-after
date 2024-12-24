@@ -1,12 +1,25 @@
+import { ShowDealsForDateContext } from "@/contexts/ShowDealsForDateContext"
+import DateTimePicker from "@react-native-community/datetimepicker"
 import { Link } from "expo-router"
-import { useState } from "react"
-import { ImageBackground, Pressable, StyleSheet, View } from "react-native"
+import React, { useContext, useState } from "react"
+import {
+	ImageBackground,
+	Platform,
+	Pressable,
+	StyleSheet,
+	View,
+} from "react-native"
 import { ThemedText } from "./ThemedText"
+import { getRelativeDateString } from "./helpers/dateHelpers"
 
 type HeaderPage = "home" | "add"
 
 export default function Header({ page }: { page: HeaderPage }) {
 	const [hover, setHover] = useState(false)
+
+	const { showDealsForDate, setShowDealsForDate } = useContext(
+		ShowDealsForDateContext,
+	)
 
 	return (
 		<View style={styles.headerContainer}>
@@ -46,9 +59,41 @@ export default function Header({ page }: { page: HeaderPage }) {
 						</Link>
 					)}
 				</Pressable>
-
-				<View style={{ marginLeft: 20 }}>
-					<ThemedText>Showing deals for...</ThemedText>
+				<View
+					style={{
+						paddingLeft: 60,
+						display: "flex",
+						flexDirection: "column",
+						alignItems: "center",
+						rowGap: 4,
+						width: 320,
+					}}
+				>
+					<ThemedText>Showing Deals for</ThemedText>
+					{Platform.OS === "web" ? (
+						<input
+							type="date"
+							style={styles.dateInput}
+							value={showDealsForDate.toISOString().substr(0, 10)}
+							onChange={(e) =>
+								setShowDealsForDate(
+									new Date(e.target.value + " EST"),
+								)
+							}
+						/>
+					) : (
+						<DateTimePicker
+							value={showDealsForDate}
+							mode="date"
+							onChange={(_) => {}}
+						/>
+					)}
+					<ThemedText style={{ marginTop: 8, marginLeft: 10 }}>
+						(which is {getRelativeDateString(showDealsForDate)})
+					</ThemedText>
+					<ThemedText style={{ marginTop: 8 }}>
+						in <ThemedText type="defaultBold">Waterloo</ThemedText>
+					</ThemedText>
 				</View>
 			</View>
 		</View>
@@ -76,12 +121,23 @@ const styles = StyleSheet.create({
 	rightContainer: {
 		position: "absolute",
 		top: 26,
-		left: "69.8%",
+		right: 40,
 		display: "flex",
 		flexDirection: "row",
 	},
 	underlineOnHover: {
 		textDecorationLine: "underline",
 		cursor: "pointer",
+	},
+	dateInput: {
+		backgroundColor: "white",
+		borderRadius: 10,
+		padding: 6,
+		paddingLeft: 12,
+		fontFamily: "CourierPrime",
+		fontSize: 18,
+		borderColor: "white",
+		boxShadow: "none",
+		width: 150,
 	},
 })

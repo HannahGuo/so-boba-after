@@ -2,7 +2,8 @@ import DealsList from "@/components/DealsList"
 import Header from "@/components/Header"
 import SortAndFilterBar from "@/components/SortAndFilterBar"
 import { Colors } from "@/constants/Colors"
-import { useEffect } from "react"
+import { ShowDealsForDateContext } from "@/contexts/ShowDealsForDateContext"
+import { useEffect, useState } from "react"
 import { ScrollView, StyleSheet } from "react-native"
 
 export default function Home() {
@@ -10,12 +11,18 @@ export default function Home() {
 		document.title = "...so, boba after?"
 	}, [])
 
+	const [showDealsForDate, setShowDealsForDate] = useState(new Date())
+
 	return (
-		<ScrollView style={styles.mainContainer}>
-			<Header page="home" />
-			<DealsList />
-			<SortAndFilterBar />
-		</ScrollView>
+		<ShowDealsForDateContext.Provider
+			value={{ showDealsForDate, setShowDealsForDate }}
+		>
+			<ScrollView style={styles.mainContainer}>
+				<Header page="home" />
+				<DealsList />
+				<SortAndFilterBar />
+			</ScrollView>
+		</ShowDealsForDateContext.Provider>
 	)
 }
 
