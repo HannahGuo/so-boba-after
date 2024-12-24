@@ -1,6 +1,9 @@
-import { createContext } from "react"
+import React, { createContext } from "react"
 
-export const ShowDealsForDateContext = createContext({
+export const ShowDealsForDateContext = createContext<{
+	showDealsForDate: Date
+	setShowDealsForDate: React.Dispatch<React.SetStateAction<Date>>
+}>({
 	showDealsForDate: new Date(),
-	setShowDealsForDate: (date: Date) => {},
+	setShowDealsForDate: () => {},
 })

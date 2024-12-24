@@ -1,5 +1,6 @@
 import { Colors } from "@/constants/Colors"
 import { BobaDeal, Store, StoreDeal, weekdayMap } from "@/constants/types/Deals"
+import { ShowDealsForDateContext } from "@/contexts/ShowDealsForDateContext"
 import { db } from "@/firebase/app/firebaseConfig"
 import {
 	collection,
@@ -9,20 +10,23 @@ import {
 	query,
 	Timestamp,
 } from "firebase/firestore"
-import React, { useEffect, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { StyleSheet, View } from "react-native"
 import BobaDealCard from "./BobaDealCard"
 import StoreDealCard from "./StoreDealCard"
 import { ThemedText } from "./ThemedText"
 
 const getStoreFromID = async (id: string): Promise<Store> => {
-	console.log("Getting store from ID", id)
 	const querySnapshot = await getDoc(doc(db, "stores", id))
 	return querySnapshot.data() as Store
 }
 
 export default function DealsList() {
 	const [bobaDeals, setBobaDeals] = useState<BobaDeal[]>([])
+
+	const { showDealsForDate, setShowDealsForDate } = useContext(
+		ShowDealsForDateContext,
+	)
 
 	const [storeIDToObjMap, setStoreIDToObjMap] = useState(
 		new Map<string, Store>(),
@@ -71,8 +75,6 @@ export default function DealsList() {
 	}, [])
 
 	const filteredBobaDeals = bobaDeals.filter((deal) => {
-		const today = Timestamp.now()
-
 		if (
 			!(
 				deal.promoPeriod.startDate === "always" ||
@@ -80,8 +82,8 @@ export default function DealsList() {
 			)
 		) {
 			if (
-				today < deal.promoPeriod.startDate ||
-				today > deal.promoPeriod.endDate
+				showDealsForDate < deal.promoPeriod.startDate.toDate() ||
+				showDealsForDate > deal.promoPeriod.endDate.toDate()
 			) {
 				return false
 			}
@@ -91,18 +93,14 @@ export default function DealsList() {
 			if ("day" in deal.promoPeriod.condition) {
 				if (
 					weekdayMap[deal.promoPeriod.condition.day] !==
-					Timestamp.fromDate(new Date()).toDate().getDay()
+					Timestamp.fromDate(showDealsForDate).toDate().getDay()
 				) {
-					console.log(
-						weekdayMap[deal.promoPeriod.condition.day],
-						Timestamp.fromDate(new Date()).toDate().getDay(),
-					)
 					return false
 				}
 			} else if ("date" in deal.promoPeriod.condition) {
 				if (
 					deal.promoPeriod.condition.date !==
-					Timestamp.fromDate(new Date()).toDate().getDate()
+					Timestamp.fromDate(showDealsForDate).toDate().getDate()
 				) {
 					return false
 				}
@@ -110,6 +108,20 @@ export default function DealsList() {
 		}
 
 		return true
+	})
+
+	filteredBobaDeals.sort((a, b) => {
+		const storeA = storeIDToObjMap.get(a.storeID)
+		const storeB = storeIDToObjMap.get(b.storeID)
+
+		if (storeA && storeB) {
+			if (storeA.name < storeB.name) {
+				return -1
+			} else if (storeA.name > storeB.name) {
+				return 1
+			}
+		}
+		return 0
 	})
 
 	return (
