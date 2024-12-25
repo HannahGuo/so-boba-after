@@ -1,9 +1,11 @@
+import { Colors } from "@/constants/Colors"
 import { ShowDealsForDateContext } from "@/contexts/ShowDealsForDateContext"
 import DateTimePicker from "@react-native-community/datetimepicker"
 import Checkbox from "expo-checkbox"
 import { Link } from "expo-router"
 import React, { useContext, useState } from "react"
 import {
+	Button,
 	ImageBackground,
 	Platform,
 	Pressable,
@@ -23,6 +25,8 @@ export default function Header({ page }: { page: HeaderPage }) {
 	)
 
 	const [showAllDeals, setShowAllDeals] = useState(false)
+
+	const [showDatePickerMobile, setShowDatePickerMobile] = useState(false)
 
 	return (
 		<View style={styles.headerContainer}>
@@ -87,6 +91,7 @@ export default function Header({ page }: { page: HeaderPage }) {
 									setShowDealsForDate(new Date())
 								}
 							}}
+							color={Colors.shared.bobaBrown}
 						/>
 					</View>
 					<View style={styles.dividerLine} />
@@ -108,12 +113,37 @@ export default function Header({ page }: { page: HeaderPage }) {
 									disabled={showAllDeals}
 								/>
 							) : (
-								<DateTimePicker
-									value={showDealsForDate}
-									mode="date"
-									onChange={(_) => {}}
-									disabled={showAllDeals}
-								/>
+								<>
+									<ThemedText>
+										{showDealsForDate
+											.toISOString()
+											.substr(0, 10)}
+									</ThemedText>
+									<Button
+										title="Change Date"
+										color={Colors.shared.bobaBrown}
+										onPress={() =>
+											setShowDatePickerMobile(true)
+										}
+									/>
+									{showDatePickerMobile && (
+										<DateTimePicker
+											value={showDealsForDate}
+											accentColor={
+												Colors.shared.bobaBrown
+											}
+											textColor={Colors.shared.bobaBrown}
+											mode="date"
+											onChange={(_, date) => {
+												if (date) {
+													setShowDealsForDate(date)
+												}
+												setShowDatePickerMobile(false)
+											}}
+											disabled={showAllDeals}
+										/>
+									)}
+								</>
 							)}
 							<ThemedText
 								style={{ marginTop: 8, marginLeft: 10 }}
