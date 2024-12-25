@@ -75,6 +75,9 @@ function chooseBobaListEmoji(drinkName: string) {
 	return "🧋"
 }
 
+import React from "react"
+import { Text } from "react-native"
+
 export default function BobaDealCard({
 	deal,
 	store,
@@ -91,17 +94,13 @@ export default function BobaDealCard({
 		>
 			<ThemedText type="subtitle">{store?.name}</ThemedText>
 			<ThemedText type="defaultBold">{makeDealText(deal)}</ThemedText>
-			<ThemedText type="default">
-				<ul style={{ ...styles.drinkList, listStyleType: "none" }}>
-					{drinksList.map((drink) => {
-						return (
-							<li key={deal.id + drink.name}>
-								{chooseBobaListEmoji(drink.name)} {drink.name}
-							</li>
-						)
-					})}
-				</ul>
-			</ThemedText>
+			<View style={styles.drinkList}>
+				{drinksList.map((drink) => (
+					<Text key={deal.id + drink.name} style={styles.drinkItem}>
+						{chooseBobaListEmoji(drink.name)} {drink.name}
+					</Text>
+				))}
+			</View>
 			<View style={styles.dividerLine} />
 			<ThemedText type="default">
 				📅 {makePromoPeriodText(deal.promoPeriod)}
@@ -136,5 +135,10 @@ const styles = StyleSheet.create({
 		paddingLeft: 10,
 		marginTop: 8,
 		marginBottom: 5,
+	},
+	drinkItem: {
+		color: "white",
+		fontSize: 16,
+		marginVertical: 2,
 	},
 })

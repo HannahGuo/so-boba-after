@@ -4,14 +4,18 @@ import SortAndFilterBar from "@/components/SortAndFilterBar"
 import { Colors } from "@/constants/Colors"
 import { ShowDealsForDateContext } from "@/contexts/ShowDealsForDateContext"
 import { useEffect, useState } from "react"
-import { ScrollView, StyleSheet } from "react-native"
+import { Platform, ScrollView, StyleSheet } from "react-native"
 
 export default function Home() {
 	useEffect(() => {
-		document.title = "...so, boba after?"
+		if (Platform.OS === "web") {
+			document.title = "...so, boba after?"
+		}
 	}, [])
 
-	const [showDealsForDate, setShowDealsForDate] = useState(new Date())
+	const [showDealsForDate, setShowDealsForDate] = useState<Date | null>(
+		new Date(),
+	)
 
 	return (
 		<ShowDealsForDateContext.Provider
