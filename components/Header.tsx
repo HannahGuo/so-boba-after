@@ -9,6 +9,7 @@ import {
 	ImageBackground,
 	Platform,
 	Pressable,
+	SafeAreaView,
 	StyleSheet,
 	View,
 } from "react-native"
@@ -29,18 +30,35 @@ export default function Header({ page }: { page: HeaderPage }) {
 	const [showDatePickerMobile, setShowDatePickerMobile] = useState(false)
 
 	return (
-		<View style={styles.headerContainer}>
-			<ImageBackground
-				source={require("../assets/images/bobaHeaderLeft.svg")}
-				style={styles.headerImageLeft}
-			/>
-			<View style={styles.titleContainer}>
-				<ThemedText type="title">...so boba after?</ThemedText>
-			</View>
-			<ImageBackground
-				source={require("../assets/images/bobaHeaderRight.svg")}
-				style={styles.headerImageRight}
-			/>
+		<SafeAreaView style={styles.headerContainer}>
+			{Platform.OS === "web" && (
+				<>
+					<ImageBackground
+						source={require("../assets/images/bobaHeaderLeft.png")}
+						style={styles.headerImageLeft}
+					/>
+					<View style={styles.titleContainer}>
+						<ThemedText type="title">...so boba after?</ThemedText>
+					</View>
+					<ImageBackground
+						source={require("../assets/images/bobaHeaderRight.png")}
+						style={styles.headerImageRight}
+					/>
+				</>
+			)}
+
+			{Platform.OS === "android" && (
+				<>
+					<ImageBackground
+						source={require("../assets/images/bobaHeaderLeft.png")}
+						style={styles.headerMobile}
+					/>
+
+					<View style={styles.titleContainer}>
+						<ThemedText type="title">...so boba after?</ThemedText>
+					</View>
+				</>
+			)}
 
 			<View style={styles.rightContainer}>
 				<Pressable
@@ -161,7 +179,7 @@ export default function Header({ page }: { page: HeaderPage }) {
 					)}
 				</View>
 			</View>
-		</View>
+		</SafeAreaView>
 	)
 }
 
@@ -182,6 +200,13 @@ const styles = StyleSheet.create({
 		position: "absolute",
 		top: 0,
 		left: "68%",
+	},
+	headerMobile: {
+		position: "absolute",
+		top: 0,
+		height: 160,
+		width: "100%",
+		resizeMode: "contain",
 	},
 	rightContainer: {
 		position: "absolute",

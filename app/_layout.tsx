@@ -1,6 +1,7 @@
 import { useFonts } from "expo-font"
 import * as SplashScreen from "expo-splash-screen"
 
+import { ThemedText } from "@/components/ThemedText"
 import { Stack } from "expo-router"
 SplashScreen.preventAutoHideAsync()
 
@@ -11,6 +12,10 @@ export default function RootLayout() {
 		CourierPrimeBold: require("../assets/fonts/CourierPrime-Bold.ttf"),
 		CourierPrimeItalic: require("../assets/fonts/CourierPrime-Italic.ttf"),
 	})
+
+	if (!loaded) {
+		return <ThemedText>Loading fonts...</ThemedText>
+	}
 
 	return (
 		<Stack screenOptions={{ headerShown: false }}>

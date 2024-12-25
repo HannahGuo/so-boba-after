@@ -1,8 +1,13 @@
-import { BobaColors, BobaGradientColors } from "@/constants/BobaColors"
+import {
+	AtLeastTwoStrings,
+	BobaColors,
+	BobaGradientColors,
+} from "@/constants/BobaColors"
 import { BobaEmojis } from "@/constants/BobaEmojis"
 import { Colors } from "@/constants/Colors"
 import { BobaDeal, Drink, Store, StoreDeal } from "@/constants/types/Deals"
-import { StyleSheet, View } from "react-native"
+import { LinearGradient } from "expo-linear-gradient"
+import { Platform, StyleSheet, View } from "react-native"
 import { ThemedText } from "./ThemedText"
 import { drinkArraysEqual } from "./helpers/arrayHelpers"
 import { makeDealText, makePromoPeriodText } from "./helpers/dealHelpers"
@@ -13,7 +18,7 @@ type BobaDealProps = {
 	storeDeals?: StoreDeal[]
 }
 
-function chooseBackgroundColor(drinkName: string) {
+function chooseBackgroundColor(drinkName: string): AtLeastTwoStrings {
 	const normalizeDrinkName = drinkName.toLowerCase()
 
 	for (const color in BobaColors) {
@@ -38,7 +43,7 @@ function chooseBackgroundColor(drinkName: string) {
 		}
 	}
 
-	return `linear-gradient(to top, ${Colors.shared.bobaBrown}, 95%, ${Colors.shared.bobaBrownLight})`
+	return [Colors.shared.bobaBrown, Colors.shared.bobaBrownLight]
 }
 
 function makeDrinkList(drinks: Drink[]): Drink[] {
@@ -84,12 +89,18 @@ export default function BobaDealCard({
 }: BobaDealProps) {
 	const drinksList = makeDrinkList(deal.drinks)
 
+	if (Platform.OS === "android") {
+		// TODO
+		return <></>
+	}
+
 	return (
-		<View
-			style={{
-				backgroundImage: chooseBackgroundColor(deal.drinks[0].name),
-				...styles.dealContainer,
-			}}
+		<LinearGradient
+			colors={chooseBackgroundColor(deal.drinks[0].name)}
+			style={styles.dealContainer}
+			locations={[0, 0.05]}
+			start={{ x: 0.5, y: 0 }}
+			end={{ x: 0.5, y: 1 }}
 		>
 			<ThemedText type="subtitle">{store?.name}</ThemedText>
 			<ThemedText type="defaultBold">{makeDealText(deal)}</ThemedText>
@@ -112,7 +123,7 @@ export default function BobaDealCard({
 			<ThemedText type="default">
 				🏠 {store?.address?.split(/waterloo/i)[0] + "Waterloo"}
 			</ThemedText>
-		</View>
+		</LinearGradient>
 	)
 }
 
@@ -125,7 +136,11 @@ const styles = StyleSheet.create({
 		paddingRight: 25,
 		borderRadius: 20,
 		margin: 10,
-		filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))",
+		shadowColor: "#000",
+		shadowOffset: { width: 0, height: 4 },
+		shadowOpacity: 0.25,
+		shadowRadius: 4,
+		elevation: 4,
 	},
 	dividerLine: {
 		borderBottomColor: "white",

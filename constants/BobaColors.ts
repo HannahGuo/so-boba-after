@@ -53,13 +53,15 @@ export const BobaColors: Record<string, KeywordTier> = {
 	},
 }
 
-export const BobaGradientColors: Record<string, string> = {
-	red: `linear-gradient(to top, ${Colors.shared.bobaRed}, 95%, #FFD9D9)`,
-	orange: `linear-gradient(to top, ${Colors.shared.bobaOrange}, 95%, #FFD9D9)`,
-	yellow: `linear-gradient(to top, ${Colors.shared.bobaYellow}, 95%, #FFD9D9)`,
-	green: `linear-gradient(to top, ${Colors.shared.bobaGreen}, 95%, #D9FFD9)`,
-	blue: `linear-gradient(to top, ${Colors.shared.bobaBlue}, 95%, #D9D9FF)`,
-	purple: `linear-gradient(to top, ${Colors.shared.bobaPurple}, 95%, #F1DCFF)`,
-	pink: `linear-gradient(to top, ${Colors.shared.bobaPink}, 95%, #FFE3F7)`,
-	brown: `linear-gradient(to top, ${Colors.shared.bobaBrownDark}, 95%, #EFB660)`,
+export type AtLeastTwoStrings = [string, string, ...string[]]
+
+export const BobaGradientColors: Record<string, AtLeastTwoStrings> = {
+	red: ["#FFD9D9", Colors.shared.bobaRed],
+	orange: ["#FFD9D9", Colors.shared.bobaOrange],
+	yellow: ["#FFD9D9", Colors.shared.bobaYellow],
+	green: ["#D9FFD9", Colors.shared.bobaGreen],
+	blue: ["#D9D9FF", Colors.shared.bobaBlue],
+	purple: ["#F1DCFF", Colors.shared.bobaPurple],
+	pink: ["#FFE3F7", Colors.shared.bobaPink],
+	brown: ["#EFB660", Colors.shared.bobaBrownDark],
 }
