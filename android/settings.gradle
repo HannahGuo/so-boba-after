@@ -21,7 +21,7 @@ extensions.configure(com.facebook.react.ReactSettingsExtension) { ex ->
   }
 }
 
-rootProject.name = 'sobobaafter'
+rootProject.name = 'so-boba-after'
 
 dependencyResolutionManagement {
   versionCatalogs {

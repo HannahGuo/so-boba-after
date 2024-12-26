@@ -7,7 +7,8 @@ import { BobaEmojis } from "@/constants/BobaEmojis"
 import { Colors } from "@/constants/Colors"
 import { BobaDeal, Drink, Store, StoreDeal } from "@/constants/types/Deals"
 import { LinearGradient } from "expo-linear-gradient"
-import { Platform, StyleSheet, View } from "react-native"
+import React from "react"
+import { StyleSheet, View } from "react-native"
 import { ThemedText } from "./ThemedText"
 import { drinkArraysEqual } from "./helpers/arrayHelpers"
 import { makeDealText, makePromoPeriodText } from "./helpers/dealHelpers"
@@ -80,19 +81,12 @@ function chooseBobaListEmoji(drinkName: string) {
 	return "🧋"
 }
 
-import React from "react"
-
 export default function BobaDealCard({
 	deal,
 	store,
 	storeDeals,
 }: BobaDealProps) {
 	const drinksList = makeDrinkList(deal.drinks)
-
-	if (Platform.OS === "android") {
-		// TODO
-		return <></>
-	}
 
 	return (
 		<LinearGradient

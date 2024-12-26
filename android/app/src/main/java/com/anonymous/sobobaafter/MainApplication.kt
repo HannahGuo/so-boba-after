@@ -1,7 +1,6 @@
 package com.anonymous.sobobaafter
 
 import android.app.Application
-import android.content.res.Configuration
 
 import com.facebook.react.PackageList
 import com.facebook.react.ReactApplication
@@ -14,11 +13,8 @@ import com.facebook.react.soloader.OpenSourceMergedSoMapping
 import com.facebook.soloader.SoLoader
 
 import android.content.res.Configuration
-import expo.modules.ApplicationLifecycleDispatcher
 import expo.modules.ReactNativeHostWrapper
-
 import expo.modules.ApplicationLifecycleDispatcher
-import expo.modules.ReactNativeHostWrapper
 
 class MainApplication : Application(), ReactApplication {
 
