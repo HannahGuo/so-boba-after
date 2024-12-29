@@ -96,21 +96,25 @@ export default function Header({ page }: { page: HeaderPage }) {
 					}}
 				>
 					<View style={styles.checkboxRow}>
-						<ThemedText type="defaultBold">
-							Show All Deals:
-						</ThemedText>
-						<Checkbox
-							value={showAllDeals}
-							onValueChange={(val) => {
-								setShowAllDeals(val)
-								if (val) {
-									setShowDealsForDate(null)
-								} else {
-									setShowDealsForDate(new Date())
-								}
-							}}
-							color={Colors.shared.bobaBrown}
-						/>
+						<View>
+							<ThemedText type="defaultBold">
+								Show All Deals:
+							</ThemedText>
+						</View>
+						<View>
+							<Checkbox
+								value={showAllDeals}
+								onValueChange={(val) => {
+									setShowAllDeals(val)
+									if (val) {
+										setShowDealsForDate(null)
+									} else {
+										setShowDealsForDate(new Date())
+									}
+								}}
+								color={Colors.shared.bobaBrownLight}
+							/>
+						</View>
 					</View>
 					<View style={styles.dividerLine} />
 					{showDealsForDate && (

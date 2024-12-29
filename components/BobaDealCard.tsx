@@ -44,7 +44,7 @@ function chooseBackgroundColor(drinkName: string): AtLeastTwoStrings {
 		}
 	}
 
-	return [Colors.shared.bobaBrown, Colors.shared.bobaBrownLight]
+	return [Colors.shared.bobaBrownLight, Colors.shared.bobaBrown]
 }
 
 function makeDrinkList(drinks: Drink[]): Drink[] {
