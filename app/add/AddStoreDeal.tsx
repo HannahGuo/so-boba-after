@@ -169,6 +169,7 @@ export default function AddStoreDeal({ storesList }: { storesList: Store[] }) {
 						<Checkbox
 							value={isDiscountAlwaysActive}
 							onValueChange={setDiscountAlwaysActive}
+							color={Colors.shared.bobaBrownLight}
 						/>
 					</View>
 					<ThemedText type="subsubtitle">Start Date:</ThemedText>

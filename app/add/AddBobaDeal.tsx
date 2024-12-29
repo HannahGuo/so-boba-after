@@ -365,6 +365,7 @@ export default function AddBobaDeal({ storesList }: { storesList: Store[] }) {
 						<Checkbox
 							value={isDiscountAlwaysActive}
 							onValueChange={setDiscountAlwaysActive}
+							color={Colors.shared.bobaBrownLight}
 						/>
 					</View>
 
