@@ -127,11 +127,17 @@ export default function Header({ page }: { page: HeaderPage }) {
 									value={showDealsForDate
 										.toISOString()
 										.substr(0, 10)}
-									onChange={(e) =>
-										setShowDealsForDate(
-											new Date(e.target.value + " EST"),
-										)
-									}
+									onChange={(e) => {
+										if (e.target.value) {
+											setShowDealsForDate(
+												new Date(
+													e.target.value + " EST",
+												),
+											)
+										} else {
+											setShowDealsForDate(new Date())
+										}
+									}}
 									disabled={showAllDeals}
 								/>
 							) : (
