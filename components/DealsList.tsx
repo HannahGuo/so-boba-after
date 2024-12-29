@@ -1,4 +1,3 @@
-import { Colors } from "@/constants/Colors"
 import { BobaDeal, Store, StoreDeal, weekdayMap } from "@/constants/types/Deals"
 import { ShowDealsForDateContext } from "@/contexts/ShowDealsForDateContext"
 import { db } from "@/firebase/app/firebaseConfig"
@@ -179,7 +178,7 @@ export default function DealsList() {
 						})}
 					</View>
 				</View>
-				<View style={styles.dividerLine} />
+				<View style={styles.spacer} />
 				<View style={styles.dealsContainer}>
 					<ThemedText type="subtitle">🏪 Store Deals</ThemedText>
 					<View style={styles.listContainer}>
@@ -246,7 +245,7 @@ const styles = StyleSheet.create({
 		alignContent: "space-between",
 		justifyContent: "flex-start",
 		alignItems: "flex-start",
-		marginTop: 20,
+		marginTop: 10,
 		marginBottom: 20,
 		gap: 0,
 	},
@@ -257,10 +256,8 @@ const styles = StyleSheet.create({
 		borderRadius: 20,
 		filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))",
 	},
-	dividerLine: {
-		borderBottomColor: Colors.shared.bobaBrownLight,
-		borderBottomWidth: StyleSheet.hairlineWidth,
-		marginBottom: 10,
+	spacer: {
+		marginBottom: 20,
 		marginTop: 10,
 	},
 })
