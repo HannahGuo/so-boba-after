@@ -374,7 +374,7 @@ export default function AddBobaDeal({ storesList }: { storesList: Store[] }) {
 							<input
 								type="date"
 								style={styles.dateInput}
-								value={startDate.toISOString().substr(0, 10)}
+								value={startDate.toISOString().substring(0, 10)}
 								onChange={(e) =>
 									setStartDate(
 										new Date(e.target.value + " EST"),
@@ -401,7 +401,7 @@ export default function AddBobaDeal({ storesList }: { storesList: Store[] }) {
 								style={styles.dateInput}
 								type="date"
 								placeholder="End Date"
-								value={endDate.toISOString().substr(0, 10)}
+								value={endDate.toISOString().substring(0, 10)}
 								onChange={(e) =>
 									setEndDate(
 										new Date(e.target.value + " EST"),

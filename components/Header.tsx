@@ -126,7 +126,7 @@ export default function Header({ page }: { page: HeaderPage }) {
 									style={styles.dateInput}
 									value={showDealsForDate
 										.toISOString()
-										.substr(0, 10)}
+										.substring(0, 10)}
 									onChange={(e) => {
 										if (e.target.value) {
 											setShowDealsForDate(
@@ -145,7 +145,7 @@ export default function Header({ page }: { page: HeaderPage }) {
 									<ThemedText>
 										{showDealsForDate
 											.toISOString()
-											.substr(0, 10)}
+											.substring(0, 10)}
 									</ThemedText>
 									<Button
 										title="Change Date"
