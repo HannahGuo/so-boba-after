@@ -79,14 +79,14 @@ export default function AddBobaDeal({ storesList }: { storesList: Store[] }) {
 	const [startDate, setStartDate] = useState<Date>(new Date())
 	const [endDate, setEndDate] = useState<Date>(new Date())
 	const [dayCondition, setDayCondition] = useState<Weekday | null>(null)
-	const [dateCondition, setDateCondition] = useState<number | null>(null)
+	const [dateCondition, setDateCondition] = useState<number>(0)
 
 	const [isDiscountAlwaysActive, setDiscountAlwaysActive] = useState(true)
 
 	const [notes, setNotes] = useState<string>()
 
 	const [discountType, setDiscountType] = useState<DiscountType>("total")
-	const [discountValue, setDiscountValue] = useState<number>(NaN)
+	const [discountValue, setDiscountValue] = useState<number>(0)
 
 	function validateForm(): boolean {
 		if (
@@ -95,7 +95,7 @@ export default function AddBobaDeal({ storesList }: { storesList: Store[] }) {
 			!drinkNameOne ||
 			!drinkSizeOne ||
 			!discountType ||
-			isNaN(discountValue)
+			!discountValue
 		) {
 			alert("Please fill out all required fields")
 			return false
@@ -116,9 +116,9 @@ export default function AddBobaDeal({ storesList }: { storesList: Store[] }) {
 		setStartDate(new Date())
 		setEndDate(new Date())
 		setDayCondition(null)
-		setDateCondition(null)
+		setDateCondition(0)
 		setDiscountType("total")
-		setDiscountValue(NaN)
+		setDiscountValue(0)
 		setNotes("")
 	}
 
@@ -154,7 +154,7 @@ export default function AddBobaDeal({ storesList }: { storesList: Store[] }) {
 		if (dayCondition) {
 			chosenCondition = { day: dayCondition }
 		} else if (dateCondition) {
-			chosenCondition = { date: dateCondition }
+			chosenCondition = { date: Number(dateCondition) }
 		}
 
 		const constructedDeal: BobaDeal = {
@@ -460,11 +460,11 @@ export default function AddBobaDeal({ storesList }: { storesList: Store[] }) {
 							setDateCondition(itemValue)
 						}
 					>
-						<Picker.Item label="None" value={null} />
+						<Picker.Item label="None" value={0} />
 						{Array.from({ length: 31 }, (_, i) => (
 							<Picker.Item
 								label={(i + 1).toString()}
-								value={i + 1}
+								value={(i + 1) as number}
 								key={`date-condition-${i + 1}`}
 							/>
 						))}

@@ -181,6 +181,12 @@ export default function DealsList() {
 				<View style={styles.spacer} />
 				<View style={styles.dealsContainer}>
 					<ThemedText type="subtitle">🏪 Store Deals</ThemedText>
+					<ThemedText type="subsubtitle">
+						<em>
+							Probably not stackable with drink-specific deals
+							above.
+						</em>
+					</ThemedText>
 					<View style={styles.listContainer}>
 						{storeDeals.map((deal) => {
 							return (
@@ -213,9 +219,14 @@ export default function DealsList() {
 					})}
 				</View>
 			</View>
-			<View style={styles.dividerLine} />
+			<View style={styles.spacer} />
 			<View style={styles.dealsContainer}>
 				<ThemedText type="subtitle">🏪 Store Deals</ThemedText>
+				<ThemedText type="subsubtitle">
+					<em>
+						Probably not stackable with drink-specific deals above.
+					</em>
+				</ThemedText>
 				<View style={styles.listContainer}>
 					{storeDeals.map((deal) => {
 						return (
