@@ -28,7 +28,7 @@
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff",
-          "image": "./assets/images/bobaHeaderLeft.png"
+          "image": "./assets/images/logo.png"
         }
       ],
       [
