@@ -1,5 +1,5 @@
 <p align="center">
-   <img src="./assets/images/logo.png">
+   <img src="./assets/images/boba.svg">
 </p>
 
 A web and mobile app to track boba discounts! Currently optimised for my friends and I to use in Waterloo, but aiming to have support for other cities.
