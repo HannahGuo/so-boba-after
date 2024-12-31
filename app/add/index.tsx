@@ -139,6 +139,7 @@ export default function Add() {
 							<Button
 								title="Sign in with Google to add a deal"
 								onPress={signInWithGoogle}
+								color={Colors.shared.bobaBrownDark}
 							/>
 							<ThemedText style={{ marginTop: 20 }}>
 								Note you must be to added to a Firebase rule in
