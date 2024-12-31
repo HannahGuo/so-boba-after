@@ -121,12 +121,12 @@ export default function DealsList() {
 			if (deal.dealType === "bogo" || deal.dealType === "buyXforY") {
 				return false
 			}
-		} else if (numberOfDrinks === "two") {
-			//TODO: this is also wrong lol
 		}
 
 		return true
 	})
+
+	console.log({ filteredBobaDeals })
 
 	filteredBobaDeals.sort((a, b) => {
 		switch (sortType) {

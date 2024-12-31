@@ -16,7 +16,7 @@ export const weekdayMap = {
 	thursday: 4,
 	friday: 5,
 	saturday: 6,
-	sunday: 7,
+	sunday: 0,
 }
 
 export type DayCondition = {
