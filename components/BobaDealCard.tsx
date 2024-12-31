@@ -5,13 +5,16 @@ import {
 } from "@/constants/BobaColors"
 import { BobaEmojis } from "@/constants/BobaEmojis"
 import { Colors } from "@/constants/Colors"
-import { BobaDeal, Drink, Store, StoreDeal } from "@/constants/types/Deals"
+import { BobaDeal, Store, StoreDeal } from "@/constants/types/Deals"
 import { LinearGradient } from "expo-linear-gradient"
 import React from "react"
 import { StyleSheet, View } from "react-native"
 import { ThemedText } from "./ThemedText"
-import { drinkArraysEqual } from "./helpers/arrayHelpers"
-import { makeDealText, makePromoPeriodText } from "./helpers/dealHelpers"
+import {
+	makeDealText,
+	makeDrinkList,
+	makePromoPeriodText,
+} from "./helpers/dealHelpers"
 
 type BobaDealProps = {
 	deal: BobaDeal
@@ -45,28 +48,6 @@ function chooseBackgroundColor(drinkName: string): AtLeastTwoStrings {
 	}
 
 	return [Colors.shared.bobaBrownLight, Colors.shared.bobaBrown]
-}
-
-function makeDrinkList(drinks: Drink[]): Drink[] {
-	const drinkNumToList: Record<number, Drink[]> = {}
-
-	for (const drink of drinks) {
-		if (!drinkNumToList[drink.drinkIndex]) {
-			drinkNumToList[drink.drinkIndex] = []
-		}
-
-		drinkNumToList[drink.drinkIndex].push(drink)
-	}
-
-	// TODO: hardcoding 2 for now
-	if (Object.keys(drinkNumToList).length == 2) {
-		if (drinkArraysEqual(drinkNumToList[0], drinkNumToList[1])) {
-			// this is a "2 for X" deal
-			return drinkNumToList[0]
-		}
-	}
-
-	return drinks
 }
 
 function chooseBobaListEmoji(drinkName: string) {

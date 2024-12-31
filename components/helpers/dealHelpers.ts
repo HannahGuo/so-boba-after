@@ -1,9 +1,11 @@
 import {
 	BobaDeal,
 	Discount,
+	Drink,
 	PromoPeriod,
 	StoreDeal,
 } from "@/constants/types/Deals"
+import { drinkArraysEqual } from "./arrayHelpers"
 
 export function makeSizeText(size: string) {
 	if (size === "any") {
@@ -21,7 +23,7 @@ export function makeDealText(deal: BobaDeal | StoreDeal): string {
 			case "flatoff":
 				return `$${discount.discountValue} off`
 			case "total":
-				return `for $${discount.discountValue}`
+				return `For $${discount.discountValue}`
 			default:
 				return "Unknown discount type"
 		}
@@ -87,4 +89,26 @@ export function makePromoPeriodText(promoPeriod: PromoPeriod): string {
 		})
 
 	return `${startDate} to ${endDate}`
+}
+
+export function makeDrinkList(drinks: Drink[]): Drink[] {
+	const drinkNumToList: Record<number, Drink[]> = {}
+
+	for (const drink of drinks) {
+		if (!drinkNumToList[drink.drinkIndex]) {
+			drinkNumToList[drink.drinkIndex] = []
+		}
+
+		drinkNumToList[drink.drinkIndex].push(drink)
+	}
+
+	// TODO: hardcoding 2 for now
+	if (Object.keys(drinkNumToList).length == 2) {
+		if (drinkArraysEqual(drinkNumToList[0], drinkNumToList[1])) {
+			// this is a "2 for X" deal
+			return drinkNumToList[0]
+		}
+	}
+
+	return drinks
 }

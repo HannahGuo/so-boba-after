@@ -1,5 +1,12 @@
-import { BobaDeal, Store, StoreDeal, weekdayMap } from "@/constants/types/Deals"
+import {
+	BobaDeal,
+	compareDiscounts,
+	Store,
+	StoreDeal,
+	weekdayMap,
+} from "@/constants/types/Deals"
 import { ShowDealsForDateContext } from "@/contexts/ShowDealsForDateContext"
+import { SortAndFilterContext } from "@/contexts/SortAndFilterContext"
 import { db } from "@/firebase/app/firebaseConfig"
 import {
 	collection,
@@ -32,6 +39,8 @@ export default function DealsList() {
 	)
 
 	const [storeDeals, setStoreDeals] = useState<StoreDeal[]>([])
+
+	const { sortType, numberOfDrinks } = useContext(SortAndFilterContext)
 
 	useEffect(() => {
 		const retrieveBobaDeals = async () => {
@@ -110,21 +119,43 @@ export default function DealsList() {
 			}
 		}
 
+		if (numberOfDrinks === "one") {
+			if (deal.dealType === "bogo" || deal.dealType === "buyXforY") {
+				return false
+			}
+		} else if (numberOfDrinks === "two") {
+			//TODO: this is also wrong lol
+		}
+
 		return true
 	})
 
 	filteredBobaDeals.sort((a, b) => {
-		const storeA = storeIDToObjMap.get(a.storeID)
-		const storeB = storeIDToObjMap.get(b.storeID)
+		switch (sortType) {
+			case "storeName":
+				const storeA = storeIDToObjMap.get(a.storeID)
+				const storeB = storeIDToObjMap.get(b.storeID)
 
-		if (storeA && storeB) {
-			if (storeA.name < storeB.name) {
-				return -1
-			} else if (storeA.name > storeB.name) {
-				return 1
-			}
+				if (storeA && storeB) {
+					if (storeA.name < storeB.name) {
+						return -1
+					} else if (storeA.name > storeB.name) {
+						return 1
+					}
+				}
+				return 0
+			case "expiry":
+				if (a.promoPeriod.endDate < b.promoPeriod.endDate) {
+					return -1
+				} else if (a.promoPeriod.endDate > b.promoPeriod.endDate) {
+					return 1
+				}
+				return 0
+			case "price":
+			default:
+				// TODO: this is wrong lol
+				return compareDiscounts(a.discount, b.discount)
 		}
-		return 0
 	})
 
 	// On desktop, we'll have 3 columns. and because i like grid layouts and flex is being a pain, i'm hacking it.

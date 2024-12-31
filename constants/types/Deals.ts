@@ -40,6 +40,16 @@ export type Discount = {
 	discountValue: number
 }
 
+export function compareDiscounts(a: Discount, b: Discount): number {
+	if (a.discountType < b.discountType) return -1
+	if (a.discountType > b.discountType) return 1
+
+	if (a.discountValue < b.discountValue) return -1
+	if (a.discountValue > b.discountValue) return 1
+
+	return 0
+}
+
 // DEALS FOR DRINKS
 export type BobaDealType = "single" | "bogo" | "buyXforY" | "other"
 export type DrinkType = "milktea" | "fruittea" | "slush" | "other"

@@ -1,8 +1,7 @@
 import { useFonts } from "expo-font"
-import * as SplashScreen from "expo-splash-screen"
 import React, { useEffect } from "react"
 
-import { Stack } from "expo-router"
+import { SplashScreen, Stack } from "expo-router"
 
 SplashScreen.preventAutoHideAsync().catch((e) => {
 	console.warn("Failed to prevent splash screen auto-hide:", e)

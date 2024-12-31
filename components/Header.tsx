@@ -31,33 +31,22 @@ export default function Header({ page }: { page: HeaderPage }) {
 
 	return (
 		<SafeAreaView style={styles.headerContainer}>
+			<ImageBackground
+				source={require("../assets/images/bobaHeaderLeft.png")}
+				style={
+					Platform.OS === "web"
+						? styles.headerImageLeft
+						: styles.headerMobile
+				}
+			/>
+			<View style={styles.titleContainer}>
+				<ThemedText type="title">...so boba after?</ThemedText>
+			</View>
 			{Platform.OS === "web" && (
-				<>
-					<ImageBackground
-						source={require("../assets/images/bobaHeaderLeft.png")}
-						style={styles.headerImageLeft}
-					/>
-					<View style={styles.titleContainer}>
-						<ThemedText type="title">...so boba after?</ThemedText>
-					</View>
-					<ImageBackground
-						source={require("../assets/images/bobaHeaderRight.png")}
-						style={styles.headerImageRight}
-					/>
-				</>
-			)}
-
-			{Platform.OS === "android" && (
-				<>
-					<ImageBackground
-						source={require("../assets/images/bobaHeaderLeft.png")}
-						style={styles.headerMobile}
-					/>
-
-					<View style={styles.titleContainer}>
-						<ThemedText type="title">...so boba after?</ThemedText>
-					</View>
-				</>
+				<ImageBackground
+					source={require("../assets/images/bobaHeaderRight.png")}
+					style={styles.headerImageRight}
+				/>
 			)}
 
 			<View style={styles.rightContainer}>

@@ -3,6 +3,11 @@ import Header from "@/components/Header"
 import SortAndFilterBar from "@/components/SortAndFilterBar"
 import { Colors } from "@/constants/Colors"
 import { ShowDealsForDateContext } from "@/contexts/ShowDealsForDateContext"
+import {
+	NumberOfDrinks,
+	SortAndFilterContext,
+	SortType,
+} from "@/contexts/SortAndFilterContext"
 import { useEffect, useState } from "react"
 import { Platform, ScrollView, StyleSheet } from "react-native"
 
@@ -17,14 +22,26 @@ export default function Home() {
 		new Date(),
 	)
 
+	const [sortType, setSortType] = useState<SortType>("storeName")
+	const [numberOfDrinks, setNumberOfDrinks] = useState<NumberOfDrinks>("any")
+
 	return (
 		<ShowDealsForDateContext.Provider
 			value={{ showDealsForDate, setShowDealsForDate }}
 		>
 			<ScrollView style={styles.mainContainer}>
 				<Header page="home" />
-				<DealsList />
-				<SortAndFilterBar />
+				<SortAndFilterContext.Provider
+					value={{
+						sortType,
+						setSortType,
+						numberOfDrinks,
+						setNumberOfDrinks,
+					}}
+				>
+					<DealsList />
+					<SortAndFilterBar />
+				</SortAndFilterContext.Provider>
 			</ScrollView>
 		</ShowDealsForDateContext.Provider>
 	)
