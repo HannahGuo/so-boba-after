@@ -17,7 +17,7 @@ import DateTimePicker from "@react-native-community/datetimepicker"
 import { Picker } from "@react-native-picker/picker"
 import Checkbox from "expo-checkbox"
 import { Timestamp, doc, setDoc } from "firebase/firestore"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Button, Platform, StyleSheet, TextInput, View } from "react-native"
 
 function makeDrinkHolderPlaceholder(
@@ -186,6 +186,16 @@ export default function AddBobaDeal({ storesList }: { storesList: Store[] }) {
 		resetForm()
 	}
 
+	const storeAddress = storesList.find(
+		(store) => storeName === store.name,
+	)?.address
+
+	useEffect(() => {
+		if (storesList.length > 0) {
+			setStoreName(storesList[0].name)
+		}
+	}, [storesList])
+
 	return (
 		<>
 			<View style={styles.inputContainer}>
@@ -204,6 +214,7 @@ export default function AddBobaDeal({ storesList }: { storesList: Store[] }) {
 						/>
 					))}
 				</Picker>
+				<ThemedText>({storeAddress})</ThemedText>
 			</View>
 			<View style={styles.inputContainer}>
 				<ThemedText type="subtitle">Deal Type:</ThemedText>
@@ -508,8 +519,7 @@ const styles = StyleSheet.create({
 	inputContainer: {
 		display: "flex",
 		flexDirection: "row",
-		justifyContent: "space-between",
-		width: 560,
+		alignItems: "center",
 	},
 	dateInputContainer: {
 		display: "flex",
@@ -586,6 +596,8 @@ const styles = StyleSheet.create({
 		borderColor: "white",
 		padding: 6,
 		marginBottom: 10,
+		marginLeft: 16,
+		marginRight: 16,
 	},
 	thinPicker: {
 		height: 40,

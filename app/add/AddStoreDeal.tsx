@@ -104,6 +104,16 @@ export default function AddStoreDeal({ storesList }: { storesList: Store[] }) {
 		fetchData()
 	}, [])
 
+	const storeAddress = storesList.find(
+		(store) => storeName === store.name,
+	)?.address
+
+	useEffect(() => {
+		if (storesList.length > 0) {
+			setStoreName(storesList[0].name)
+		}
+	}, [storesList])
+
 	return (
 		<>
 			<View style={styles.inputContainer}>
@@ -121,6 +131,7 @@ export default function AddStoreDeal({ storesList }: { storesList: Store[] }) {
 						/>
 					))}
 				</Picker>
+				<ThemedText>({storeAddress})</ThemedText>
 			</View>
 			<View style={{ marginTop: 12 }}>
 				<ThemedText type="subtitle">Discount Amount:</ThemedText>
@@ -275,7 +286,8 @@ const styles = StyleSheet.create({
 		display: "flex",
 		flexDirection: "row",
 		justifyContent: "space-between",
-		width: 560,
+		width: "65%",
+		alignItems: "center",
 	},
 	dateInputContainer: {
 		display: "flex",
