@@ -30,9 +30,7 @@ const getStoreFromID = async (id: string): Promise<Store> => {
 export default function DealsList() {
 	const [bobaDeals, setBobaDeals] = useState<BobaDeal[]>([])
 
-	const { showDealsForDate, setShowDealsForDate } = useContext(
-		ShowDealsForDateContext,
-	)
+	const { showDealsForDate } = useContext(ShowDealsForDateContext)
 
 	const [storeIDToObjMap, setStoreIDToObjMap] = useState(
 		new Map<string, Store>(),
@@ -160,92 +158,44 @@ export default function DealsList() {
 
 	// On desktop, we'll have 3 columns. and because i like grid layouts and flex is being a pain, i'm hacking it.
 	// this avoids the problem of different card heights causing the cards to not line up properly
-	if (Platform.OS === "web") {
-		const COLUMN_COUNT = 3
-		const bobaDealsCols: BobaDeal[][] = Array.from(
-			{ length: COLUMN_COUNT },
-			() => [],
-		)
+	const COLUMN_COUNT = Platform.OS === "web" ? 3 : 1
+	const bobaDealsCols: BobaDeal[][] = Array.from(
+		{ length: COLUMN_COUNT },
+		() => [],
+	)
 
-		for (let i = 0; i < filteredBobaDeals.length; i++) {
-			const columnIndex = i % COLUMN_COUNT
-			bobaDealsCols[columnIndex].push(filteredBobaDeals[i])
-		}
-
-		return (
-			<View style={styles.allDealsContainer}>
-				<View style={styles.dealsContainer}>
-					<ThemedText type="subtitle">🧋 Boba Deals</ThemedText>
-					<View
-						style={{
-							display: "flex",
-							flexDirection: "row",
-							rowGap: 20,
-						}}
-					>
-						{bobaDealsCols.map((row, index) => {
-							return (
-								<View
-									key={index}
-									style={{
-										display: "flex",
-										flexDirection: "column",
-										width: "29%",
-									}}
-								>
-									{row.map((deal) => {
-										return (
-											<BobaDealCard
-												key={deal.id}
-												deal={deal}
-												store={storeIDToObjMap.get(
-													deal.storeID,
-												)}
-											/>
-										)
-									})}
-								</View>
-							)
-						})}
-					</View>
-				</View>
-				<View style={styles.spacer} />
-				<View style={styles.dealsContainer}>
-					<ThemedText type="subtitle">🏪 Store Deals</ThemedText>
-					<ThemedText type="subsubtitle">
-						<em>
-							Probably not stackable with drink-specific deals
-							above.
-						</em>
-					</ThemedText>
-					<View style={styles.listContainer}>
-						{storeDeals.map((deal) => {
-							return (
-								<StoreDealCard
-									key={deal.id}
-									deal={deal}
-									store={storeIDToObjMap.get(deal.storeID)}
-								/>
-							)
-						})}
-					</View>
-				</View>
-			</View>
-		)
+	for (let i = 0; i < filteredBobaDeals.length; i++) {
+		const columnIndex = i % COLUMN_COUNT
+		bobaDealsCols[columnIndex].push(filteredBobaDeals[i])
 	}
 
 	return (
 		<View style={styles.allDealsContainer}>
 			<View style={styles.dealsContainer}>
 				<ThemedText type="subtitle">🧋 Boba Deals</ThemedText>
-				<View style={styles.listContainer}>
-					{filteredBobaDeals.map((deal) => {
+				<View style={styles.rowContainer}>
+					{bobaDealsCols.map((row, index) => {
 						return (
-							<BobaDealCard
-								key={deal.id}
-								deal={deal}
-								store={storeIDToObjMap.get(deal.storeID)}
-							/>
+							<View
+								key={index}
+								style={{
+									display: "flex",
+									flexDirection: "column",
+									width: "29%",
+								}}
+							>
+								{row.map((deal) => {
+									return (
+										<BobaDealCard
+											key={deal.id}
+											deal={deal}
+											store={storeIDToObjMap.get(
+												deal.storeID,
+											)}
+										/>
+									)
+								})}
+							</View>
 						)
 					})}
 				</View>
@@ -301,5 +251,10 @@ const styles = StyleSheet.create({
 	spacer: {
 		marginBottom: 20,
 		marginTop: 10,
+	},
+	rowContainer: {
+		display: "flex",
+		flexDirection: "row",
+		rowGap: 20,
 	},
 })
