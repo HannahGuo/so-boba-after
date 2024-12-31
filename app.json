@@ -1,12 +1,13 @@
 {
   "expo": {
-    "name": "so-boba-after",
+    "name": "...so, boba after?",
     "slug": "so-boba-after",
     "version": "1.0.0",
     "orientation": "portrait",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "icon": "./assets/images/appIcon.png",
     "ios": {
       "supportsTablet": true
     },
