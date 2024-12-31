@@ -60,7 +60,7 @@ export const BobaGradientColors: Record<string, AtLeastTwoStrings> = {
 	orange: ["#FFD9D9", Colors.shared.bobaOrange],
 	yellow: ["#FFD9D9", Colors.shared.bobaYellow],
 	green: ["#D9FFD9", Colors.shared.bobaGreen],
-	blue: ["#D9D9FF", Colors.shared.bobaBlue],
+	blue: ["#B4D2FF", Colors.shared.bobaBlue],
 	purple: ["#F1DCFF", Colors.shared.bobaPurple],
 	pink: ["#FFE3F7", Colors.shared.bobaPink],
 	brown: ["#EFB660", Colors.shared.bobaBrownDark],

@@ -1,5 +1,6 @@
 import DealsList from "@/components/DealsList"
 import Header from "@/components/Header"
+import SortAndFilterBar from "@/components/SortAndFilterBar"
 import { Colors } from "@/constants/Colors"
 import { ShowDealsForDateContext } from "@/contexts/ShowDealsForDateContext"
 import { useEffect, useState } from "react"
@@ -23,7 +24,7 @@ export default function Home() {
 			<ScrollView style={styles.mainContainer}>
 				<Header page="home" />
 				<DealsList />
-				{/* <SortAndFilterBar /> */}
+				<SortAndFilterBar />
 			</ScrollView>
 		</ShowDealsForDateContext.Provider>
 	)
