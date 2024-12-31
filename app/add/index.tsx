@@ -2,10 +2,16 @@ import Header from "@/components/Header"
 import { ThemedText } from "@/components/ThemedText"
 import { Colors } from "@/constants/Colors"
 import { Store } from "@/constants/types/Deals"
-import { db } from "@/firebase/app/firebaseConfig"
+import { db, provider } from "@/firebase/app/firebaseConfig"
+import {
+	getAuth,
+	GoogleAuthProvider,
+	signInWithPopup,
+	User,
+} from "firebase/auth"
 import { collection, getDocs } from "firebase/firestore"
 import React, { useEffect } from "react"
-import { ScrollView, StyleSheet, View } from "react-native"
+import { Button, ScrollView, StyleSheet, View } from "react-native"
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs"
 import "react-tabs/style/react-tabs.css"
 import AddBobaDeal from "./AddBobaDeal"
@@ -14,6 +20,29 @@ import AddStoreDeal from "./AddStoreDeal"
 export default function Add() {
 	const [tabIndex, setTabIndex] = React.useState(0)
 	const [storesList, setStoresList] = React.useState<Store[]>([])
+	const [isUserLoggedIn, setIsUserLoggedIn] = React.useState(false)
+	const [user, setUser] = React.useState<User | null>(null)
+
+	const auth = getAuth()
+
+	function signInWithGoogle() {
+		signInWithPopup(auth, provider).then((result) => {
+			const credential = GoogleAuthProvider.credentialFromResult(result)
+			const token = credential ? credential.accessToken : null
+			const user = result.user
+			if (user && token) {
+				setIsUserLoggedIn(true)
+				setUser(user)
+			}
+		})
+	}
+
+	function signOut() {
+		auth.signOut().then(() => {
+			setIsUserLoggedIn(false)
+			setUser(null)
+		})
+	}
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -68,12 +97,56 @@ export default function Add() {
 				</TabList>
 
 				<View style={styles.formContainer}>
-					<TabPanel>
-						<AddBobaDeal storesList={storesList} />
-					</TabPanel>
-					<TabPanel>
-						<AddStoreDeal storesList={storesList} />
-					</TabPanel>
+					{isUserLoggedIn ? (
+						<>
+							<TabPanel>
+								<ThemedText>
+									<em>Signed in as {user?.displayName} </em>(
+									<a
+										href="#"
+										onClick={signOut}
+										style={{
+											color: "white",
+										}}
+									>
+										sign out
+									</a>
+									)
+								</ThemedText>
+								<View style={styles.dividerLine} />
+								<AddBobaDeal storesList={storesList} />
+							</TabPanel>
+							<TabPanel>
+								<ThemedText>
+									<em>Signed in as {user?.displayName} </em>(
+									<a
+										href="#"
+										onClick={signOut}
+										style={{
+											color: "white",
+										}}
+									>
+										sign out
+									</a>
+									)
+								</ThemedText>
+								<View style={styles.dividerLine} />
+								<AddStoreDeal storesList={storesList} />
+							</TabPanel>
+						</>
+					) : (
+						<>
+							<Button
+								title="Sign in with Google to add a deal"
+								onPress={signInWithGoogle}
+							/>
+							<ThemedText style={{ marginTop: 20 }}>
+								Note you must be to added to a Firebase rule in
+								order to add a deal (so you won't be able to
+								submit a deal despite this auth).
+							</ThemedText>
+						</>
+					)}
 				</View>
 			</Tabs>
 		</ScrollView>
@@ -107,5 +180,11 @@ const styles = StyleSheet.create({
 		borderTopLeftRadius: 10,
 		borderTopRightRadius: 10,
 		borderWidth: 0,
+	},
+	dividerLine: {
+		borderBottomColor: "white",
+		borderBottomWidth: StyleSheet.hairlineWidth,
+		marginBottom: 10,
+		marginTop: 10,
 	},
 })

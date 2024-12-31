@@ -1,8 +1,9 @@
 import { initializeApp } from "firebase/app"
+import { GoogleAuthProvider } from "firebase/auth"
 import { getFirestore } from "firebase/firestore"
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+export const provider = new GoogleAuthProvider()
+
 const firebaseConfig = {
 	apiKey: "AIzaSyCtjjbGJgEME2fhOfRRL1ehPtSYHbNV180",
 	authDomain: "so-boba-after.firebaseapp.com",
