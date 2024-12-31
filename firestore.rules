@@ -1,0 +1,21 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Applies to all documents in the database
+    match /{document=**} {
+
+      // 1) Allow read for everyone (including unauthenticated users):
+      allow read: if true;
+
+      // 2) Allow write ONLY if:
+      //    - The user is authenticated (request.auth != null), and
+      //    - Their Google email is in the allowed list below
+      allow write: if request.auth != null
+                   && request.auth.token.email in [
+                     "hguo2102@gmail.com",
+                   ];
+    }
+  }
+}
