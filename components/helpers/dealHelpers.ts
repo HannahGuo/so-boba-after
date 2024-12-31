@@ -91,6 +91,26 @@ export function makePromoPeriodText(promoPeriod: PromoPeriod): string {
 	return `${startDate} to ${endDate}`
 }
 
+export function isDealExpired(deal: BobaDeal | StoreDeal): boolean {
+	if ("promoPeriod" in deal) {
+		const today = new Date()
+
+		if (deal.promoPeriod.startDate === "always") {
+			return false
+		}
+
+		if (deal.promoPeriod.endDate === "always") {
+			return false
+		}
+
+		if (deal.promoPeriod.endDate.toDate() < today) {
+			return true
+		}
+	}
+
+	return false
+}
+
 export function makeDrinkList(drinks: Drink[]): Drink[] {
 	const drinkNumToList: Record<number, Drink[]> = {}
 

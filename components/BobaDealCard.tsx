@@ -11,6 +11,7 @@ import React from "react"
 import { StyleSheet, View } from "react-native"
 import { ThemedText } from "./ThemedText"
 import {
+	isDealExpired,
 	makeDealText,
 	makeDrinkList,
 	makePromoPeriodText,
@@ -77,6 +78,12 @@ export default function BobaDealCard({
 			start={{ x: 0.5, y: 0 }}
 			end={{ x: 0.5, y: 1 }}
 		>
+			{/* TODO: yeah i want to do seperate columns but im lazy rn */}
+			{isDealExpired(deal) && (
+				<ThemedText type="subtitle" style={{ color: "red" }}>
+					EXPIRED
+				</ThemedText>
+			)}
 			<ThemedText type="subtitle">{store?.name}</ThemedText>
 			<ThemedText type="defaultBold">{makeDealText(deal)}</ThemedText>
 			<View style={styles.drinkList}>
