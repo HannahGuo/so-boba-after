@@ -1,5 +1,6 @@
-import { Colors } from "@/constants/Colors"
+import { AtLeastTwoStrings, BobaGradientColors } from "@/constants/BobaColors"
 import { Store, StoreDeal } from "@/constants/types/Deals"
+import { LinearGradient } from "expo-linear-gradient"
 import { StyleSheet, View } from "react-native"
 import { ThemedText } from "./ThemedText"
 import { makeDealText, makePromoPeriodText } from "./helpers/dealHelpers"
@@ -9,14 +10,45 @@ type StoreDealProps = {
 	store: Store | undefined
 }
 
+/**
+ * From ChatGPT:
+ * Simple hash function (djb2 algorithm) to convert a string into a numeric hash.
+ * @param str - The input string to hash.
+ * @returns A numeric hash value.
+ */
+function hashString(str: string): number {
+	let hash = 5381
+	for (let i = 0; i < str.length; i++) {
+		hash = hash * 33 + str.charCodeAt(i)
+		hash = hash & hash
+	}
+	return Math.abs(hash)
+}
+
+/**
+ * From ChatGPT:
+ * Selects a deterministic color array from BobaGradientColors based on the input string.
+ * @param input - The input string to base the color selection on.
+ * @returns A tuple containing two color strings.
+ */
+function getColorForString(input: string): AtLeastTwoStrings {
+	const keys = Object.keys(BobaGradientColors)
+	const hash = hashString(input)
+	const index = hash % keys.length
+	const selectedKey = keys[index]
+	return BobaGradientColors[selectedKey]
+}
+
 export default function StoreDealCard({ deal, store }: StoreDealProps) {
 	const notes = deal.condition.notes
+
 	return (
-		<View
-			style={{
-				backgroundColor: Colors.shared.bobaOrange,
-				...styles.dealContainer,
-			}}
+		<LinearGradient
+			colors={getColorForString(deal.condition.id)}
+			style={styles.dealContainer}
+			locations={[0, 0.05]}
+			start={{ x: 0.5, y: 0 }}
+			end={{ x: 0.5, y: 1 }}
 		>
 			<ThemedText type="subtitle">{store?.name}</ThemedText>
 			<ThemedText type="defaultBold">{deal.condition.clause}</ThemedText>
@@ -26,7 +58,7 @@ export default function StoreDealCard({ deal, store }: StoreDealProps) {
 				📅 {makePromoPeriodText(deal.promoPeriod)}
 			</ThemedText>
 			{notes && <ThemedText type="default">📝 {notes}</ThemedText>}
-		</View>
+		</LinearGradient>
 	)
 }
 
