@@ -126,8 +126,6 @@ export default function DealsList() {
 		return true
 	})
 
-	console.log({ filteredBobaDeals })
-
 	filteredBobaDeals.sort((a, b) => {
 		switch (sortType) {
 			case "storeName":
