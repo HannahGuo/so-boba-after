@@ -1,3 +1,4 @@
+import { DESKTOP_WIDTH_BREAKPOINT } from "@/constants/Breakpoints"
 import { Colors } from "@/constants/Colors"
 import {
 	NumberOfDrinks,
@@ -6,15 +7,23 @@ import {
 } from "@/contexts/SortAndFilterContext"
 import { Picker } from "@react-native-picker/picker"
 import React, { useContext } from "react"
-import { StyleSheet, View } from "react-native"
+import { StyleSheet, useWindowDimensions, View } from "react-native"
 import { ThemedText } from "./ThemedText"
 
 export default function SortAndFilterBar() {
 	const { sortType, setSortType, numberOfDrinks, setNumberOfDrinks } =
 		useContext(SortAndFilterContext)
 
+	const { width: windowWidth } = useWindowDimensions()
+
 	return (
-		<View style={styles.container}>
+		<View
+			style={
+				windowWidth > DESKTOP_WIDTH_BREAKPOINT
+					? styles.container
+					: styles.mobileContainer
+			}
+		>
 			<View style={styles.pickerRow}>
 				<ThemedText style={styles.pickerTitle}>
 					Set Sort Order:
@@ -70,18 +79,31 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		bottom: 0,
 	},
+	mobileContainer: {
+		padding: 14,
+		backgroundColor: Colors.shared.bobaBrown,
+		width: "100%",
+		position: "sticky",
+		justifyContent: "space-evenly",
+		alignContent: "center",
+		display: "flex",
+		flexDirection: "column",
+		rowGap: 10,
+		bottom: 0,
+	},
 	pickerRow: {
 		flexDirection: "row",
 		alignItems: "baseline",
 		justifyContent: "space-between",
 	},
 	picker: {
-		width: 300,
 		fontFamily: "CourierPrime",
 		fontSize: 18,
 		borderRadius: 10,
 		borderColor: "white",
 		padding: 6,
+		paddingLeft: 10,
+		paddingRight: 10,
 	},
 	pickerTitle: {
 		marginRight: 20,

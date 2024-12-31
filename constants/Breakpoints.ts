@@ -1,0 +1,1 @@
+export const DESKTOP_WIDTH_BREAKPOINT = 1024

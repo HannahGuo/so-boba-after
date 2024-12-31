@@ -7,7 +7,7 @@ import { BobaEmojis } from "@/constants/BobaEmojis"
 import { Colors } from "@/constants/Colors"
 import { BobaDeal, Store, StoreDeal } from "@/constants/types/Deals"
 import { LinearGradient } from "expo-linear-gradient"
-import React from "react"
+import React, { useMemo } from "react"
 import { StyleSheet, View } from "react-native"
 import { ThemedText } from "./ThemedText"
 import {
@@ -68,7 +68,7 @@ export default function BobaDealCard({
 	store,
 	storeDeals,
 }: BobaDealProps) {
-	const drinksList = makeDrinkList(deal.drinks)
+	const drinksList = useMemo(() => makeDrinkList(deal.drinks), [deal.drinks])
 
 	return (
 		<LinearGradient

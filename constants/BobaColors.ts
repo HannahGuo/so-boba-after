@@ -57,7 +57,7 @@ export type AtLeastTwoStrings = [string, string, ...string[]]
 
 export const BobaGradientColors: Record<string, AtLeastTwoStrings> = {
 	red: ["#FFD9D9", Colors.shared.bobaRed],
-	orange: ["#FFD9D9", Colors.shared.bobaOrange],
+	orange: ["#FFE3BB", Colors.shared.bobaOrange],
 	yellow: ["#FFD9D9", Colors.shared.bobaYellow],
 	green: ["#D9FFD9", Colors.shared.bobaGreen],
 	blue: ["#B4D2FF", Colors.shared.bobaBlue],

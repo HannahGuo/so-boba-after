@@ -36,6 +36,7 @@ export default function RootLayout() {
 
 	return (
 		<Stack screenOptions={{ headerShown: false }}>
+			<meta name="description" content="A boba discount tracker." />
 			<Stack.Screen name="index" options={{ title: "Home" }} />
 			<Stack.Screen name="add" options={{ title: "Add" }} />
 		</Stack>

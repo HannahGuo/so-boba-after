@@ -68,7 +68,6 @@ const styles = StyleSheet.create({
 		flexDirection: "column",
 		justifyContent: "space-between",
 		padding: 20,
-		width: 460,
 		borderRadius: 20,
 		margin: 10,
 		filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))",

@@ -22,6 +22,9 @@ import BobaDealCard from "./BobaDealCard"
 import StoreDealCard from "./StoreDealCard"
 import { ThemedText } from "./ThemedText"
 
+import { DESKTOP_WIDTH_BREAKPOINT } from "@/constants/Breakpoints"
+import { useWindowDimensions } from "react-native"
+
 const getStoreFromID = async (id: string): Promise<Store> => {
 	const querySnapshot = await getDoc(doc(db, "stores", id))
 	return querySnapshot.data() as Store
@@ -79,6 +82,10 @@ export default function DealsList() {
 		retrieveBobaDeals()
 		retrieveStoreDeals()
 	}, [])
+
+	if (!bobaDeals || !storeDeals) {
+		return <></>
+	}
 
 	const filteredBobaDeals = bobaDeals.filter((deal) => {
 		if (showDealsForDate === null) {
@@ -156,7 +163,11 @@ export default function DealsList() {
 
 	// On desktop, we'll have 3 columns. and because i like grid layouts and flex is being a pain, i'm hacking it.
 	// this avoids the problem of different card heights causing the cards to not line up properly
-	const COLUMN_COUNT = Platform.OS === "web" ? 3 : 1
+
+	const { width: windowWidth } = useWindowDimensions()
+
+	const COLUMN_COUNT =
+		Platform.OS === "web" && windowWidth > DESKTOP_WIDTH_BREAKPOINT ? 3 : 1
 	const bobaDealsCols: BobaDeal[][] = Array.from(
 		{ length: COLUMN_COUNT },
 		() => [],
@@ -179,7 +190,10 @@ export default function DealsList() {
 								style={{
 									display: "flex",
 									flexDirection: "column",
-									width: "29%",
+									width:
+										windowWidth > DESKTOP_WIDTH_BREAKPOINT
+											? "29%"
+											: "90%",
 								}}
 							>
 								{row.map((deal) => {
@@ -206,7 +220,19 @@ export default function DealsList() {
 						Probably not stackable with drink-specific deals above.
 					</em>
 				</ThemedText>
-				<View style={styles.listContainer}>
+				<View
+					style={[
+						styles.rowContainer,
+						{
+							display: "flex",
+							flexDirection: "column",
+							width:
+								windowWidth > DESKTOP_WIDTH_BREAKPOINT
+									? "29%"
+									: "90%",
+						},
+					]}
+				>
 					{storeDeals.map((deal) => {
 						return (
 							<StoreDealCard
