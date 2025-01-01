@@ -17,6 +17,7 @@ Built using Expo, with TypeScript, React (Native) and Firebase. Designed with Fi
 - Basic Google authentication to restrict deal adding
 
 ## Coming Soon™️
+- [ ] Android app (technically this already works but need to figure out a way to update it well without Playstore...)
 - [ ] iOS app (this is hard because I don't have an iPhone...)
 - [ ] Support for other cities
 - [ ] Better deals sorting and filtering (e.g. by store)
