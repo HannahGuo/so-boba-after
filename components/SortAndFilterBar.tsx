@@ -1,4 +1,3 @@
-import { DESKTOP_WIDTH_BREAKPOINT } from "@/constants/Breakpoints"
 import { Colors } from "@/constants/Colors"
 import {
 	NumberOfDrinks,
@@ -8,19 +7,18 @@ import {
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet"
 import { Picker } from "@react-native-picker/picker"
 import React, { useContext } from "react"
-import { Platform, StyleSheet, useWindowDimensions, View } from "react-native"
+import { StyleSheet, View } from "react-native"
 import DateChooser from "./DateChooser"
 import { ThemedText } from "./ThemedText"
+import { isDesktop, isMobileDevice, isWeb } from "./helpers/deviceHelpers"
 
 export default function SortAndFilterBar() {
 	const { sortType, setSortType, numberOfDrinks, setNumberOfDrinks } =
 		useContext(SortAndFilterContext)
 
-	const { width: windowWidth } = useWindowDimensions()
-
 	return (
 		<BottomSheet
-			snapPoints={windowWidth > DESKTOP_WIDTH_BREAKPOINT ? [] : [20]}
+			snapPoints={!isMobileDevice() ? [] : [20]}
 			enableDynamicSizing={true}
 			animateOnMount={true}
 			enableOverDrag={false}
@@ -30,26 +28,17 @@ export default function SortAndFilterBar() {
 			handleIndicatorStyle={{
 				backgroundColor: "white",
 			}}
-			handleComponent={
-				Platform.OS === "web" && windowWidth > DESKTOP_WIDTH_BREAKPOINT
-					? null
-					: undefined
-			}
+			handleComponent={isDesktop() ? null : undefined}
 		>
 			<BottomSheetView
 				style={
-					windowWidth > DESKTOP_WIDTH_BREAKPOINT
+					!isMobileDevice()
 						? styles.container
 						: styles.mobileContainer
 				}
 			>
-				<View
-					style={
-						windowWidth > DESKTOP_WIDTH_BREAKPOINT &&
-						styles.pickerRow
-					}
-				>
-					{windowWidth < DESKTOP_WIDTH_BREAKPOINT && (
+				<View style={!isMobileDevice() && styles.pickerRow}>
+					{isMobileDevice() && (
 						<>
 							<DateChooser />
 							<View style={styles.dividerLine} />
@@ -62,7 +51,7 @@ export default function SortAndFilterBar() {
 						<Picker
 							style={{
 								...styles.picker,
-								...(Platform.OS === "web"
+								...(isWeb()
 									? { color: "black" }
 									: { color: "white" }),
 							}}
@@ -82,12 +71,7 @@ export default function SortAndFilterBar() {
 						</Picker>
 					</View>
 				</View>
-				<View
-					style={
-						windowWidth > DESKTOP_WIDTH_BREAKPOINT &&
-						styles.pickerRow
-					}
-				>
+				<View style={!isMobileDevice() && styles.pickerRow}>
 					<ThemedText style={styles.pickerTitle}>
 						Filter by Drink Number:
 					</ThemedText>
@@ -95,7 +79,7 @@ export default function SortAndFilterBar() {
 						<Picker
 							style={{
 								...styles.picker,
-								...(Platform.OS === "web"
+								...(isWeb()
 									? { color: "black" }
 									: { color: "white" }),
 							}}

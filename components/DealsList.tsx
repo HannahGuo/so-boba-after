@@ -17,13 +17,13 @@ import {
 	Timestamp,
 } from "firebase/firestore"
 import React, { useContext, useEffect, useState } from "react"
-import { Platform, StyleSheet, View } from "react-native"
+import { StyleSheet, View } from "react-native"
 import BobaDealCard from "./BobaDealCard"
 import StoreDealCard from "./StoreDealCard"
 import { ThemedText } from "./ThemedText"
 
-import { DESKTOP_WIDTH_BREAKPOINT } from "@/constants/Breakpoints"
 import { useWindowDimensions } from "react-native"
+import { isDesktop, isMobileDevice } from "./helpers/deviceHelpers"
 
 const getStoreFromID = async (id: string): Promise<Store> => {
 	const querySnapshot = await getDoc(doc(db, "stores", id))
@@ -166,8 +166,7 @@ export default function DealsList() {
 
 	const { width: windowWidth } = useWindowDimensions()
 
-	const COLUMN_COUNT =
-		Platform.OS === "web" && windowWidth > DESKTOP_WIDTH_BREAKPOINT ? 3 : 1
+	const COLUMN_COUNT = isDesktop() ? 3 : 1
 	const bobaDealsCols: BobaDeal[][] = Array.from(
 		{ length: COLUMN_COUNT },
 		() => [],
@@ -182,12 +181,12 @@ export default function DealsList() {
 		<View
 			style={{
 				...styles.allDealsContainer,
-				...(windowWidth > DESKTOP_WIDTH_BREAKPOINT
-					? { padding: 40, marginTop: 60 }
-					: {
+				...(!isDesktop()
+					? {
 							marginTop: 100,
 							padding: 20,
-					  }),
+					  }
+					: { padding: 40, marginTop: 60 }),
 			}}
 		>
 			<View style={styles.dealsContainer}>
@@ -200,10 +199,7 @@ export default function DealsList() {
 								style={{
 									display: "flex",
 									flexDirection: "column",
-									width:
-										windowWidth > DESKTOP_WIDTH_BREAKPOINT
-											? "29%"
-											: "100%",
+									width: isMobileDevice() ? "100%" : "29%",
 								}}
 							>
 								{row.map((deal) => {
@@ -234,10 +230,7 @@ export default function DealsList() {
 						{
 							display: "flex",
 							flexDirection: "column",
-							width:
-								windowWidth > DESKTOP_WIDTH_BREAKPOINT
-									? "29%"
-									: "100%",
+							width: isMobileDevice() ? "100%" : "29%",
 						},
 					]}
 				>

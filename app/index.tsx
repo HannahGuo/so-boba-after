@@ -1,5 +1,6 @@
 import DealsList from "@/components/DealsList"
 import Header from "@/components/Header"
+import { isWeb } from "@/components/helpers/deviceHelpers"
 import SortAndFilterBar from "@/components/SortAndFilterBar"
 import { Colors } from "@/constants/Colors"
 import { ShowDealsForDateContext } from "@/contexts/ShowDealsForDateContext"
@@ -9,12 +10,12 @@ import {
 	SortType,
 } from "@/contexts/SortAndFilterContext"
 import { useEffect, useState } from "react"
-import { Platform, ScrollView, StyleSheet } from "react-native"
+import { ScrollView, StyleSheet } from "react-native"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
 
 export default function Home() {
 	useEffect(() => {
-		if (Platform.OS === "web") {
+		if (isWeb()) {
 			document.title = "...so, boba after?"
 		}
 	}, [])

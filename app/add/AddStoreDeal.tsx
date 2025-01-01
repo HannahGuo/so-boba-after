@@ -1,3 +1,4 @@
+import { isWeb } from "@/components/helpers/deviceHelpers"
 import { ThemedText } from "@/components/ThemedText"
 import { Colors } from "@/constants/Colors"
 import {
@@ -12,7 +13,7 @@ import { Picker } from "@react-native-picker/picker"
 import Checkbox from "expo-checkbox"
 import { collection, doc, getDocs, setDoc, Timestamp } from "firebase/firestore"
 import React, { useEffect, useState } from "react"
-import { Button, Platform, StyleSheet, TextInput, View } from "react-native"
+import { Button, StyleSheet, TextInput, View } from "react-native"
 
 export default function AddStoreDeal({ storesList }: { storesList: Store[] }) {
 	const [storeName, setStoreName] = useState<string>()
@@ -136,7 +137,7 @@ export default function AddStoreDeal({ storesList }: { storesList: Store[] }) {
 			<View style={{ marginTop: 12 }}>
 				<ThemedText type="subtitle">Discount Amount:</ThemedText>
 				<View style={styles.inputRow}>
-					{Platform.OS === "web" ? (
+					{isWeb() ? (
 						<input
 							type="number"
 							value={discountValue}
@@ -185,7 +186,7 @@ export default function AddStoreDeal({ storesList }: { storesList: Store[] }) {
 					</View>
 					<ThemedText type="subsubtitle">Start Date:</ThemedText>
 					<View>
-						{Platform.OS === "web" ? (
+						{isWeb() ? (
 							<input
 								type="date"
 								style={styles.dateInput}
@@ -208,7 +209,7 @@ export default function AddStoreDeal({ storesList }: { storesList: Store[] }) {
 					</View>
 					<ThemedText type="subsubtitle">End Date:</ThemedText>
 					<View>
-						{Platform.OS === "web" ? (
+						{isWeb() ? (
 							<input
 								style={styles.dateInput}
 								type="date"
@@ -261,7 +262,7 @@ export default function AddStoreDeal({ storesList }: { storesList: Store[] }) {
 				</View>
 
 				<View style={styles.submitButtonContainer}>
-					{Platform.OS === "web" ? (
+					{isWeb() ? (
 						<button
 							style={styles.submitButton}
 							onClick={submitStoreDeal}

@@ -1,9 +1,7 @@
-import { DESKTOP_WIDTH_BREAKPOINT } from "@/constants/Breakpoints"
 import { Link } from "expo-router"
 import React, { useState } from "react"
 import {
 	ImageBackground,
-	Platform,
 	Pressable,
 	SafeAreaView,
 	StyleSheet,
@@ -12,6 +10,7 @@ import {
 } from "react-native"
 import DateChooser from "./DateChooser"
 import { ThemedText } from "./ThemedText"
+import { isDesktop, isMobileDevice, isWeb } from "./helpers/deviceHelpers"
 
 type HeaderPage = "home" | "add"
 
@@ -24,17 +23,13 @@ export default function Header({ page }: { page: HeaderPage }) {
 		<SafeAreaView style={styles.headerContainer}>
 			<ImageBackground
 				source={require("../assets/images/bobaHeaderLeft.png")}
-				style={
-					Platform.OS === "web"
-						? styles.headerImageLeft
-						: styles.headerMobile
-				}
+				style={isWeb() ? styles.headerImageLeft : styles.headerMobile}
 			/>
 			<View style={styles.titleContainer}>
 				<ThemedText
 					type="title"
 					style={
-						windowWidth < DESKTOP_WIDTH_BREAKPOINT && {
+						isMobileDevice() && {
 							fontSize: 48,
 						}
 					}
@@ -42,16 +37,15 @@ export default function Header({ page }: { page: HeaderPage }) {
 					...so, boba after?
 				</ThemedText>
 			</View>
-			{Platform.OS === "web" &&
-				windowWidth > DESKTOP_WIDTH_BREAKPOINT && (
-					<ImageBackground
-						source={require("../assets/images/bobaHeaderRight.png")}
-						style={styles.headerImageRight}
-					/>
-				)}
+			{isDesktop() && (
+				<ImageBackground
+					source={require("../assets/images/bobaHeaderRight.png")}
+					style={styles.headerImageRight}
+				/>
+			)}
 
 			<View style={styles.rightContainer}>
-				{windowWidth > DESKTOP_WIDTH_BREAKPOINT && (
+				{!isMobileDevice() && (
 					<Pressable
 						onHoverIn={() => setHover(true)}
 						onHoverOut={() => setHover(false)}
@@ -77,7 +71,7 @@ export default function Header({ page }: { page: HeaderPage }) {
 					</Pressable>
 				)}
 
-				{windowWidth > DESKTOP_WIDTH_BREAKPOINT && <DateChooser />}
+				{!isMobileDevice() && <DateChooser />}
 			</View>
 		</SafeAreaView>
 	)

@@ -3,9 +3,10 @@ import { ShowDealsForDateContext } from "@/contexts/ShowDealsForDateContext"
 import DateTimePicker from "@react-native-community/datetimepicker"
 import Checkbox from "expo-checkbox"
 import React, { useContext, useState } from "react"
-import { Button, Platform, StyleSheet, View } from "react-native"
+import { Button, StyleSheet, View } from "react-native"
 import { ThemedText } from "./ThemedText"
 import { getRelativeDateString } from "./helpers/dateHelpers"
+import { isWeb } from "./helpers/deviceHelpers"
 
 export default function DateChooser() {
 	const { showDealsForDate, setShowDealsForDate } = useContext(
@@ -41,7 +42,7 @@ export default function DateChooser() {
 			{showDealsForDate && (
 				<>
 					<ThemedText>Showing Deals for</ThemedText>
-					{Platform.OS === "web" ? (
+					{isWeb() ? (
 						<input
 							type="date"
 							style={styles.dateInput}
