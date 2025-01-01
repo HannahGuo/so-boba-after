@@ -25,7 +25,7 @@ Built using Expo, with TypeScript, React (Native) and Firebase. Designed with Fi
 
 ## Commands
 So I remember how to build this project:
-`npx expo start` start
-`npm run deploy-hosting` deploy to https://so-boba-after.web.app/
-`npx expo prebuild --platform android` - prebuild for android
-`eas build --profile preview --platform android` - build for android
+- `npx expo start` start
+- `npm run deploy-hosting` deploy to https://so-boba-after.web.app/
+- `npx expo prebuild --platform android` - prebuild for android
+- `eas build --profile preview --platform android` - build for android

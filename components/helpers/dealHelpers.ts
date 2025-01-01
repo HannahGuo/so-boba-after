@@ -23,7 +23,7 @@ export function makeDealText(deal: BobaDeal | StoreDeal): string {
 			case "flatoff":
 				return `$${discount.discountValue} off`
 			case "total":
-				return `For $${discount.discountValue}`
+				return `for $${discount.discountValue}`
 			default:
 				return "Unknown discount type"
 		}
@@ -34,10 +34,10 @@ export function makeDealText(deal: BobaDeal | StoreDeal): string {
 			case "single":
 				return makeDiscountText(deal.discount)
 			case "bogo":
-				return "Buy one get one " + makeDealText(deal)
+				return "buy one get one " + makeDealText(deal)
 			case "buyXforY":
 				return (
-					"Buy any 2 " +
+					"buy any 2 " +
 					makeSizeText(deal.drinks[0].size) +
 					" " +
 					makeDiscountText(deal.discount)
