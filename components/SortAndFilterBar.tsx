@@ -5,9 +5,10 @@ import {
 	SortAndFilterContext,
 	SortType,
 } from "@/contexts/SortAndFilterContext"
+import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet"
 import { Picker } from "@react-native-picker/picker"
 import React, { useContext } from "react"
-import { StyleSheet, useWindowDimensions, View } from "react-native"
+import { Platform, StyleSheet, useWindowDimensions, View } from "react-native"
 import { ThemedText } from "./ThemedText"
 
 export default function SortAndFilterBar() {
@@ -17,79 +18,117 @@ export default function SortAndFilterBar() {
 	const { width: windowWidth } = useWindowDimensions()
 
 	return (
-		<View
-			style={
-				windowWidth > DESKTOP_WIDTH_BREAKPOINT
-					? styles.container
-					: styles.mobileContainer
+		<BottomSheet
+			snapPoints={windowWidth > DESKTOP_WIDTH_BREAKPOINT ? [] : [20]}
+			enableDynamicSizing={true}
+			animateOnMount={true}
+			enableOverDrag={false}
+			backgroundStyle={{
+				backgroundColor: Colors.shared.bobaBrown,
+			}}
+			handleIndicatorStyle={{
+				backgroundColor: "white",
+			}}
+			handleComponent={
+				Platform.OS === "web" && windowWidth > DESKTOP_WIDTH_BREAKPOINT
+					? null
+					: undefined
 			}
 		>
-			<View style={styles.pickerRow}>
-				<ThemedText style={styles.pickerTitle}>
-					Set Sort Order:
-				</ThemedText>
-				<View>
-					<Picker
-						style={styles.picker}
-						selectedValue={sortType}
-						onValueChange={(itemValue: SortType) =>
-							setSortType(itemValue)
-						}
-					>
-						<Picker.Item
-							label="Store Name (A-Z)"
-							value="storeName"
-						/>
-						<Picker.Item label="Expiry Date" value="expiry" />
-						<Picker.Item label="Price" value="price" />
-					</Picker>
+			<BottomSheetView
+				style={
+					windowWidth > DESKTOP_WIDTH_BREAKPOINT
+						? styles.container
+						: styles.mobileContainer
+				}
+			>
+				<View
+					style={
+						windowWidth > DESKTOP_WIDTH_BREAKPOINT &&
+						styles.pickerRow
+					}
+				>
+					<ThemedText style={styles.pickerTitle}>
+						Set Sort Order:
+					</ThemedText>
+					<View>
+						<Picker
+							style={{
+								...styles.picker,
+								...(Platform.OS === "web"
+									? { color: "black" }
+									: { color: "white" }),
+							}}
+							selectedValue={sortType}
+							onValueChange={(itemValue: SortType) =>
+								setSortType(itemValue)
+							}
+							dropdownIconColor="white"
+							prompt="Select Sort Method"
+						>
+							<Picker.Item
+								label="Store Name (A-Z)"
+								value="storeName"
+							/>
+							<Picker.Item label="Expiry Date" value="expiry" />
+							<Picker.Item label="Price" value="price" />
+						</Picker>
+					</View>
 				</View>
-			</View>
-			<View style={styles.pickerRow}>
-				<ThemedText style={styles.pickerTitle}>
-					Filter by Drink Number:
-				</ThemedText>
-				<View>
-					<Picker
-						style={styles.picker}
-						selectedValue={numberOfDrinks}
-						onValueChange={(itemValue: NumberOfDrinks) =>
-							setNumberOfDrinks(itemValue)
-						}
-					>
-						<Picker.Item label="Any Number" value="any" />
-						<Picker.Item label="One Drink" value="one" />
-						<Picker.Item label="Two Drinks" value="two" />
-					</Picker>
+				<View
+					style={
+						windowWidth > DESKTOP_WIDTH_BREAKPOINT &&
+						styles.pickerRow
+					}
+				>
+					<ThemedText style={styles.pickerTitle}>
+						Filter by Drink Number:
+					</ThemedText>
+					<View>
+						<Picker
+							style={{
+								...styles.picker,
+								...(Platform.OS === "web"
+									? { color: "black" }
+									: { color: "white" }),
+							}}
+							selectedValue={numberOfDrinks}
+							onValueChange={(itemValue: NumberOfDrinks) =>
+								setNumberOfDrinks(itemValue)
+							}
+							dropdownIconColor="white"
+							prompt="Filter by Drink Number"
+						>
+							<Picker.Item label="Any Number" value="any" />
+							<Picker.Item label="One Drink" value="one" />
+							<Picker.Item label="Two Drinks" value="two" />
+						</Picker>
+					</View>
 				</View>
-			</View>
-		</View>
+			</BottomSheetView>
+		</BottomSheet>
 	)
 }
 
 const styles = StyleSheet.create({
 	container: {
-		padding: 14,
 		backgroundColor: Colors.shared.bobaBrown,
 		width: "100%",
-		position: "sticky",
 		justifyContent: "space-evenly",
 		alignContent: "center",
 		display: "flex",
 		flexDirection: "row",
-		bottom: 0,
+		padding: 14,
 	},
 	mobileContainer: {
-		padding: 14,
 		backgroundColor: Colors.shared.bobaBrown,
 		width: "100%",
-		position: "sticky",
 		justifyContent: "space-evenly",
 		alignContent: "center",
 		display: "flex",
 		flexDirection: "column",
 		rowGap: 10,
-		bottom: 0,
+		padding: 14,
 	},
 	pickerRow: {
 		flexDirection: "row",
@@ -104,6 +143,7 @@ const styles = StyleSheet.create({
 		padding: 6,
 		paddingLeft: 10,
 		paddingRight: 10,
+		color: "black",
 	},
 	pickerTitle: {
 		marginRight: 20,

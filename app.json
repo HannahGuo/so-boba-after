@@ -9,11 +9,12 @@
     "newArchEnabled": true,
     "icon": "./assets/images/appIcon.png",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anonymous.sobobaafter"
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#000000"
       },
       "package": "com.anonymous.sobobaafter"
     },
@@ -29,7 +30,7 @@
         {
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#ffffff",
+          "backgroundColor": "#000000",
           "image": "./assets/images/logo.png"
         }
       ],

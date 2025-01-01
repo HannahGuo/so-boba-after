@@ -10,6 +10,7 @@ import {
 } from "@/contexts/SortAndFilterContext"
 import { useEffect, useState } from "react"
 import { Platform, ScrollView, StyleSheet } from "react-native"
+import { GestureHandlerRootView } from "react-native-gesture-handler"
 
 export default function Home() {
 	useEffect(() => {
@@ -26,11 +27,10 @@ export default function Home() {
 	const [numberOfDrinks, setNumberOfDrinks] = useState<NumberOfDrinks>("any")
 
 	return (
-		<ShowDealsForDateContext.Provider
-			value={{ showDealsForDate, setShowDealsForDate }}
-		>
-			<ScrollView style={styles.mainContainer}>
-				<Header page="home" />
+		<GestureHandlerRootView>
+			<ShowDealsForDateContext.Provider
+				value={{ showDealsForDate, setShowDealsForDate }}
+			>
 				<SortAndFilterContext.Provider
 					value={{
 						sortType,
@@ -39,11 +39,17 @@ export default function Home() {
 						setNumberOfDrinks,
 					}}
 				>
-					<DealsList />
+					<ScrollView
+						style={styles.mainContainer}
+						contentContainerStyle={{ marginBottom: 40 }}
+					>
+						<Header page="home" />
+						<DealsList />
+					</ScrollView>
 					<SortAndFilterBar />
 				</SortAndFilterContext.Provider>
-			</ScrollView>
-		</ShowDealsForDateContext.Provider>
+			</ShowDealsForDateContext.Provider>
+		</GestureHandlerRootView>
 	)
 }
 

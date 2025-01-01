@@ -216,9 +216,7 @@ export default function DealsList() {
 			<View style={styles.dealsContainer}>
 				<ThemedText type="subtitle">🏪 Store Deals</ThemedText>
 				<ThemedText type="subsubtitle">
-					<em>
-						Probably not stackable with drink-specific deals above.
-					</em>
+					Probably not stackable with drink-specific deals above.
 				</ThemedText>
 				<View
 					style={[

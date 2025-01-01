@@ -48,11 +48,11 @@ export default function Header({ page }: { page: HeaderPage }) {
 					type="title"
 					style={
 						windowWidth < DESKTOP_WIDTH_BREAKPOINT && {
-							fontSize: 64,
+							fontSize: 48,
 						}
 					}
 				>
-					...so boba after?
+					...so, boba after?
 				</ThemedText>
 			</View>
 			{Platform.OS === "web" &&
