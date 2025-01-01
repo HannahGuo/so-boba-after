@@ -9,6 +9,7 @@ import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet"
 import { Picker } from "@react-native-picker/picker"
 import React, { useContext } from "react"
 import { Platform, StyleSheet, useWindowDimensions, View } from "react-native"
+import DateChooser from "./DateChooser"
 import { ThemedText } from "./ThemedText"
 
 export default function SortAndFilterBar() {
@@ -48,6 +49,12 @@ export default function SortAndFilterBar() {
 						styles.pickerRow
 					}
 				>
+					{windowWidth < DESKTOP_WIDTH_BREAKPOINT && (
+						<>
+							<DateChooser />
+							<View style={styles.dividerLine} />
+						</>
+					)}
 					<ThemedText style={styles.pickerTitle}>
 						Set Sort Order:
 					</ThemedText>
@@ -147,5 +154,12 @@ const styles = StyleSheet.create({
 	},
 	pickerTitle: {
 		marginRight: 20,
+	},
+	dividerLine: {
+		borderBottomColor: "white",
+		borderBottomWidth: StyleSheet.hairlineWidth,
+		marginBottom: 10,
+		marginTop: 10,
+		width: "100%",
 	},
 })

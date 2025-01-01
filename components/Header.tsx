@@ -1,12 +1,7 @@
 import { DESKTOP_WIDTH_BREAKPOINT } from "@/constants/Breakpoints"
-import { Colors } from "@/constants/Colors"
-import { ShowDealsForDateContext } from "@/contexts/ShowDealsForDateContext"
-import DateTimePicker from "@react-native-community/datetimepicker"
-import Checkbox from "expo-checkbox"
 import { Link } from "expo-router"
-import React, { useContext, useState } from "react"
+import React, { useState } from "react"
 import {
-	Button,
 	ImageBackground,
 	Platform,
 	Pressable,
@@ -15,21 +10,13 @@ import {
 	useWindowDimensions,
 	View,
 } from "react-native"
+import DateChooser from "./DateChooser"
 import { ThemedText } from "./ThemedText"
-import { getRelativeDateString } from "./helpers/dateHelpers"
 
 type HeaderPage = "home" | "add"
 
 export default function Header({ page }: { page: HeaderPage }) {
 	const [hover, setHover] = useState(false)
-
-	const { showDealsForDate, setShowDealsForDate } = useContext(
-		ShowDealsForDateContext,
-	)
-
-	const [showAllDeals, setShowAllDeals] = useState(false)
-
-	const [showDatePickerMobile, setShowDatePickerMobile] = useState(false)
 
 	const { width: windowWidth } = useWindowDimensions()
 
@@ -90,118 +77,7 @@ export default function Header({ page }: { page: HeaderPage }) {
 					</Pressable>
 				)}
 
-				{windowWidth > DESKTOP_WIDTH_BREAKPOINT && (
-					<View
-						style={{
-							paddingLeft: 60,
-							display: "flex",
-							flexDirection: "column",
-							alignItems: "center",
-							rowGap: 4,
-							width: 320,
-							top: -8,
-						}}
-					>
-						<View style={styles.checkboxRow}>
-							<View>
-								<ThemedText type="defaultBold">
-									Show All Deals:
-								</ThemedText>
-							</View>
-							<View>
-								<Checkbox
-									value={showAllDeals}
-									onValueChange={(val) => {
-										setShowAllDeals(val)
-										if (val) {
-											setShowDealsForDate(null)
-										} else {
-											setShowDealsForDate(new Date())
-										}
-									}}
-									color={Colors.shared.bobaBrownLight}
-								/>
-							</View>
-						</View>
-						<View style={styles.dividerLine} />
-						{showDealsForDate && (
-							<>
-								<ThemedText>Showing Deals for</ThemedText>
-								{Platform.OS === "web" ? (
-									<input
-										type="date"
-										style={styles.dateInput}
-										value={showDealsForDate
-											.toISOString()
-											.substring(0, 10)}
-										onChange={(e) => {
-											if (e.target.value) {
-												setShowDealsForDate(
-													new Date(
-														e.target.value + " EST",
-													),
-												)
-											} else {
-												setShowDealsForDate(new Date())
-											}
-										}}
-										disabled={showAllDeals}
-									/>
-								) : (
-									<>
-										<ThemedText>
-											{showDealsForDate
-												.toISOString()
-												.substring(0, 10)}
-										</ThemedText>
-										<Button
-											title="Change Date"
-											color={Colors.shared.bobaBrown}
-											onPress={() =>
-												setShowDatePickerMobile(true)
-											}
-										/>
-										{showDatePickerMobile && (
-											<DateTimePicker
-												value={showDealsForDate}
-												accentColor={
-													Colors.shared.bobaBrown
-												}
-												textColor={
-													Colors.shared.bobaBrown
-												}
-												mode="date"
-												onChange={(_, date) => {
-													if (date) {
-														setShowDealsForDate(
-															date,
-														)
-													}
-													setShowDatePickerMobile(
-														false,
-													)
-												}}
-												disabled={showAllDeals}
-											/>
-										)}
-									</>
-								)}
-								<ThemedText
-									style={{ marginTop: 8, marginLeft: 10 }}
-								>
-									(which is{" "}
-									{getRelativeDateString(showDealsForDate)})
-								</ThemedText>
-								<ThemedText style={{ marginTop: 8 }}>
-									in{" "}
-									<ThemedText type="defaultBold">
-										Waterloo
-									</ThemedText>
-								</ThemedText>
-							</>
-						)}
-					</View>
-				)}
+				{windowWidth > DESKTOP_WIDTH_BREAKPOINT && <DateChooser />}
 			</View>
 		</SafeAreaView>
 	)
