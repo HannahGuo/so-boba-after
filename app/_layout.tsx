@@ -3,9 +3,7 @@ import React, { useEffect } from "react"
 
 import { SplashScreen, Stack } from "expo-router"
 
-SplashScreen.preventAutoHideAsync().catch((e) => {
-	console.warn("Failed to prevent splash screen auto-hide:", e)
-})
+SplashScreen.preventAutoHideAsync().catch((_) => {})
 
 export default function RootLayout() {
 	const [fontsLoaded, error] = useFonts({
@@ -17,15 +15,12 @@ export default function RootLayout() {
 
 	useEffect(() => {
 		if (fontsLoaded) {
-			SplashScreen.hideAsync().catch((e) => {
-				console.warn("Failed to hide splash screen:", e)
-			})
+			SplashScreen.hideAsync().catch((_) => {})
 		}
 	}, [fontsLoaded])
 
 	useEffect(() => {
 		if (error) {
-			console.error("Error loading fonts:", error)
 			SplashScreen.hideAsync()
 		}
 	}, [error])

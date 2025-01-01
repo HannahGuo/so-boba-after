@@ -183,7 +183,7 @@ export default function DealsList() {
 			style={{
 				...styles.allDealsContainer,
 				...(windowWidth > DESKTOP_WIDTH_BREAKPOINT
-					? { padding: 40 }
+					? { padding: 40, marginTop: 60 }
 					: {
 							marginTop: 100,
 							padding: 20,
