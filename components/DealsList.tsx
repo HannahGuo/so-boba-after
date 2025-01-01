@@ -84,7 +84,7 @@ export default function DealsList() {
 	}, [])
 
 	if (!bobaDeals || !storeDeals) {
-		return <></>
+		return null
 	}
 
 	const filteredBobaDeals = bobaDeals.filter((deal) => {
@@ -179,7 +179,17 @@ export default function DealsList() {
 	}
 
 	return (
-		<View style={styles.allDealsContainer}>
+		<View
+			style={{
+				...styles.allDealsContainer,
+				...(windowWidth > DESKTOP_WIDTH_BREAKPOINT
+					? { padding: 40 }
+					: {
+							marginTop: 100,
+							padding: 20,
+					  }),
+			}}
+		>
 			<View style={styles.dealsContainer}>
 				<ThemedText type="subtitle">🧋 Boba Deals</ThemedText>
 				<View style={styles.rowContainer}>
@@ -193,7 +203,7 @@ export default function DealsList() {
 									width:
 										windowWidth > DESKTOP_WIDTH_BREAKPOINT
 											? "29%"
-											: "90%",
+											: "100%",
 								}}
 							>
 								{row.map((deal) => {
@@ -227,7 +237,7 @@ export default function DealsList() {
 							width:
 								windowWidth > DESKTOP_WIDTH_BREAKPOINT
 									? "29%"
-									: "90%",
+									: "100%",
 						},
 					]}
 				>
@@ -249,8 +259,6 @@ export default function DealsList() {
 const styles = StyleSheet.create({
 	allDealsContainer: {
 		display: "flex",
-		marginTop: 60,
-		padding: 40,
 	},
 	listContainer: {
 		display: "flex",
