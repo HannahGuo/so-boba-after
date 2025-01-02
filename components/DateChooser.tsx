@@ -103,7 +103,6 @@ export default function DateChooser() {
 
 const styles = StyleSheet.create({
 	dateChooserContainer: {
-		paddingLeft: 60,
 		display: "flex",
 		flexDirection: "column",
 		alignItems: "center",

@@ -47,6 +47,7 @@ export default function Header({ page }: { page: HeaderPage }) {
 			<View style={styles.rightContainer}>
 				{!isMobileDevice() && (
 					<Pressable
+						style={{ marginRight: 60 }}
 						onHoverIn={() => setHover(true)}
 						onHoverOut={() => setHover(false)}
 					>
