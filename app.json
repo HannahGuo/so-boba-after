@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "so, boba after?",
+    "name": "...so, boba after?",
     "slug": "so-boba-after",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -14,14 +14,14 @@
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#3B2A0F"
+        "backgroundColor": "#000000"
       },
       "package": "com.anonymous.sobobaafter"
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/boba.svg"
+      "favicon": "./assets/images/logo.png"
     },
     "plugins": [
       "expo-router",
@@ -30,7 +30,7 @@
         {
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#3B2A0F",
+          "backgroundColor": "#000000",
           "image": "./assets/images/logo.png"
         }
       ],
