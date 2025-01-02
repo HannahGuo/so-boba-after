@@ -41,10 +41,18 @@ export default function SortAndFilterBar() {
 			>
 				<View style={!isMobileDeviceCheck && styles.pickerRow}>
 					{isMobileDeviceCheck && (
-						<>
+						<View
+							style={{
+								display: "flex",
+								flexDirection: "column",
+								width: "100%",
+								alignItems: "center",
+								justifyContent: "center",
+							}}
+						>
 							<DateChooser />
 							<View style={styles.dividerLine} />
-						</>
+						</View>
 					)}
 					<ThemedText style={styles.pickerTitle}>
 						Set Sort Order:

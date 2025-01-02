@@ -261,7 +261,6 @@ const styles = StyleSheet.create({
 		justifyContent: "flex-start",
 		alignItems: "flex-start",
 		marginTop: 10,
-		marginBottom: 20,
 		gap: 0,
 	},
 	dealsContainer: {

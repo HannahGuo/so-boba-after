@@ -107,7 +107,8 @@ const styles = StyleSheet.create({
 		flexDirection: "column",
 		alignItems: "center",
 		rowGap: 4,
-		width: 320,
+		width: 300,
+		marginRight: 10,
 		top: -8,
 	},
 	underlineOnHover: {

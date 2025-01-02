@@ -59,5 +59,6 @@ const styles = StyleSheet.create({
 		height: "100%",
 		backgroundColor: Colors.light.background,
 		display: "flex",
+		marginBottom: 20,
 	},
 })
