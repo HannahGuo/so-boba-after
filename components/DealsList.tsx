@@ -159,6 +159,10 @@ export default function DealsList() {
 	const isDesktopCheck: boolean = isDesktop()
 	const isMobileDeviceCheck: boolean = isMobileDevice()
 
+	if (!bobaDeals) {
+		return null
+	}
+
 	// On desktop, we'll have 3 columns. and because i like grid layouts and flex is being a pain, i'm hacking it.
 	// this avoids the problem of different card heights causing the cards to not line up properly
 

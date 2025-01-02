@@ -16,6 +16,8 @@ export default function SortAndFilterBar() {
 	const { sortType, setSortType, numberOfDrinks, setNumberOfDrinks } =
 		useContext(SortAndFilterContext)
 
+	const isMobileDeviceCheck = isMobileDevice()
+
 	return (
 		<BottomSheet
 			snapPoints={!isMobileDevice() ? [] : [20]}
@@ -32,13 +34,13 @@ export default function SortAndFilterBar() {
 		>
 			<BottomSheetView
 				style={
-					!isMobileDevice()
+					!isMobileDeviceCheck
 						? styles.container
 						: styles.mobileContainer
 				}
 			>
-				<View style={!isMobileDevice() && styles.pickerRow}>
-					{isMobileDevice() && (
+				<View style={!isMobileDeviceCheck && styles.pickerRow}>
+					{isMobileDeviceCheck && (
 						<>
 							<DateChooser />
 							<View style={styles.dividerLine} />
@@ -71,7 +73,7 @@ export default function SortAndFilterBar() {
 						</Picker>
 					</View>
 				</View>
-				<View style={!isMobileDevice() && styles.pickerRow}>
+				<View style={!isMobileDeviceCheck && styles.pickerRow}>
 					<ThemedText style={styles.pickerTitle}>
 						Filter by Drink Number:
 					</ThemedText>
