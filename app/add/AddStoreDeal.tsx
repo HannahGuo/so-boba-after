@@ -190,7 +190,9 @@ export default function AddStoreDeal({ storesList }: { storesList: Store[] }) {
 							<input
 								type="date"
 								style={styles.dateInput}
-								value={startDate.toISOString().substring(0, 10)}
+								value={startDate
+									.toLocaleDateString("en-CA")
+									.substring(0, 10)}
 								onChange={(e) =>
 									setStartDate(new Date(e.target.value))
 								}
@@ -213,7 +215,9 @@ export default function AddStoreDeal({ storesList }: { storesList: Store[] }) {
 							<input
 								style={styles.dateInput}
 								type="date"
-								value={endDate.toISOString().substring(0, 10)}
+								value={endDate
+									.toLocaleDateString("en-CA")
+									.substring(0, 10)}
 								onChange={(e) =>
 									setEndDate(new Date(e.target.value))
 								}

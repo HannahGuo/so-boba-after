@@ -47,7 +47,7 @@ export default function DateChooser() {
 							type="date"
 							style={styles.dateInput}
 							value={showDealsForDate
-								.toISOString()
+								.toLocaleDateString("en-CA")
 								.substring(0, 10)}
 							onChange={(e) => {
 								if (e.target.value) {
@@ -64,12 +64,12 @@ export default function DateChooser() {
 						<>
 							<ThemedText>
 								{showDealsForDate
-									.toISOString()
+									.toLocaleDateString("en-CA")
 									.substring(0, 10)}
 							</ThemedText>
 							<Button
 								title="Change Date"
-								color={Colors.shared.bobaBrown}
+								color={Colors.shared.bobaBrownDark}
 								onPress={() => setShowDatePickerMobile(true)}
 							/>
 							{showDatePickerMobile && (

@@ -22,7 +22,6 @@ import BobaDealCard from "./BobaDealCard"
 import StoreDealCard from "./StoreDealCard"
 import { ThemedText } from "./ThemedText"
 
-import { useWindowDimensions } from "react-native"
 import { isDesktop, isMobileDevice } from "./helpers/deviceHelpers"
 
 const getStoreFromID = async (id: string): Promise<Store> => {
@@ -82,10 +81,6 @@ export default function DealsList() {
 		retrieveBobaDeals()
 		retrieveStoreDeals()
 	}, [])
-
-	if (!bobaDeals || !storeDeals) {
-		return null
-	}
 
 	const filteredBobaDeals = bobaDeals.filter((deal) => {
 		if (showDealsForDate === null) {
@@ -161,12 +156,13 @@ export default function DealsList() {
 		}
 	})
 
+	const isDesktopCheck: boolean = isDesktop()
+	const isMobileDeviceCheck: boolean = isMobileDevice()
+
 	// On desktop, we'll have 3 columns. and because i like grid layouts and flex is being a pain, i'm hacking it.
 	// this avoids the problem of different card heights causing the cards to not line up properly
 
-	const { width: windowWidth } = useWindowDimensions()
-
-	const COLUMN_COUNT = isDesktop() ? 3 : 1
+	const COLUMN_COUNT = isDesktopCheck ? 3 : 1
 	const bobaDealsCols: BobaDeal[][] = Array.from(
 		{ length: COLUMN_COUNT },
 		() => [],
@@ -181,7 +177,7 @@ export default function DealsList() {
 		<View
 			style={{
 				...styles.allDealsContainer,
-				...(!isDesktop()
+				...(!isDesktopCheck
 					? {
 							marginTop: 100,
 							padding: 20,
@@ -199,7 +195,7 @@ export default function DealsList() {
 								style={{
 									display: "flex",
 									flexDirection: "column",
-									width: isMobileDevice() ? "100%" : "29%",
+									width: isMobileDeviceCheck ? "100%" : "29%",
 								}}
 							>
 								{row.map((deal) => {
@@ -230,7 +226,7 @@ export default function DealsList() {
 						{
 							display: "flex",
 							flexDirection: "column",
-							width: isMobileDevice() ? "100%" : "29%",
+							width: isMobileDeviceCheck ? "100%" : "29%",
 						},
 					]}
 				>
