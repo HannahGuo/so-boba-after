@@ -5,7 +5,6 @@ import {
 	Pressable,
 	SafeAreaView,
 	StyleSheet,
-	useWindowDimensions,
 	View,
 } from "react-native"
 import DateChooser from "./DateChooser"
@@ -17,19 +16,23 @@ type HeaderPage = "home" | "add"
 export default function Header({ page }: { page: HeaderPage }) {
 	const [hover, setHover] = useState(false)
 
-	const { width: windowWidth } = useWindowDimensions()
+	const isMobileCheck = isMobileDevice()
+	const isWebCheck = isWeb()
+	const isDesktopCheck = isDesktop()
 
 	return (
 		<SafeAreaView style={styles.headerContainer}>
 			<ImageBackground
 				source={require("../assets/images/bobaHeaderLeft.png")}
-				style={isWeb() ? styles.headerImageLeft : styles.headerMobile}
+				style={
+					isWebCheck ? styles.headerImageLeft : styles.headerMobile
+				}
 			/>
 			<View style={styles.titleContainer}>
 				<ThemedText
 					type="title"
 					style={
-						isMobileDevice() && {
+						isMobileCheck && {
 							fontSize: 48,
 						}
 					}
@@ -37,7 +40,7 @@ export default function Header({ page }: { page: HeaderPage }) {
 					...so, boba after?
 				</ThemedText>
 			</View>
-			{isDesktop() && (
+			{isDesktopCheck && (
 				<ImageBackground
 					source={require("../assets/images/bobaHeaderRight.png")}
 					style={styles.headerImageRight}
@@ -45,34 +48,35 @@ export default function Header({ page }: { page: HeaderPage }) {
 			)}
 
 			<View style={styles.rightContainer}>
-				{!isMobileDevice() && (
-					<Pressable
-						style={{ marginRight: 60 }}
-						onHoverIn={() => setHover(true)}
-						onHoverOut={() => setHover(false)}
-					>
-						{page === "home" && (
-							<Link href="/add">
-								<ThemedText
-									style={hover && styles.underlineOnHover}
-								>
-									Add a deal [+]
-								</ThemedText>
-							</Link>
-						)}
-						{page === "add" && (
-							<Link href="/">
-								<ThemedText
-									style={hover && styles.underlineOnHover}
-								>
-									Back to home
-								</ThemedText>
-							</Link>
-						)}
-					</Pressable>
+				{!isMobileCheck && (
+					<>
+						<Pressable
+							style={{ marginRight: 60 }}
+							onHoverIn={() => setHover(true)}
+							onHoverOut={() => setHover(false)}
+						>
+							{page === "home" && (
+								<Link href="/add">
+									<ThemedText
+										style={hover && styles.underlineOnHover}
+									>
+										Add a deal [+]
+									</ThemedText>
+								</Link>
+							)}
+							{page === "add" && (
+								<Link href="/">
+									<ThemedText
+										style={hover && styles.underlineOnHover}
+									>
+										Back to home
+									</ThemedText>
+								</Link>
+							)}
+						</Pressable>
+						<DateChooser />
+					</>
 				)}
-
-				{!isMobileDevice() && <DateChooser />}
 			</View>
 		</SafeAreaView>
 	)
