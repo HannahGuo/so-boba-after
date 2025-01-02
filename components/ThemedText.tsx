@@ -64,9 +64,11 @@ const styles = StyleSheet.create({
 		fontFamily: "LondrinaSolid",
 	},
 	link: {
-		fontSize: 16,
-		color: "#0a7ea4",
+		color: "white",
+		fontSize: 18,
 		fontFamily: "CourierPrime",
+		textDecorationLine: "underline",
+		marginTop: 2,
 	},
 	tiny: {
 		fontSize: 12,

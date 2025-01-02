@@ -106,6 +106,25 @@ export default function SortAndFilterBar() {
 						</Picker>
 					</View>
 				</View>
+				<View
+					style={{
+						display: "flex",
+						flexDirection: "row",
+						justifyContent: "center",
+						alignItems: "center",
+						paddingTop: -10,
+					}}
+				>
+					<ThemedText>Made with 🧋 by </ThemedText>
+					<ThemedText
+						type="link"
+						onPress={() => {
+							window.open("https://github.com/HannahGuo")
+						}}
+					>
+						Hannah
+					</ThemedText>
+				</View>
 			</BottomSheetView>
 		</BottomSheet>
 	)
