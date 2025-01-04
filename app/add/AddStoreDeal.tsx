@@ -194,7 +194,9 @@ export default function AddStoreDeal({ storesList }: { storesList: Store[] }) {
 									.toLocaleDateString("en-CA")
 									.substring(0, 10)}
 								onChange={(e) =>
-									setStartDate(new Date(e.target.value))
+									setStartDate(
+										new Date(e.target.value + " EST"),
+									)
 								}
 								disabled={isDiscountAlwaysActive}
 							/>
@@ -219,7 +221,9 @@ export default function AddStoreDeal({ storesList }: { storesList: Store[] }) {
 									.toLocaleDateString("en-CA")
 									.substring(0, 10)}
 								onChange={(e) =>
-									setEndDate(new Date(e.target.value))
+									setEndDate(
+										new Date(e.target.value + " EST"),
+									)
 								}
 								disabled={isDiscountAlwaysActive}
 							/>
