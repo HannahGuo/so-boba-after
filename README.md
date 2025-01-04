@@ -6,7 +6,7 @@ _Hosted at https://so-boba-after.web.app/_
 
 A web and mobile app to track boba discounts! Currently (hyper) optimised for my friends and I to use in Waterloo, but aiming to have support for other cities.
 
-It's fully possible this app will break as soon as more deals come out... but that's a later problem. Deals are added manually, and thankfully most deals are usually active for at least a week so this should stay mostly accurate. 
+It's fully possible this app will break as soon as more deals come out... but that's a later problem. Deals are added manually, and thankfully most deals are usually active for at least a week so this should stay mostly accurate. I make no accuracy guarantees on deals though :P
 
 Built using Expo, with TypeScript, React (Native) and Firebase. Designed with Figma.
 
