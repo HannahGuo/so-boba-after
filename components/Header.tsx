@@ -74,7 +74,7 @@ export default function Header({ page }: { page: HeaderPage }) {
 								</Link>
 							)}
 						</Pressable>
-						<DateChooser />
+						{page === "home" && <DateChooser />}
 					</>
 				)}
 			</View>
