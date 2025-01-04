@@ -1,7 +1,8 @@
 import { AtLeastTwoStrings, BobaGradientColors } from "@/constants/BobaColors"
+import { Colors } from "@/constants/Colors"
 import { Store, StoreDeal } from "@/constants/types/Deals"
 import { LinearGradient } from "expo-linear-gradient"
-import { StyleSheet, View } from "react-native"
+import { ActivityIndicator, StyleSheet, View } from "react-native"
 import { ThemedText } from "./ThemedText"
 import { makeDealText, makePromoPeriodText } from "./helpers/dealHelpers"
 
@@ -41,6 +42,12 @@ function getColorForString(input: string): AtLeastTwoStrings {
 
 export default function StoreDealCard({ deal, store }: StoreDealProps) {
 	const notes = deal.condition.notes
+
+	if (!store) {
+		return (
+			<ActivityIndicator size="small" color={Colors.shared.bobaBrown} />
+		)
+	}
 
 	return (
 		<LinearGradient

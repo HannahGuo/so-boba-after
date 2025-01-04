@@ -22,7 +22,7 @@ export default function SortAndFilterBar() {
 		<BottomSheet
 			snapPoints={!isMobileDevice() ? [] : [20]}
 			enableDynamicSizing={true}
-			animateOnMount={true}
+			animateOnMount={false}
 			enableOverDrag={false}
 			backgroundStyle={{
 				backgroundColor: Colors.shared.bobaBrown,
