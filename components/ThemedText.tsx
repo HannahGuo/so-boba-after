@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
 		fontSize: 18,
 		fontFamily: "CourierPrime",
 		textDecorationLine: "underline",
-		marginTop: 2,
+		marginTop: 3,
 	},
 	tiny: {
 		fontSize: 12,

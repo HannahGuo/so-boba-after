@@ -124,6 +124,18 @@ export default function SortAndFilterBar() {
 					>
 						Hannah
 					</ThemedText>
+					<ThemedText> (</ThemedText>
+					<ThemedText
+						type="link"
+						onPress={() => {
+							window.open(
+								"https://github.com/HannahGuo/so-boba-after",
+							)
+						}}
+					>
+						source
+					</ThemedText>
+					<ThemedText>)</ThemedText>
 				</View>
 			</BottomSheetView>
 		</BottomSheet>
