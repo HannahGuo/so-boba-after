@@ -177,6 +177,16 @@ export default function DealsList() {
 		bobaDealsCols[columnIndex].push(filteredBobaDeals[i])
 	}
 
+	const storeDealsCols: StoreDeal[][] = Array.from(
+		{ length: COLUMN_COUNT },
+		() => [],
+	)
+
+	for (let i = 0; i < storeDeals.length; i++) {
+		const columnIndex = i % COLUMN_COUNT
+		storeDealsCols[columnIndex].push(storeDeals[i])
+	}
+
 	return (
 		<View
 			style={{
@@ -224,23 +234,29 @@ export default function DealsList() {
 				<ThemedText type="subsubtitle">
 					Probably not stackable with drink-specific deals above.
 				</ThemedText>
-				<View
-					style={[
-						styles.rowContainer,
-						{
-							display: "flex",
-							flexDirection: "column",
-							width: isMobileDeviceCheck ? "100%" : "29%",
-						},
-					]}
-				>
-					{storeDeals.map((deal) => {
+				<View style={styles.rowContainer}>
+					{storeDealsCols.map((row, index) => {
 						return (
-							<StoreDealCard
-								key={deal.id}
-								deal={deal}
-								store={storeIDToObjMap.get(deal.storeID)}
-							/>
+							<View
+								key={index}
+								style={{
+									display: "flex",
+									flexDirection: "column",
+									width: isMobileDeviceCheck ? "100%" : "29%",
+								}}
+							>
+								{row.map((deal) => {
+									return (
+										<StoreDealCard
+											key={deal.id}
+											deal={deal}
+											store={storeIDToObjMap.get(
+												deal.storeID,
+											)}
+										/>
+									)
+								})}
+							</View>
 						)
 					})}
 				</View>
