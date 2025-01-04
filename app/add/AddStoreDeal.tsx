@@ -7,10 +7,12 @@ import {
 	Store,
 	StoreDeal,
 } from "@/constants/types/Deals"
-import { db } from "@/firebase/app/firebaseConfig"
+import { UserAuthContext } from "@/contexts/UserAuthContext"
+import { db, provider } from "@/firebase/app/firebaseConfig"
 import DateTimePicker from "@react-native-community/datetimepicker"
 import { Picker } from "@react-native-picker/picker"
 import Checkbox from "expo-checkbox"
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth"
 import { collection, doc, getDocs, setDoc, Timestamp } from "firebase/firestore"
 import React, { useEffect, useState } from "react"
 import { Button, StyleSheet, TextInput, View } from "react-native"
@@ -31,6 +33,27 @@ export default function AddStoreDeal({ storesList }: { storesList: Store[] }) {
 	const [existingConditions, setExistingConditions] = useState<Condition[]>(
 		[],
 	)
+
+	const { user, setUser } = React.useContext(UserAuthContext)
+
+	const auth = getAuth()
+
+	function signInWithGoogle() {
+		signInWithPopup(auth, provider).then((result) => {
+			const credential = GoogleAuthProvider.credentialFromResult(result)
+			const token = credential ? credential.accessToken : null
+			const user = result.user
+			if (user && token) {
+				setUser(user)
+			}
+		})
+	}
+
+	function signOut() {
+		auth.signOut().then(() => {
+			setUser(null)
+		})
+	}
 
 	function resetForm() {
 		setStoreName("")
@@ -271,12 +294,50 @@ export default function AddStoreDeal({ storesList }: { storesList: Store[] }) {
 
 				<View style={styles.submitButtonContainer}>
 					{isWeb() ? (
-						<button
-							style={styles.submitButton}
-							onClick={submitStoreDeal}
-						>
-							Submit
-						</button>
+						<>
+							{user ? (
+								<>
+									<button
+										style={styles.submitButton}
+										onClick={submitStoreDeal}
+									>
+										Submit
+									</button>
+									<ThemedText style={{ marginTop: 10 }}>
+										<em>
+											Signed in as {user?.displayName}{" "}
+										</em>
+										(
+										<a
+											href="#"
+											onClick={signOut}
+											style={{
+												color: "white",
+											}}
+										>
+											sign out
+										</a>
+										)
+									</ThemedText>
+								</>
+							) : (
+								<>
+									<button
+										onClick={signInWithGoogle}
+										color={Colors.shared.bobaBrownDark}
+										style={styles.submitButton}
+									>
+										Sign in with Google to add a deal
+									</button>
+									<ThemedText style={{ marginTop: 20 }}>
+										Note you must be to added to a Firebase
+										rule in order to add a deal (so you
+										probably won't be able to submit a deal
+										despite this auth).
+									</ThemedText>
+								</>
+							)}
+						</>
 					) : (
 						<Button
 							title="Submit"

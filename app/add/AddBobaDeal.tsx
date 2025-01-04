@@ -13,10 +13,12 @@ import {
 	Store,
 	Weekday,
 } from "@/constants/types/Deals"
-import { db } from "@/firebase/app/firebaseConfig"
+import { UserAuthContext } from "@/contexts/UserAuthContext"
+import { db, provider } from "@/firebase/app/firebaseConfig"
 import DateTimePicker from "@react-native-community/datetimepicker"
 import { Picker } from "@react-native-picker/picker"
 import Checkbox from "expo-checkbox"
+import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth"
 import { Timestamp, doc, setDoc } from "firebase/firestore"
 import React, { useEffect, useState } from "react"
 import { Button, StyleSheet, TextInput, View } from "react-native"
@@ -88,6 +90,27 @@ export default function AddBobaDeal({ storesList }: { storesList: Store[] }) {
 
 	const [discountType, setDiscountType] = useState<DiscountType>("total")
 	const [discountValue, setDiscountValue] = useState<number>(0)
+
+	const { user, setUser } = React.useContext(UserAuthContext)
+
+	const auth = getAuth()
+
+	function signInWithGoogle() {
+		signInWithPopup(auth, provider).then((result) => {
+			const credential = GoogleAuthProvider.credentialFromResult(result)
+			const token = credential ? credential.accessToken : null
+			const user = result.user
+			if (user && token) {
+				setUser(user)
+			}
+		})
+	}
+
+	function signOut() {
+		auth.signOut().then(() => {
+			setUser(null)
+		})
+	}
 
 	function validateForm(): boolean {
 		if (
@@ -232,6 +255,10 @@ export default function AddBobaDeal({ storesList }: { storesList: Store[] }) {
 			</View>
 			<View style={styles.textInputContainer}>
 				<ThemedText type="subtitle">Drink Name(s):</ThemedText>
+				<ThemedText style={styles.inputNote}>
+					If the deal is for “one of XYZ” input all drinks in one box
+					with each drink comma-seperated.
+				</ThemedText>
 				<View style={styles.textInputRow}>
 					<View style={styles.inputCol}>
 						<TextInput
@@ -321,13 +348,12 @@ export default function AddBobaDeal({ storesList }: { storesList: Store[] }) {
 						</Picker>
 					</View>
 				</View>
-				<ThemedText style={styles.inputNote}>
-					If the deal is for “one of XYZ” input all drinks in one box
-					with each drink comma-seperated.
-				</ThemedText>
 			</View>
 			<View style={{ marginTop: 12 }}>
 				<ThemedText type="subtitle">Drink Promotion:</ThemedText>
+				<ThemedText style={styles.inputNote}>
+					{makeDiscountInfoString(dealType)}
+				</ThemedText>
 				<View style={styles.inputRow}>
 					{isWeb() ? (
 						<input
@@ -363,9 +389,6 @@ export default function AddBobaDeal({ storesList }: { storesList: Store[] }) {
 						<Picker.Item label="Flat Off" value="flatoff" />
 					</Picker>
 				</View>
-				<ThemedText style={styles.inputNote}>
-					{makeDiscountInfoString(dealType)}
-				</ThemedText>
 			</View>
 			<View style={styles.dateInputContainer}>
 				<ThemedText type="subtitle">Deal Dates:</ThemedText>
@@ -490,6 +513,9 @@ export default function AddBobaDeal({ storesList }: { storesList: Store[] }) {
 			</View>
 			<View style={styles.notesInputContainer}>
 				<ThemedText type="subtitle">Notes:</ThemedText>
+				<ThemedText style={styles.inputNote}>
+					Limits, restrictions, etc.
+				</ThemedText>
 				<TextInput
 					style={styles.notesInput}
 					multiline={true}
@@ -499,15 +525,50 @@ export default function AddBobaDeal({ storesList }: { storesList: Store[] }) {
 					onChangeText={(notes) => setNotes(notes)}
 					placeholderTextColor={"lightgray"}
 				/>
-				<ThemedText style={styles.inputNote}>
-					Limits, restrictions, etc.
-				</ThemedText>
 			</View>
 			<View style={styles.submitButtonContainer}>
 				{isWeb() ? (
-					<button style={styles.submitButton} onClick={submitDeal}>
-						Submit
-					</button>
+					<>
+						{user ? (
+							<>
+								<button
+									style={styles.submitButton}
+									onClick={submitDeal}
+								>
+									Submit
+								</button>
+								<ThemedText style={{ marginTop: 10 }}>
+									<em>Signed in as {user?.displayName} </em>(
+									<a
+										href="#"
+										onClick={signOut}
+										style={{
+											color: "white",
+										}}
+									>
+										sign out
+									</a>
+									)
+								</ThemedText>
+							</>
+						) : (
+							<>
+								<button
+									onClick={signInWithGoogle}
+									color={Colors.shared.bobaBrownDark}
+									style={styles.submitButton}
+								>
+									Sign in with Google to add a deal
+								</button>
+								<ThemedText style={{ marginTop: 20 }}>
+									Note you must be to added to a Firebase rule
+									in order to add a deal (so you probably
+									won't be able to submit a deal despite this
+									auth).
+								</ThemedText>
+							</>
+						)}
+					</>
 				) : (
 					<Button
 						title="Submit"
@@ -614,7 +675,7 @@ const styles = StyleSheet.create({
 		marginBottom: 10,
 	},
 	inputNote: {
-		marginTop: 10,
+		marginBottom: 10,
 	},
 	dateInput: {
 		backgroundColor: "white",
@@ -640,6 +701,18 @@ const styles = StyleSheet.create({
 		marginTop: 10,
 		backgroundColor: Colors.shared.bobaOrange,
 		width: 200,
+		fontFamily: "LondrinaSolid",
+		color: "white",
+		padding: 10,
+		borderRadius: 10,
+		fontSize: 24,
+		borderColor: Colors.shared.bobaOrange,
+		cursor: "pointer",
+	},
+	googleAuthButton: {
+		marginTop: 10,
+		backgroundColor: Colors.shared.bobaOrange,
+		width: 400,
 		fontFamily: "LondrinaSolid",
 		color: "white",
 		padding: 10,
