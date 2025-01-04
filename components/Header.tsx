@@ -114,6 +114,7 @@ const styles = StyleSheet.create({
 		display: "flex",
 		flexDirection: "row",
 		marginRight: -40,
+		height: undefined,
 	},
 	underlineOnHover: {
 		textDecorationLine: "underline",

@@ -19,6 +19,7 @@ import {
 import React, { useContext, useEffect, useState } from "react"
 import { ActivityIndicator, StyleSheet, View } from "react-native"
 
+import { Colors } from "@/constants/Colors"
 import BobaDealCard from "./BobaDealCard"
 import StoreDealCard from "./StoreDealCard"
 import { ThemedText } from "./ThemedText"
@@ -88,7 +89,10 @@ export default function DealsList() {
 	if (loading || !bobaDeals || !storeDeals) {
 		return (
 			<View style={styles.loadingContainer}>
-				<ActivityIndicator size="large" color="#333" />
+				<ActivityIndicator
+					size="large"
+					color={Colors.shared.bobaBrownDark}
+				/>
 			</View>
 		)
 	}
