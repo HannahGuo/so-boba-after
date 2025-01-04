@@ -100,7 +100,9 @@ export default function BobaDealCard({
 			<ThemedText type="default">
 				📅 {makePromoPeriodText(deal.promoPeriod)}
 			</ThemedText>
-			<ThemedText type="default">📝 {deal.notes}</ThemedText>
+			{deal.notes && (
+				<ThemedText type="default">📝 {deal.notes}</ThemedText>
+			)}
 			<View style={styles.dividerLine} />
 			<ThemedText type="default">
 				🏠 {store?.address?.split(/waterloo/i)[0] + "Waterloo"}

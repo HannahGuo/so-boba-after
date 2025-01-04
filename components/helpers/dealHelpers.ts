@@ -32,7 +32,11 @@ export function makeDealText(deal: BobaDeal | StoreDeal): string {
 	if ("drinks" in deal) {
 		switch (deal.dealType) {
 			case "single":
-				return makeDiscountText(deal.discount)
+				return (
+					makeSizeText(deal.drinks[0].size) +
+					" " +
+					makeDiscountText(deal.discount)
+				)
 			case "bogo":
 				return "buy one get one " + makeDealText(deal)
 			case "buyXforY":
