@@ -23,6 +23,7 @@ import { Colors } from "@/constants/Colors"
 import BobaDealCard from "./BobaDealCard"
 import StoreDealCard from "./StoreDealCard"
 import { ThemedText } from "./ThemedText"
+import { toDateIgnoreTimestamp } from "./helpers/dateHelpers"
 import { isDesktop, isMobileDevice } from "./helpers/deviceHelpers"
 
 const getStoreFromID = async (id: string): Promise<Store> => {
@@ -106,8 +107,12 @@ export default function DealsList() {
 			)
 		) {
 			if (
-				showDealsForDate < deal.promoPeriod.startDate.toDate() ||
-				showDealsForDate > deal.promoPeriod.endDate.toDate()
+				showDealsForDate <
+					toDateIgnoreTimestamp(
+						deal.promoPeriod.startDate.toDate(),
+					) ||
+				showDealsForDate >
+					toDateIgnoreTimestamp(deal.promoPeriod.endDate.toDate())
 			) {
 				return false
 			}
