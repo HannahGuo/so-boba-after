@@ -9,6 +9,8 @@ import {
 	SortAndFilterContext,
 	SortType,
 } from "@/contexts/SortAndFilterContext"
+import { analytics } from "@/firebase/app/firebaseConfig"
+import { logEvent } from "firebase/analytics"
 import { useEffect, useState } from "react"
 import { ScrollView, StyleSheet } from "react-native"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
@@ -26,6 +28,8 @@ export default function Home() {
 
 	const [sortType, setSortType] = useState<SortType>("storeName")
 	const [numberOfDrinks, setNumberOfDrinks] = useState<NumberOfDrinks>("any")
+
+	logEvent(analytics, "home_page_viewed")
 
 	return (
 		<GestureHandlerRootView>
