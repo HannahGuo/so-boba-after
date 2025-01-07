@@ -118,8 +118,7 @@ export default function AddBobaDeal({ storesList }: { storesList: Store[] }) {
 			!dealType ||
 			!drinkNameOne ||
 			!drinkSizeOne ||
-			!discountType ||
-			!discountValue
+			!discountType
 		) {
 			alert("Please fill out all required fields")
 			return false
