@@ -144,6 +144,46 @@ export default function DealsList() {
 		return true
 	})
 
+	const filteredStoreDeals = storeDeals.filter((deal) => {
+		if (showDealsForDate === null) return true
+		if (
+			!(
+				deal.promoPeriod.startDate === "always" ||
+				deal.promoPeriod.endDate === "always"
+			)
+		) {
+			if (
+				showDealsForDate <
+					toDateIgnoreTimestamp(
+						deal.promoPeriod.startDate.toDate(),
+					) ||
+				showDealsForDate >
+					toDateIgnoreTimestamp(deal.promoPeriod.endDate.toDate())
+			) {
+				return false
+			}
+		}
+
+		if (deal.promoPeriod.condition) {
+			if ("day" in deal.promoPeriod.condition) {
+				if (
+					weekdayMap[deal.promoPeriod.condition.day] !==
+					Timestamp.fromDate(showDealsForDate).toDate().getDay()
+				) {
+					return false
+				}
+			} else if ("date" in deal.promoPeriod.condition) {
+				if (
+					deal.promoPeriod.condition.date !==
+					Timestamp.fromDate(showDealsForDate).toDate().getDate()
+				) {
+					return false
+				}
+			}
+		}
+		return true
+	})
+
 	filteredBobaDeals.sort((a, b) => {
 		switch (sortType) {
 			case "storeName":
@@ -180,9 +220,9 @@ export default function DealsList() {
 		{ length: COLUMN_COUNT },
 		() => [],
 	)
-	for (let i = 0; i < storeDeals.length; i++) {
+	for (let i = 0; i < filteredStoreDeals.length; i++) {
 		const columnIndex = i % COLUMN_COUNT
-		storeDealsCols[columnIndex].push(storeDeals[i])
+		storeDealsCols[columnIndex].push(filteredStoreDeals[i])
 	}
 
 	return (
