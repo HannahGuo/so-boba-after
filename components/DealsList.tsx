@@ -107,11 +107,11 @@ export default function DealsList() {
 			)
 		) {
 			if (
-				showDealsForDate <
+				toDateIgnoreTimestamp(showDealsForDate) <
 					toDateIgnoreTimestamp(
 						deal.promoPeriod.startDate.toDate(),
 					) ||
-				showDealsForDate >
+				toDateIgnoreTimestamp(showDealsForDate) >
 					toDateIgnoreTimestamp(deal.promoPeriod.endDate.toDate())
 			) {
 				return false

@@ -6,6 +6,7 @@ import {
 	StoreDeal,
 } from "@/constants/types/Deals"
 import { drinkArraysEqual } from "./arrayHelpers"
+import { toDateIgnoreTimestamp } from "./dateHelpers"
 
 export function makeSizeText(size: string) {
 	if (size === "any") {
@@ -101,7 +102,7 @@ export function makePromoPeriodText(promoPeriod: PromoPeriod): string {
 
 export function isDealExpired(deal: BobaDeal | StoreDeal): boolean {
 	if ("promoPeriod" in deal) {
-		const today = new Date()
+		const today = toDateIgnoreTimestamp(new Date())
 
 		if (deal.promoPeriod.startDate === "always") {
 			return false
@@ -111,7 +112,7 @@ export function isDealExpired(deal: BobaDeal | StoreDeal): boolean {
 			return false
 		}
 
-		if (deal.promoPeriod.endDate.toDate() < today) {
+		if (toDateIgnoreTimestamp(deal.promoPeriod.endDate.toDate()) < today) {
 			return true
 		}
 	}

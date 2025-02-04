@@ -36,5 +36,7 @@ export function getRelativeDateString(targetDate: Date): string {
 }
 
 export function toDateIgnoreTimestamp(d: Date): Date {
-	return new Date(d.getFullYear(), d.getMonth(), d.getDate())
+	const nd = new Date(d.getFullYear(), d.getMonth(), d.getDate())
+	nd.setHours(0, 0, 0, 0)
+	return nd
 }
