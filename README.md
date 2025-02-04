@@ -30,10 +30,6 @@ For your viewing pleasure ✨
 ### Desktop:
 https://github.com/user-attachments/assets/5a946dc0-3f22-4a4c-9927-3759e7e7e1e5
 
-### Mobile:
-https://github.com/user-attachments/assets/45aff4d9-db09-4dd5-9230-968d4297c90e
-
-
 ## Commands
 So I remember how to build this project:
 - `npx expo start` start
