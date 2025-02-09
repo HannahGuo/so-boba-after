@@ -1,4 +1,5 @@
 import { getNewDateWithNoTime } from "@/components/helpers/dateHelpers"
+import { makeStoreAddress } from "@/components/helpers/dealHelpers"
 import { isWeb } from "@/components/helpers/deviceHelpers"
 import { ThemedText } from "@/components/ThemedText"
 import { Colors } from "@/constants/Colors"
@@ -131,9 +132,9 @@ export default function AddStoreDeal({ storesList }: { storesList: Store[] }) {
 		fetchData()
 	}, [])
 
-	const storeAddress = storesList.find(
-		(store) => storeName === store.name,
-	)?.address
+	const storeAddress = makeStoreAddress(
+		storesList.find((s) => s.name === storeName),
+	)
 
 	useEffect(() => {
 		if (storesList.length > 0) {
