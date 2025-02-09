@@ -15,7 +15,16 @@
     "deploy-hosting": "npm run predeploy && firebase deploy --only hosting"
   },
   "jest": {
-    "preset": "jest-expo"
+    "preset": "jest-expo",
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "**/*.{ts,tsx,js,jsx}",
+      "!**/coverage/**",
+      "!**/node_modules/**",
+      "!**/babel.config.js",
+      "!**/expo-env.d.ts",
+      "!**/.expo/**"
+    ]
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
