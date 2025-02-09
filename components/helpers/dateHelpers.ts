@@ -1,19 +1,10 @@
 // yes i just got this from chatgpt
 export function getRelativeDateString(targetDate: Date): string {
 	// 1. Get "today" with the time zeroed out
-	const today = new Date()
-	const todayZero = new Date(
-		today.getFullYear(),
-		today.getMonth(),
-		today.getDate(),
-	)
+	const todayZero = getNewDateWithNoTime()
 
 	// 2. Zero out the time in the target date
-	const targetZero = new Date(
-		targetDate.getFullYear(),
-		targetDate.getMonth(),
-		targetDate.getDate(),
-	)
+	const targetZero = getNewDateWithNoTime(targetDate)
 
 	// 3. Calculate the difference in days (integer)
 	const msInOneDay = 24 * 60 * 60 * 1000
@@ -35,8 +26,23 @@ export function getRelativeDateString(targetDate: Date): string {
 	}
 }
 
-export function toDateIgnoreTimestamp(d: Date): Date {
-	const nd = new Date(d.getFullYear(), d.getMonth(), d.getDate())
-	nd.setHours(0, 0, 0, 0)
-	return nd
+export function stringToDate(dateString: string, timezone?: string): Date {
+	dateString += " " + (timezone ?? "EST")
+
+	const [year, month, day] = dateString.split("-")
+	// eslint-disable-next-line no-restricted-syntax
+	return new Date(parseInt(year), parseInt(month) - 1, parseInt(day))
+}
+
+export function getNewDateWithNoTime(date?: Date): Date {
+	if (!date) {
+		// eslint-disable-next-line no-restricted-syntax
+		date = new Date()
+	}
+
+	// eslint-disable-next-line no-restricted-syntax
+	const newDate = new Date(date.getTime())
+	newDate.setHours(0, 0, 0, 0)
+
+	return newDate
 }

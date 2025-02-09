@@ -9,16 +9,16 @@ import {
 } from "react-native"
 import DateChooser from "./DateChooser"
 import { ThemedText } from "./ThemedText"
-import { isDesktop, isMobileDevice, isWeb } from "./helpers/deviceHelpers"
+import { isWeb, useIsDesktop, useIsMobileDevice } from "./helpers/deviceHelpers"
 
 type HeaderPage = "home" | "add"
 
 export default function Header({ page }: { page: HeaderPage }) {
 	const [hover, setHover] = useState(false)
 
-	const isMobileCheck = isMobileDevice()
+	const isMobileCheck = useIsMobileDevice()
 	const isWebCheck = isWeb()
-	const isDesktopCheck = isDesktop()
+	const isDesktopCheck = useIsDesktop()
 
 	return (
 		<SafeAreaView style={styles.headerContainer}>

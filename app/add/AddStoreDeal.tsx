@@ -1,3 +1,4 @@
+import { getNewDateWithNoTime } from "@/components/helpers/dateHelpers"
 import { isWeb } from "@/components/helpers/deviceHelpers"
 import { ThemedText } from "@/components/ThemedText"
 import { Colors } from "@/constants/Colors"
@@ -20,8 +21,8 @@ import { Button, StyleSheet, TextInput, View } from "react-native"
 export default function AddStoreDeal({ storesList }: { storesList: Store[] }) {
 	const [storeName, setStoreName] = useState<string>()
 
-	const [startDate, setStartDate] = useState<Date>(new Date())
-	const [endDate, setEndDate] = useState<Date>(new Date())
+	const [startDate, setStartDate] = useState<Date>(getNewDateWithNoTime())
+	const [endDate, setEndDate] = useState<Date>(getNewDateWithNoTime())
 
 	const [discountType, setDiscountType] = useState<DiscountType>("percentage")
 	const [discountValue, setDiscountValue] = useState<number>(NaN)
@@ -57,8 +58,8 @@ export default function AddStoreDeal({ storesList }: { storesList: Store[] }) {
 
 	function resetForm() {
 		setStoreName("")
-		setStartDate(new Date())
-		setEndDate(new Date())
+		setStartDate(getNewDateWithNoTime())
+		setEndDate(getNewDateWithNoTime())
 		setDiscountType("percentage")
 		setDiscountValue(NaN)
 		setDiscountAlwaysActive(true)
@@ -71,7 +72,7 @@ export default function AddStoreDeal({ storesList }: { storesList: Store[] }) {
 			Math.random().toString(36).substring(2, 15)
 
 		let conditionID: string | undefined = undefined
-		if (existingConditions.some((c) => c.clause != condition)) {
+		if (existingConditions.some((c) => c.clause !== condition)) {
 			conditionID =
 				Math.random().toString(36).substring(2, 15) +
 				Math.random().toString(36).substring(2, 15)
@@ -84,13 +85,13 @@ export default function AddStoreDeal({ storesList }: { storesList: Store[] }) {
 			await setDoc(doc(db, "conditions", conditionID), newCondition)
 		} else {
 			conditionID = existingConditions.find(
-				(c) => c.clause == condition,
+				(c) => c.clause === condition,
 			)?.id
 		}
 
 		const constructedDeal: StoreDeal = {
 			id: dealID,
-			storeID: storesList.find((s) => s.name == storeName)?.id ?? "",
+			storeID: storesList.find((s) => s.name === storeName)?.id ?? "",
 			condition: {
 				id: conditionID ?? "",
 				clause: condition ?? "",
@@ -98,10 +99,12 @@ export default function AddStoreDeal({ storesList }: { storesList: Store[] }) {
 			promoPeriod: {
 				startDate: isDiscountAlwaysActive
 					? "always"
-					: Timestamp.fromDate(startDate),
+					: // eslint-disable-next-line no-restricted-syntax
+					  Timestamp.fromDate(startDate),
 				endDate: isDiscountAlwaysActive
 					? "always"
-					: Timestamp.fromDate(endDate),
+					: // eslint-disable-next-line no-restricted-syntax
+					  Timestamp.fromDate(endDate),
 			},
 			discount: {
 				discountType: discountType,
@@ -217,9 +220,7 @@ export default function AddStoreDeal({ storesList }: { storesList: Store[] }) {
 									.toLocaleDateString("en-CA")
 									.substring(0, 10)}
 								onChange={(e) =>
-									setStartDate(
-										new Date(e.target.value + " EST"),
-									)
+									setStartDate(getNewDateWithNoTime())
 								}
 								disabled={isDiscountAlwaysActive}
 							/>
@@ -244,9 +245,7 @@ export default function AddStoreDeal({ storesList }: { storesList: Store[] }) {
 									.toLocaleDateString("en-CA")
 									.substring(0, 10)}
 								onChange={(e) =>
-									setEndDate(
-										new Date(e.target.value + " EST"),
-									)
+									setEndDate(getNewDateWithNoTime())
 								}
 								disabled={isDiscountAlwaysActive}
 							/>

@@ -5,7 +5,11 @@ import Checkbox from "expo-checkbox"
 import React, { useContext, useState } from "react"
 import { Button, StyleSheet, View } from "react-native"
 import { ThemedText } from "./ThemedText"
-import { getRelativeDateString } from "./helpers/dateHelpers"
+import {
+	getNewDateWithNoTime,
+	getRelativeDateString,
+	stringToDate,
+} from "./helpers/dateHelpers"
 import { isWeb } from "./helpers/deviceHelpers"
 
 export default function DateChooser() {
@@ -31,7 +35,7 @@ export default function DateChooser() {
 							if (val) {
 								setShowDealsForDate(null)
 							} else {
-								setShowDealsForDate(new Date())
+								setShowDealsForDate(getNewDateWithNoTime())
 							}
 						}}
 						color={Colors.shared.bobaBrownLight}
@@ -52,10 +56,12 @@ export default function DateChooser() {
 							onChange={(e) => {
 								if (e.target.value) {
 									setShowDealsForDate(
-										new Date(e.target.value + " EST"),
+										getNewDateWithNoTime(
+											stringToDate(e.target.value),
+										),
 									)
 								} else {
-									setShowDealsForDate(new Date())
+									setShowDealsForDate(getNewDateWithNoTime())
 								}
 							}}
 							disabled={showAllDeals}
