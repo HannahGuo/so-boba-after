@@ -6,7 +6,7 @@ import {
 	StoreDeal,
 } from "@/constants/types/Deals"
 import { drinkArraysEqual } from "./arrayHelpers"
-import { toDateIgnoreTimestamp } from "./dateHelpers"
+import { getNewDateWithNoTime } from "./dateHelpers"
 
 export function makeSizeText(size: string) {
 	if (size === "any") {
@@ -102,8 +102,7 @@ export function makePromoPeriodText(promoPeriod: PromoPeriod): string {
 
 export function isDealExpired(deal: BobaDeal | StoreDeal): boolean {
 	if ("promoPeriod" in deal) {
-		const today = toDateIgnoreTimestamp(new Date())
-
+		const today = getNewDateWithNoTime()
 		if (deal.promoPeriod.startDate === "always") {
 			return false
 		}
@@ -112,7 +111,7 @@ export function isDealExpired(deal: BobaDeal | StoreDeal): boolean {
 			return false
 		}
 
-		if (toDateIgnoreTimestamp(deal.promoPeriod.endDate.toDate()) < today) {
+		if (getNewDateWithNoTime(deal.promoPeriod.endDate.toDate()) < today) {
 			return true
 		}
 	}
@@ -132,7 +131,7 @@ export function makeDrinkList(drinks: Drink[]): Drink[] {
 	}
 
 	// TODO: hardcoding 2 for now
-	if (Object.keys(drinkNumToList).length == 2) {
+	if (Object.keys(drinkNumToList).length === 2) {
 		if (drinkArraysEqual(drinkNumToList[0], drinkNumToList[1])) {
 			// this is a "2 for X" deal
 			return drinkNumToList[0]

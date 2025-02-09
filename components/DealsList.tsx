@@ -8,14 +8,7 @@ import {
 import { ShowDealsForDateContext } from "@/contexts/ShowDealsForDateContext"
 import { SortAndFilterContext } from "@/contexts/SortAndFilterContext"
 import { db } from "@/firebase/app/firebaseConfig"
-import {
-	collection,
-	doc,
-	getDoc,
-	getDocs,
-	query,
-	Timestamp,
-} from "firebase/firestore"
+import { collection, doc, getDoc, getDocs, query } from "firebase/firestore"
 import React, { useContext, useEffect, useState } from "react"
 import { ActivityIndicator, StyleSheet, View } from "react-native"
 
@@ -23,8 +16,8 @@ import { Colors } from "@/constants/Colors"
 import BobaDealCard from "./BobaDealCard"
 import StoreDealCard from "./StoreDealCard"
 import { ThemedText } from "./ThemedText"
-import { toDateIgnoreTimestamp } from "./helpers/dateHelpers"
-import { isDesktop, isMobileDevice } from "./helpers/deviceHelpers"
+import { getNewDateWithNoTime } from "./helpers/dateHelpers"
+import { useIsDesktop, useIsMobileDevice } from "./helpers/deviceHelpers"
 
 const getStoreFromID = async (id: string): Promise<Store> => {
 	const querySnapshot = await getDoc(doc(db, "stores", id))
@@ -38,8 +31,8 @@ export default function DealsList() {
 		new Map<string, Store>(),
 	)
 
-	const isDesktopCheck: boolean = isDesktop()
-	const isMobileDeviceCheck: boolean = isMobileDevice()
+	const isDesktopCheck: boolean = useIsDesktop()
+	const isMobileDeviceCheck: boolean = useIsMobileDevice()
 
 	const [loading, setLoading] = useState(true)
 
@@ -107,12 +100,10 @@ export default function DealsList() {
 			)
 		) {
 			if (
-				toDateIgnoreTimestamp(showDealsForDate) <
-					toDateIgnoreTimestamp(
-						deal.promoPeriod.startDate.toDate(),
-					) ||
-				toDateIgnoreTimestamp(showDealsForDate) >
-					toDateIgnoreTimestamp(deal.promoPeriod.endDate.toDate())
+				getNewDateWithNoTime(showDealsForDate) <
+					getNewDateWithNoTime(deal.promoPeriod.startDate.toDate()) ||
+				getNewDateWithNoTime(showDealsForDate) >
+					getNewDateWithNoTime(deal.promoPeriod.endDate.toDate())
 			) {
 				return false
 			}
@@ -122,14 +113,14 @@ export default function DealsList() {
 			if ("day" in deal.promoPeriod.condition) {
 				if (
 					weekdayMap[deal.promoPeriod.condition.day] !==
-					Timestamp.fromDate(showDealsForDate).toDate().getDay()
+					getNewDateWithNoTime(showDealsForDate).getDay()
 				) {
 					return false
 				}
 			} else if ("date" in deal.promoPeriod.condition) {
 				if (
 					deal.promoPeriod.condition.date !==
-					Timestamp.fromDate(showDealsForDate).toDate().getDate()
+					getNewDateWithNoTime(showDealsForDate).getDate()
 				) {
 					return false
 				}
@@ -154,11 +145,9 @@ export default function DealsList() {
 		) {
 			if (
 				showDealsForDate <
-					toDateIgnoreTimestamp(
-						deal.promoPeriod.startDate.toDate(),
-					) ||
+					getNewDateWithNoTime(deal.promoPeriod.startDate.toDate()) ||
 				showDealsForDate >
-					toDateIgnoreTimestamp(deal.promoPeriod.endDate.toDate())
+					getNewDateWithNoTime(deal.promoPeriod.endDate.toDate())
 			) {
 				return false
 			}
@@ -168,14 +157,14 @@ export default function DealsList() {
 			if ("day" in deal.promoPeriod.condition) {
 				if (
 					weekdayMap[deal.promoPeriod.condition.day] !==
-					Timestamp.fromDate(showDealsForDate).toDate().getDay()
+					getNewDateWithNoTime(showDealsForDate).getDay()
 				) {
 					return false
 				}
 			} else if ("date" in deal.promoPeriod.condition) {
 				if (
 					deal.promoPeriod.condition.date !==
-					Timestamp.fromDate(showDealsForDate).toDate().getDate()
+					getNewDateWithNoTime(showDealsForDate).getDate()
 				) {
 					return false
 				}

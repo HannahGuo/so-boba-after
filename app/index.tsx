@@ -1,5 +1,6 @@
 import DealsList from "@/components/DealsList"
 import Header from "@/components/Header"
+import { getNewDateWithNoTime } from "@/components/helpers/dateHelpers"
 import { isWeb } from "@/components/helpers/deviceHelpers"
 import SortAndFilterBar from "@/components/SortAndFilterBar"
 import { Colors } from "@/constants/Colors"
@@ -21,7 +22,7 @@ export default function Home() {
 	}, [])
 
 	const [showDealsForDate, setShowDealsForDate] = useState<Date | null>(
-		new Date(),
+		getNewDateWithNoTime(),
 	)
 
 	const [sortType, setSortType] = useState<SortType>("storeName")

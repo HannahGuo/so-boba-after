@@ -10,17 +10,18 @@ import React, { useContext } from "react"
 import { StyleSheet, View } from "react-native"
 import DateChooser from "./DateChooser"
 import { ThemedText } from "./ThemedText"
-import { isDesktop, isMobileDevice, isWeb } from "./helpers/deviceHelpers"
+import { isWeb, useIsDesktop, useIsMobileDevice } from "./helpers/deviceHelpers"
 
 export default function SortAndFilterBar() {
 	const { sortType, setSortType, numberOfDrinks, setNumberOfDrinks } =
 		useContext(SortAndFilterContext)
 
-	const isMobileDeviceCheck = isMobileDevice()
+	const isMobileDeviceCheck = useIsMobileDevice()
+	const isDesktopCheck = useIsDesktop()
 
 	return (
 		<BottomSheet
-			snapPoints={!isMobileDevice() ? [] : [20]}
+			snapPoints={!isMobileDeviceCheck ? [] : [20]}
 			enableDynamicSizing={true}
 			animateOnMount={false}
 			enableOverDrag={false}
@@ -30,7 +31,7 @@ export default function SortAndFilterBar() {
 			handleIndicatorStyle={{
 				backgroundColor: "white",
 			}}
-			handleComponent={isDesktop() ? null : undefined}
+			handleComponent={isDesktopCheck ? null : undefined}
 		>
 			<BottomSheetView
 				style={

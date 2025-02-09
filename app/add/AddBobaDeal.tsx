@@ -1,3 +1,7 @@
+import {
+	getNewDateWithNoTime,
+	stringToDate,
+} from "@/components/helpers/dateHelpers"
 import { isWeb } from "@/components/helpers/deviceHelpers"
 import { ThemedText } from "@/components/ThemedText"
 import { Colors } from "@/constants/Colors"
@@ -79,8 +83,8 @@ export default function AddBobaDeal({ storesList }: { storesList: Store[] }) {
 	const allowDrinkTwo = dealType !== "single"
 	const allowDrinkThree = dealType !== "single" && dealType !== "bogo"
 
-	const [startDate, setStartDate] = useState<Date>(new Date())
-	const [endDate, setEndDate] = useState<Date>(new Date())
+	const [startDate, setStartDate] = useState<Date>(getNewDateWithNoTime())
+	const [endDate, setEndDate] = useState<Date>(getNewDateWithNoTime())
 	const [dayCondition, setDayCondition] = useState<Weekday | null>(null)
 	const [dateCondition, setDateCondition] = useState<number>(0)
 
@@ -136,8 +140,8 @@ export default function AddBobaDeal({ storesList }: { storesList: Store[] }) {
 		setDrinkSizeTwo("any")
 		setDrinkNameThree("")
 		setDrinkSizeThree("any")
-		setStartDate(new Date())
-		setEndDate(new Date())
+		setStartDate(getNewDateWithNoTime())
+		setEndDate(getNewDateWithNoTime())
 		setDayCondition(null)
 		setDateCondition(0)
 		setDiscountType("total")
@@ -189,10 +193,12 @@ export default function AddBobaDeal({ storesList }: { storesList: Store[] }) {
 			promoPeriod: {
 				startDate: isDiscountAlwaysActive
 					? "always"
-					: Timestamp.fromDate(startDate),
+					: // eslint-disable-next-line no-restricted-syntax
+					  Timestamp.fromDate(startDate),
 				endDate: isDiscountAlwaysActive
 					? "always"
-					: Timestamp.fromDate(endDate),
+					: // eslint-disable-next-line no-restricted-syntax
+					  Timestamp.fromDate(endDate),
 				...(chosenCondition !== undefined && {
 					condition: chosenCondition,
 				}),
@@ -414,7 +420,9 @@ export default function AddBobaDeal({ storesList }: { storesList: Store[] }) {
 									.substring(0, 10)}
 								onChange={(e) =>
 									setStartDate(
-										new Date(e.target.value + " EST"),
+										getNewDateWithNoTime(
+											stringToDate(e.target.value),
+										),
 									)
 								}
 								placeholder="Start Date"
@@ -443,7 +451,9 @@ export default function AddBobaDeal({ storesList }: { storesList: Store[] }) {
 									.substring(0, 10)}
 								onChange={(e) =>
 									setEndDate(
-										new Date(e.target.value + " EST"),
+										getNewDateWithNoTime(
+											stringToDate(e.target.value),
+										),
 									)
 								}
 								disabled={isDiscountAlwaysActive}
