@@ -50,30 +50,36 @@ export default function Header({ page }: { page: HeaderPage }) {
 			<View style={styles.rightContainer}>
 				{!isMobileCheck && (
 					<>
-						<Pressable
-							style={{ marginRight: 60 }}
-							onHoverIn={() => setHover(true)}
-							onHoverOut={() => setHover(false)}
-						>
-							{page === "home" && (
-								<Link href="/add">
-									<ThemedText
-										style={hover && styles.underlineOnHover}
-									>
-										Add a deal [+]
-									</ThemedText>
-								</Link>
-							)}
-							{page === "add" && (
-								<Link href="/">
-									<ThemedText
-										style={hover && styles.underlineOnHover}
-									>
-										Back to home
-									</ThemedText>
-								</Link>
-							)}
-						</Pressable>
+						<div style={{ height: "fit-content" }}>
+							<Pressable
+								style={{ marginRight: 60 }}
+								onHoverIn={() => setHover(true)}
+								onHoverOut={() => setHover(false)}
+							>
+								{page === "home" && (
+									<Link href="/add">
+										<ThemedText
+											style={
+												hover && styles.underlineOnHover
+											}
+										>
+											Add a deal [+]
+										</ThemedText>
+									</Link>
+								)}
+								{page === "add" && (
+									<Link href="/">
+										<ThemedText
+											style={
+												hover && styles.underlineOnHover
+											}
+										>
+											Back to home
+										</ThemedText>
+									</Link>
+								)}
+							</Pressable>
+						</div>
 						{page === "home" && <DateChooser />}
 					</>
 				)}
