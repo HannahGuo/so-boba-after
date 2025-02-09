@@ -21,8 +21,8 @@ Built using Expo, with TypeScript, React (Native) and Firebase. Designed with Fi
 - [ ] iOS app (this is hard because I don't have an iPhone...)
 - [ ] Support for other cities
 - [ ] Better deals sorting and filtering (e.g. by store)
-- [ ] Ability to add deals on mobile
-- [ ] Tests... surely
+- [ ] Ability to add deals on mobile (maybe, maybe not)
+- [x] Tests... surely
 
 ## Demos
 For your viewing pleasure ✨

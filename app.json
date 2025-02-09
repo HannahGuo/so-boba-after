@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "...so, boba after?",
+    "name": "so, boba after?",
     "slug": "so-boba-after",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -14,7 +14,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#000000"
+        "backgroundColor": "#3B2A0F"
       },
       "package": "com.anonymous.sobobaafter"
     },
@@ -30,7 +30,7 @@
         {
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#000000",
+          "backgroundColor": "#3B2A0F",
           "image": "./assets/images/logo.png"
         }
       ],
