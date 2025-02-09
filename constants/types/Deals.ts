@@ -72,11 +72,14 @@ export type BobaDeal = {
 	notes: string
 }
 
+export type City = "waterloo" | "kitchener"
+
 // DEALS FOR STORES
 export type Store = {
 	id: string
 	name: string
-	address: string
+	address: string // street address
+	city: City
 }
 
 export type Condition = {

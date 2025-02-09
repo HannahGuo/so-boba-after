@@ -15,6 +15,7 @@ import {
 	makeDealText,
 	makeDrinkList,
 	makePromoPeriodText,
+	makeStoreAddress,
 } from "./helpers/dealHelpers"
 
 type BobaDealProps = {
@@ -104,9 +105,7 @@ export default function BobaDealCard({
 				<ThemedText type="default">📝 {deal.notes}</ThemedText>
 			)}
 			<View style={styles.dividerLine} />
-			<ThemedText type="default">
-				🏠 {store?.address?.split(/waterloo/i)[0] + "Waterloo"}
-			</ThemedText>
+			<ThemedText type="default">🏠 {makeStoreAddress(store)}</ThemedText>
 		</LinearGradient>
 	)
 }

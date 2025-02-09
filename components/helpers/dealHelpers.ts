@@ -3,9 +3,10 @@ import {
 	Discount,
 	Drink,
 	PromoPeriod,
+	Store,
 	StoreDeal,
 } from "@/constants/types/Deals"
-import { drinkArraysEqual } from "./arrayHelpers"
+import { capitalizeFirstLetter, drinkArraysEqual } from "./arrayHelpers"
 import { getNewDateWithNoTime } from "./dateHelpers"
 
 export function makeSizeText(size: string) {
@@ -139,4 +140,14 @@ export function makeDrinkList(drinks: Drink[]): Drink[] {
 	}
 
 	return drinks
+}
+
+export function makeStoreAddress(store?: Store): string {
+	if (!store) {
+		return ""
+	}
+
+	return (
+		(store?.address ?? "") + ", " + capitalizeFirstLetter(store?.city ?? "")
+	)
 }

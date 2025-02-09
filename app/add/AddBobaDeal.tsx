@@ -2,6 +2,7 @@ import {
 	getNewDateWithNoTime,
 	stringToDate,
 } from "@/components/helpers/dateHelpers"
+import { makeStoreAddress } from "@/components/helpers/dealHelpers"
 import { isWeb } from "@/components/helpers/deviceHelpers"
 import { ThemedText } from "@/components/ThemedText"
 import { Colors } from "@/constants/Colors"
@@ -215,9 +216,8 @@ export default function AddBobaDeal({ storesList }: { storesList: Store[] }) {
 		resetForm()
 	}
 
-	const storeAddress = storesList.find(
-		(store) => storeName === store.name,
-	)?.address
+	const foundStore = storesList.find((store) => storeName === store.name)
+	const storeAddress = makeStoreAddress(foundStore)
 
 	useEffect(() => {
 		if (storesList.length > 0) {
