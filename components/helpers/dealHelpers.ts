@@ -19,12 +19,11 @@ export function makeSizeText(size: string) {
 
 export function makeDealText(deal: BobaDeal | StoreDeal): string {
 	function makeDiscountText(discount: Discount) {
-		if (discount.discountValue === 0) {
-			return "free"
-		}
-
 		switch (discount.discountType) {
 			case "percentage":
+				if (discount.discountValue === 100) {
+					return "free"
+				}
 				return `${discount.discountValue}% off`
 			case "flatoff":
 				return `$${discount.discountValue} off`
