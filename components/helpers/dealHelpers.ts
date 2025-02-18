@@ -9,9 +9,13 @@ import {
 import { capitalizeFirstLetter, drinkArraysEqual } from "./arrayHelpers"
 import { getNewDateWithNoTime } from "./dateHelpers"
 
-export function makeSizeText(size: string) {
+export function makeSizeText(size: string, dealType: string): string {
 	if (size === "any") {
 		return "any size"
+	}
+
+	if (dealType === "single") {
+		return size + " size"
 	}
 
 	return size
@@ -38,16 +42,25 @@ export function makeDealText(deal: BobaDeal | StoreDeal): string {
 		switch (deal.dealType) {
 			case "single":
 				return (
-					makeSizeText(deal.drinks[0].size) +
-					" " +
-					makeDiscountText(deal.discount)
+					makeDiscountText(deal.discount) +
+					" (" +
+					makeSizeText(deal.drinks[0].size, deal.dealType) +
+					")"
 				)
 			case "bogo":
-				return "buy one get one " + makeDiscountText(deal.discount)
+				return (
+					"buy one (" +
+					makeSizeText(deal.drinks[0].size, deal.dealType) +
+					") get one " +
+					makeDiscountText(deal.discount) +
+					" (" +
+					makeSizeText(deal.drinks[1].size, deal.dealType) +
+					")"
+				)
 			case "buyXforY":
 				return (
 					"buy any 2 " +
-					makeSizeText(deal.drinks[0].size) +
+					makeSizeText(deal.drinks[0].size, deal.dealType) +
 					" " +
 					makeDiscountText(deal.discount)
 				)

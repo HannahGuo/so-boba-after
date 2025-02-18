@@ -252,9 +252,6 @@ export default function DealsList() {
 			<View style={styles.spacer} />
 			<View style={styles.dealsContainer}>
 				<ThemedText type="subtitle">🏪 Store Deals</ThemedText>
-				<ThemedText type="subsubtitle">
-					Probably not stackable with drink-specific deals above.
-				</ThemedText>
 				<View style={styles.rowContainer}>
 					{storeDealsCols.map((row, index) => (
 						<View

@@ -45,7 +45,7 @@ export default function DateChooser() {
 			<View style={styles.dividerLine} />
 			{showDealsForDate && (
 				<>
-					<ThemedText>Showing Deals for</ThemedText>
+					<ThemedText>Showing deals for</ThemedText>
 					{isWeb() ? (
 						<input
 							type="date"
