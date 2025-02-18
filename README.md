@@ -2,7 +2,10 @@
    <img src="./assets/images/boba.svg">
 </p>
 
+https://github.com/user-attachments/assets/5a946dc0-3f22-4a4c-9927-3759e7e7e1e5
+
 _Hosted at https://so-boba-after.web.app/_
+
 
 A web and mobile app to track boba discounts! Currently (hyper) optimised for my friends and I to use in Waterloo, but aiming to have support for other cities.
 
@@ -23,12 +26,6 @@ Built using Expo, with TypeScript, React (Native) and Firebase. Designed with Fi
 - [ ] Better deals sorting and filtering (e.g. by store)
 - [ ] Ability to add deals on mobile (maybe, maybe not)
 - [x] Tests... surely
-
-## Demos
-For your viewing pleasure ✨
-
-### Desktop:
-https://github.com/user-attachments/assets/5a946dc0-3f22-4a4c-9927-3759e7e7e1e5
 
 ## Commands
 So I remember how to build this project:
