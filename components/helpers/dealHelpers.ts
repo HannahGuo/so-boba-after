@@ -133,14 +133,24 @@ export function isDealExpired(deal: BobaDeal | StoreDeal): boolean {
 }
 
 export function makeDrinkList(drinks: Drink[]): Drink[] {
-	const drinkNumToList: Record<number, Drink[]> = {}
+	let drinkNumToList: Record<number, Drink[]> = {}
 
+	let hasRepeat = false // this is scuffed but trust
 	for (const drink of drinks) {
 		if (!drinkNumToList[drink.drinkIndex]) {
 			drinkNumToList[drink.drinkIndex] = []
+		} else {
+			hasRepeat = true
 		}
 
 		drinkNumToList[drink.drinkIndex].push(drink)
+	}
+
+	if (!hasRepeat && drinks.length > 1) {
+		for (let i = 0; i < drinks.length; i++) {
+			drinkNumToList[i][0].name =
+				`Drink for req. ${i + 1}: ` + drinkNumToList[i][0].name
+		}
 	}
 
 	// TODO: hardcoding 2 for now
