@@ -21,7 +21,7 @@ export const Colors = {
 	shared: {
 		bobaRed: "#FFA4A4",
 		bobaOrange: "#FFC677",
-		bobaYellow: "#FFF5A9",
+		bobaYellow: "#eddb39",
 		bobaGreen: "#8BCB74",
 		bobaBlue: "#7BB0FF",
 		bobaPurple: "#DDADFF",
