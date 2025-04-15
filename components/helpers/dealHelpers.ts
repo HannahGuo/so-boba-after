@@ -136,6 +136,7 @@ export function makeDrinkList(drinks: Drink[]): Drink[] {
 	let drinkNumToList: Record<number, Drink[]> = {}
 
 	let hasRepeat = false // this is scuffed but trust
+
 	for (const drink of drinks) {
 		if (!drinkNumToList[drink.drinkIndex]) {
 			drinkNumToList[drink.drinkIndex] = []
@@ -146,18 +147,19 @@ export function makeDrinkList(drinks: Drink[]): Drink[] {
 		drinkNumToList[drink.drinkIndex].push(drink)
 	}
 
+	// TODO: hardcoding 2 for now
+	if (Object.keys(drinkNumToList).length === 2) {
+		console.log({ drinkNumToList })
+		if (drinkArraysEqual(drinkNumToList[0], drinkNumToList[1])) {
+			// this is a "2 for X" deal
+			return drinkNumToList[0]
+		}
+	}
+
 	if (!hasRepeat && drinks.length > 1) {
 		for (let i = 0; i < drinks.length; i++) {
 			drinkNumToList[i][0].name =
 				`Drink for req. ${i + 1}: ` + drinkNumToList[i][0].name
-		}
-	}
-
-	// TODO: hardcoding 2 for now
-	if (Object.keys(drinkNumToList).length === 2) {
-		if (drinkArraysEqual(drinkNumToList[0], drinkNumToList[1])) {
-			// this is a "2 for X" deal
-			return drinkNumToList[0]
 		}
 	}
 
