@@ -1,23 +1,48 @@
 import { Colors } from "@/constants/Colors"
+import { Store } from "@/constants/types/Deals"
 import {
 	NumberOfDrinks,
 	SortAndFilterContext,
 	SortType,
 } from "@/contexts/SortAndFilterContext"
+import { db } from "@/firebase/app/firebaseConfig"
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet"
 import { Picker } from "@react-native-picker/picker"
-import React, { useContext } from "react"
+import { collection, getDocs } from "firebase/firestore"
+import React, { useContext, useEffect } from "react"
 import { StyleSheet, View } from "react-native"
 import DateChooser from "./DateChooser"
 import { ThemedText } from "./ThemedText"
 import { isWeb, useIsDesktop, useIsMobileDevice } from "./helpers/deviceHelpers"
 
 export default function SortAndFilterBar() {
-	const { sortType, setSortType, numberOfDrinks, setNumberOfDrinks } =
-		useContext(SortAndFilterContext)
+	const {
+		sortType,
+		setSortType,
+		numberOfDrinks,
+		setNumberOfDrinks,
+		storeName,
+		setStoreName,
+	} = useContext(SortAndFilterContext)
 
 	const isMobileDeviceCheck = useIsMobileDevice()
 	const isDesktopCheck = useIsDesktop()
+
+	// TODO: i know this is bad.
+	const [storesList, setStoresList] = React.useState<Store[]>([])
+	useEffect(() => {
+		const fetchData = async () => {
+			const querySnapshot = await getDocs(collection(db, "stores"))
+			const storesList = querySnapshot.docs.map((doc) => {
+				const data = doc.data() as Store
+				return { ...data, id: doc.id }
+			})
+
+			storesList.sort((a, b) => a.name.localeCompare(b.name))
+			setStoresList(storesList)
+		}
+		fetchData()
+	}, [])
 
 	return (
 		<BottomSheet
@@ -101,11 +126,41 @@ export default function SortAndFilterBar() {
 							dropdownIconColor="white"
 							prompt="Filter by Drink Number"
 						>
-							<Picker.Item label="Any Number" value="any" />
-							<Picker.Item label="One Drink" value="one" />
-							<Picker.Item label="Two Drinks" value="two" />
+							<Picker.Item label="Any" value="any" />
+							<Picker.Item label="1 Drink" value="one" />
+							<Picker.Item label="2 Drinks" value="two" />
 						</Picker>
 					</View>
+				</View>
+				<View style={!isMobileDeviceCheck && styles.pickerRow}>
+					<ThemedText style={styles.pickerTitle}>
+						Filter by Store:
+					</ThemedText>
+					<Picker
+						style={styles.picker}
+						selectedValue={storeName}
+						onValueChange={(itemValue) => setStoreName(itemValue)}
+						placeholder="Select a store"
+					>
+						{["any", ...storesList].map((store) => {
+							if (typeof store === "string") {
+								return (
+									<Picker.Item
+										label={store}
+										value={store}
+										key={store}
+									/>
+								)
+							}
+							return (
+								<Picker.Item
+									label={store.name}
+									value={store.name}
+									key={store.name}
+								/>
+							)
+						})}
+					</Picker>
 				</View>
 				<View
 					style={{
@@ -125,18 +180,6 @@ export default function SortAndFilterBar() {
 					>
 						Hannah
 					</ThemedText>
-					<ThemedText> (</ThemedText>
-					<ThemedText
-						type="link"
-						onPress={() => {
-							window.open(
-								"https://github.com/HannahGuo/so-boba-after",
-							)
-						}}
-					>
-						source
-					</ThemedText>
-					<ThemedText>)</ThemedText>
 				</View>
 			</BottomSheetView>
 		</BottomSheet>

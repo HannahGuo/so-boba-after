@@ -27,6 +27,7 @@ export default function Home() {
 
 	const [sortType, setSortType] = useState<SortType>("storeName")
 	const [numberOfDrinks, setNumberOfDrinks] = useState<NumberOfDrinks>("any")
+	const [storeName, setStoreName] = useState<string>("")
 
 	return (
 		<GestureHandlerRootView>
@@ -39,6 +40,8 @@ export default function Home() {
 						setSortType,
 						numberOfDrinks,
 						setNumberOfDrinks,
+						storeName,
+						setStoreName,
 					}}
 				>
 					<ScrollView

@@ -37,7 +37,11 @@ export default function DealsList() {
 	const [loading, setLoading] = useState(true)
 
 	const { showDealsForDate } = useContext(ShowDealsForDateContext)
-	const { sortType, numberOfDrinks } = useContext(SortAndFilterContext)
+	const {
+		sortType,
+		numberOfDrinks,
+		storeName: filteredStoreName,
+	} = useContext(SortAndFilterContext)
 
 	useEffect(() => {
 		const retrieveBobaDeals = async () => {
@@ -132,6 +136,20 @@ export default function DealsList() {
 				return false
 			}
 		}
+
+		if (filteredStoreName !== "any") {
+			const store = storeIDToObjMap.get(deal.storeID)
+			if (store) {
+				if (
+					!store.name
+						.toLowerCase()
+						.includes(filteredStoreName.toLowerCase())
+				) {
+					return false
+				}
+			}
+		}
+
 		return true
 	})
 
@@ -170,6 +188,20 @@ export default function DealsList() {
 				}
 			}
 		}
+
+		if (filteredStoreName !== "any") {
+			const store = storeIDToObjMap.get(deal.storeID)
+			if (store) {
+				if (
+					!store.name
+						.toLowerCase()
+						.includes(filteredStoreName.toLowerCase())
+				) {
+					return false
+				}
+			}
+		}
+
 		return true
 	})
 
@@ -250,29 +282,33 @@ export default function DealsList() {
 				</View>
 			</View>
 			<View style={styles.spacer} />
-			<View style={styles.dealsContainer}>
-				<ThemedText type="subtitle">🏪 Store Deals</ThemedText>
-				<View style={styles.rowContainer}>
-					{storeDealsCols.map((row, index) => (
-						<View
-							key={index}
-							style={{
-								display: "flex",
-								flexDirection: "column",
-								width: isMobileDeviceCheck ? "100%" : "29%",
-							}}
-						>
-							{row.map((deal) => (
-								<StoreDealCard
-									key={deal.id}
-									deal={deal}
-									store={storeIDToObjMap.get(deal.storeID)}
-								/>
-							))}
-						</View>
-					))}
+			{filteredStoreDeals.length > 0 && (
+				<View style={styles.dealsContainer}>
+					<ThemedText type="subtitle">🏪 Store Deals</ThemedText>
+					<View style={styles.rowContainer}>
+						{storeDealsCols.map((row, index) => (
+							<View
+								key={index}
+								style={{
+									display: "flex",
+									flexDirection: "column",
+									width: isMobileDeviceCheck ? "100%" : "29%",
+								}}
+							>
+								{row.map((deal) => (
+									<StoreDealCard
+										key={deal.id}
+										deal={deal}
+										store={storeIDToObjMap.get(
+											deal.storeID,
+										)}
+									/>
+								))}
+							</View>
+						))}
+					</View>
 				</View>
-			</View>
+			)}
 		</View>
 	)
 }

@@ -9,9 +9,13 @@ export const SortAndFilterContext = createContext<{
 	setSortType: (sortType: SortType) => void
 	numberOfDrinks: NumberOfDrinks
 	setNumberOfDrinks: (numberOfDrinks: NumberOfDrinks) => void
+	storeName: string
+	setStoreName: (storeName: string) => void
 }>({
 	sortType: "storeName",
 	setSortType: () => {},
 	numberOfDrinks: "any",
 	setNumberOfDrinks: () => {},
+	storeName: "any",
+	setStoreName: () => {},
 })
