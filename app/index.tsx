@@ -2,6 +2,7 @@ import DealsList from "@/components/DealsList"
 import Header from "@/components/Header"
 import { getNewDateWithNoTime } from "@/components/helpers/dateHelpers"
 import { isWeb } from "@/components/helpers/deviceHelpers"
+import { Colors } from "@/constants/Colors"
 import { ShowDealsForDateContext } from "@/contexts/ShowDealsForDateContext"
 import {
 	NumberOfDrinks,
@@ -69,6 +70,7 @@ export default function Home() {
 const styles = StyleSheet.create({
 	pageWrapper: {
 		flex: 1,
+		backgroundColor: Colors.light.background,
 	},
 	mainContainer: {
 		flex: 1,
