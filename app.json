@@ -14,7 +14,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#3B2A0F"
+        "backgroundColor": "#FDF0E5"
       },
       "package": "com.anonymous.sobobaafter"
     },
@@ -30,7 +30,7 @@
         {
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#3B2A0F",
+          "backgroundColor": "#FDF0E5",
           "image": "./assets/images/logo.png"
         }
       ],
@@ -38,10 +38,7 @@
         "expo-font",
         {
           "fonts": [
-            "./assets/fonts/CourierPrime-Bold.ttf",
-            "./assets/fonts/CourierPrime-Italic.ttf",
-            "./assets/fonts/CourierPrime-Regular.ttf",
-            "./assets/fonts/LondrinaSolid-Regular.ttf"
+            "./assets/fonts/Fredoka-VariableFont_wdth,wght.ttf"
           ]
         }
       ]

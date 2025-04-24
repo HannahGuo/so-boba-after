@@ -51,7 +51,7 @@ export default function StoreDealCard({ deal, store }: StoreDealProps) {
 
 	return (
 		<LinearGradient
-			colors={getColorForString(deal.condition.id)}
+			colors={["white", "white"]}
 			style={styles.dealContainer}
 			locations={[0, 0.05]}
 			start={{ x: 0.5, y: 0 }}

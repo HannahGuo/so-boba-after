@@ -7,10 +7,7 @@ SplashScreen.preventAutoHideAsync().catch((_) => {})
 
 export default function RootLayout() {
 	const [fontsLoaded, error] = useFonts({
-		LondrinaSolid: require("../assets/fonts/LondrinaSolid-Regular.ttf"),
-		CourierPrime: require("../assets/fonts/CourierPrime-Regular.ttf"),
-		CourierPrimeBold: require("../assets/fonts/CourierPrime-Bold.ttf"),
-		CourierPrimeItalic: require("../assets/fonts/CourierPrime-Italic.ttf"),
+		Fredoka: require("../assets/fonts/Fredoka-VariableFont_wdth,wght.ttf"),
 	})
 
 	useEffect(() => {

@@ -255,11 +255,10 @@ export default function DealsList() {
 							marginTop: 100,
 							padding: 20,
 					  }
-					: { padding: 40, marginTop: 60 }),
+					: { paddingLeft: 40, paddingTop: 20 }),
 			}}
 		>
 			<View style={styles.dealsContainer}>
-				<ThemedText type="subtitle">🧋 Boba Deals</ThemedText>
 				<View style={styles.rowContainer}>
 					{bobaDealsCols.map((row, index) => (
 						<View

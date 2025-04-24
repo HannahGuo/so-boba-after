@@ -73,7 +73,7 @@ export default function BobaDealCard({
 
 	return (
 		<LinearGradient
-			colors={chooseBackgroundColor(deal.drinks[0].name)}
+			colors={["white", "white"]}
 			style={styles.dealContainer}
 			locations={[0, 0.05]}
 			start={{ x: 0.5, y: 0 }}
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
 		display: "flex",
 		flexDirection: "column",
 		justifyContent: "space-between",
-		padding: 20,
+		padding: 10,
 		paddingRight: 25,
 		borderRadius: 20,
 		margin: 10,

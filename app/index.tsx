@@ -3,7 +3,6 @@ import Header from "@/components/Header"
 import { getNewDateWithNoTime } from "@/components/helpers/dateHelpers"
 import { isWeb } from "@/components/helpers/deviceHelpers"
 import SortAndFilterBar from "@/components/SortAndFilterBar"
-import { Colors } from "@/constants/Colors"
 import { ShowDealsForDateContext } from "@/contexts/ShowDealsForDateContext"
 import {
 	NumberOfDrinks,
@@ -11,8 +10,10 @@ import {
 	SortType,
 } from "@/contexts/SortAndFilterContext"
 import { useEffect, useState } from "react"
-import { ScrollView, StyleSheet } from "react-native"
+import { Dimensions, Image, ScrollView, StyleSheet, View } from "react-native"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
+
+const { width: screenWidth } = Dimensions.get("window")
 
 export default function Home() {
 	useEffect(() => {
@@ -30,39 +31,58 @@ export default function Home() {
 	const [storeName, setStoreName] = useState<string>("")
 
 	return (
-		<GestureHandlerRootView>
-			<ShowDealsForDateContext.Provider
-				value={{ showDealsForDate, setShowDealsForDate }}
-			>
-				<SortAndFilterContext.Provider
-					value={{
-						sortType,
-						setSortType,
-						numberOfDrinks,
-						setNumberOfDrinks,
-						storeName,
-						setStoreName,
-					}}
+		<GestureHandlerRootView style={{ flex: 1 }}>
+			<View style={styles.pageWrapper}>
+				<ShowDealsForDateContext.Provider
+					value={{ showDealsForDate, setShowDealsForDate }}
 				>
-					<ScrollView
-						style={styles.mainContainer}
-						contentContainerStyle={{ marginBottom: 40 }}
+					<SortAndFilterContext.Provider
+						value={{
+							sortType,
+							setSortType,
+							numberOfDrinks,
+							setNumberOfDrinks,
+							storeName,
+							setStoreName,
+						}}
 					>
-						<Header page="home" />
-						<DealsList />
-					</ScrollView>
-					<SortAndFilterBar />
-				</SortAndFilterContext.Provider>
-			</ShowDealsForDateContext.Provider>
+						<ScrollView style={styles.mainContainer}>
+							<View style={styles.scrollContent}>
+								<Header page="home" />
+								<DealsList />
+							</View>
+
+							{/* 👇 Fake background image pinned to bottom of scroll content */}
+							<Image
+								source={require("../assets/images/waves-background.png")}
+								style={styles.backgroundImage}
+								resizeMode="cover"
+							/>
+						</ScrollView>
+
+						<SortAndFilterBar />
+					</SortAndFilterContext.Provider>
+				</ShowDealsForDateContext.Provider>
+			</View>
 		</GestureHandlerRootView>
 	)
 }
 
 const styles = StyleSheet.create({
+	pageWrapper: {
+		flex: 1,
+	},
 	mainContainer: {
+		flex: 1,
+	},
+	scrollContent: {
+		zIndex: 2,
+	},
+	backgroundImage: {
+		position: "absolute",
+		bottom: 0,
+		width: screenWidth,
 		height: "100%",
-		backgroundColor: Colors.light.background,
-		display: "flex",
-		marginBottom: 20,
+		zIndex: 1,
 	},
 })

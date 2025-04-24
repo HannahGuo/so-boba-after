@@ -469,7 +469,7 @@ const styles = StyleSheet.create({
 		marginTop: 10,
 		backgroundColor: Colors.shared.bobaOrange,
 		width: 200,
-		fontFamily: "LondrinaSolid",
+		fontFamily: "Fredoka",
 		color: "white",
 		padding: 10,
 		borderRadius: 10,
