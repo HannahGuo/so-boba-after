@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
 		...sharedStyles,
 	},
 	subtitle: {
-		fontSize: 36,
+		fontSize: 32,
 		fontWeight: "500",
 		...sharedStyles,
 	},

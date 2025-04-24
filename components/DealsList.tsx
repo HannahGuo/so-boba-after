@@ -225,8 +225,8 @@ export default function DealsList() {
 		}
 	})
 
-	// 3 columns on desktop, 1 column on mobile
-	const COLUMN_COUNT = isDesktopCheck ? 3 : 1
+	// 2 columns on desktop, 1 column on mobile
+	const COLUMN_COUNT = isDesktopCheck ? 2 : 1
 
 	const bobaDealsCols: BobaDeal[][] = Array.from(
 		{ length: COLUMN_COUNT },
@@ -255,7 +255,7 @@ export default function DealsList() {
 							marginTop: 100,
 							padding: 20,
 					  }
-					: { paddingLeft: 40, paddingTop: 20 }),
+					: { padding: 20 }),
 			}}
 		>
 			<View style={styles.dealsContainer}>
@@ -266,7 +266,7 @@ export default function DealsList() {
 							style={{
 								display: "flex",
 								flexDirection: "column",
-								width: isMobileDeviceCheck ? "100%" : "29%",
+								width: isMobileDeviceCheck ? "100%" : "50%",
 							}}
 						>
 							{row.map((deal) => (
@@ -291,7 +291,7 @@ export default function DealsList() {
 								style={{
 									display: "flex",
 									flexDirection: "column",
-									width: isMobileDeviceCheck ? "100%" : "29%",
+									width: isMobileDeviceCheck ? "100%" : "44%",
 								}}
 							>
 								{row.map((deal) => (

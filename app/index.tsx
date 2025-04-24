@@ -2,7 +2,6 @@ import DealsList from "@/components/DealsList"
 import Header from "@/components/Header"
 import { getNewDateWithNoTime } from "@/components/helpers/dateHelpers"
 import { isWeb } from "@/components/helpers/deviceHelpers"
-import SortAndFilterBar from "@/components/SortAndFilterBar"
 import { ShowDealsForDateContext } from "@/contexts/ShowDealsForDateContext"
 import {
 	NumberOfDrinks,
@@ -52,7 +51,6 @@ export default function Home() {
 								<DealsList />
 							</View>
 
-							{/* 👇 Fake background image pinned to bottom of scroll content */}
 							<Image
 								source={require("../assets/images/waves-background.png")}
 								style={styles.backgroundImage}
@@ -60,7 +58,7 @@ export default function Home() {
 							/>
 						</ScrollView>
 
-						<SortAndFilterBar />
+						{/* <SortAndFilterBar /> */}
 					</SortAndFilterContext.Provider>
 				</ShowDealsForDateContext.Provider>
 			</View>

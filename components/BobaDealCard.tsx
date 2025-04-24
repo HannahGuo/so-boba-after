@@ -79,33 +79,54 @@ export default function BobaDealCard({
 			start={{ x: 0.5, y: 0 }}
 			end={{ x: 0.5, y: 1 }}
 		>
-			{/* TODO: yeah i want to do seperate columns but im lazy rn */}
-			{isDealExpired(deal) && (
-				<ThemedText type="subtitle" style={{ color: "red" }}>
-					EXPIRED
-				</ThemedText>
-			)}
-			<ThemedText type="subtitle">{store?.name}</ThemedText>
-			<ThemedText type="defaultBold">{makeDealText(deal)}</ThemedText>
-			<View style={styles.drinkList}>
-				{drinksList.map((drink) => (
-					<ThemedText
-						key={deal.id + drink.name}
-						style={styles.drinkItem}
-					>
-						{chooseBobaListEmoji(drink.name)} {drink.name}
+			<View style={styles.flexOne}>
+				{/* TODO: yeah i want to do seperate columns but im lazy rn */}
+				{isDealExpired(deal) && (
+					<ThemedText type="subtitle" style={{ color: "red" }}>
+						EXPIRED
 					</ThemedText>
-				))}
+				)}
+				<ThemedText type="subtitle">{store?.name}</ThemedText>
+				<ThemedText type="default">{makeDealText(deal)}</ThemedText>
+				<View style={styles.drinkList}>
+					{drinksList.map((drink, ind) => {
+						return (
+							<>
+								<ThemedText
+									key={deal.id + drink.name}
+									style={styles.drinkItem}
+								>
+									<View
+										style={{
+											backgroundColor:
+												chooseBackgroundColor(
+													drink.name,
+												)[0],
+											width: "102%",
+											height: 22,
+											position: "absolute",
+											zIndex: -1,
+										}}
+									/>
+									{chooseBobaListEmoji(drink.name)}{" "}
+									{drink.name}
+								</ThemedText>
+							</>
+						)
+					})}
+				</View>
 			</View>
-			<View style={styles.dividerLine} />
-			<ThemedText type="default">
-				📅 {makePromoPeriodText(deal.promoPeriod)}
-			</ThemedText>
-			{deal.notes && (
-				<ThemedText type="default">📝 {deal.notes}</ThemedText>
-			)}
-			<View style={styles.dividerLine} />
-			<ThemedText type="default">🏠 {makeStoreAddress(store)}</ThemedText>
+			<View style={styles.flexOne}>
+				<ThemedText type="default">
+					📅 {makePromoPeriodText(deal.promoPeriod)}
+				</ThemedText>
+				{deal.notes && (
+					<ThemedText type="default">📝 {deal.notes}</ThemedText>
+				)}
+				<ThemedText type="default">
+					🏠 {makeStoreAddress(store)}
+				</ThemedText>
+			</View>
 		</LinearGradient>
 	)
 }
@@ -113,7 +134,7 @@ export default function BobaDealCard({
 const styles = StyleSheet.create({
 	dealContainer: {
 		display: "flex",
-		flexDirection: "column",
+		flexDirection: "row",
 		justifyContent: "space-between",
 		padding: 10,
 		paddingRight: 25,
@@ -138,5 +159,9 @@ const styles = StyleSheet.create({
 	},
 	drinkItem: {
 		marginVertical: 2,
+		alignSelf: "flex-start",
+	},
+	flexOne: {
+		flex: 1,
 	},
 })
