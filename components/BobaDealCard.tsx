@@ -6,6 +6,8 @@ import {
 import { BobaEmojis } from "@/constants/BobaEmojis"
 import { Colors } from "@/constants/Colors"
 import { BobaDeal, Store, StoreDeal } from "@/constants/types/Deals"
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5"
+import Octicons from "@expo/vector-icons/Octicons"
 import { LinearGradient } from "expo-linear-gradient"
 import React, { useMemo } from "react"
 import { StyleSheet, View } from "react-native"
@@ -17,14 +19,13 @@ import {
 	makePromoPeriodText,
 	makeStoreAddress,
 } from "./helpers/dealHelpers"
-
 type BobaDealProps = {
 	deal: BobaDeal
 	store: Store | undefined
 	storeDeals?: StoreDeal[]
 }
 
-function chooseBackgroundColor(drinkName: string): AtLeastTwoStrings {
+function chooseBobaColor(drinkName: string): AtLeastTwoStrings {
 	const normalizeDrinkName = drinkName.toLowerCase()
 
 	for (const color in BobaColors) {
@@ -71,6 +72,8 @@ export default function BobaDealCard({
 }: BobaDealProps) {
 	const drinksList = useMemo(() => makeDrinkList(deal.drinks), [deal.drinks])
 
+	const ICON_SIZE = 24
+
 	return (
 		<LinearGradient
 			colors={["white", "white"]}
@@ -98,10 +101,9 @@ export default function BobaDealCard({
 								>
 									<View
 										style={{
-											backgroundColor:
-												chooseBackgroundColor(
-													drink.name,
-												)[0],
+											backgroundColor: chooseBobaColor(
+												drink.name,
+											)[0],
 											width: "102%",
 											height: 22,
 											position: "absolute",
@@ -118,14 +120,51 @@ export default function BobaDealCard({
 			</View>
 			<View style={styles.flexOne}>
 				<ThemedText type="default">
-					📅 {makePromoPeriodText(deal.promoPeriod)}
+					<View style={styles.flexChild}>
+						<View style={{ flex: 0.08 }}>
+							<Octicons
+								name="home"
+								size={ICON_SIZE}
+								color="black"
+							/>{" "}
+						</View>
+						<View style={{ flex: 1 }}>
+							{makeStoreAddress(store)}
+						</View>
+					</View>
 				</ThemedText>
-				{deal.notes && (
-					<ThemedText type="default">📝 {deal.notes}</ThemedText>
-				)}
 				<ThemedText type="default">
-					🏠 {makeStoreAddress(store)}
+					<View style={styles.flexChild}>
+						<View style={{ flex: 0.08 }}>
+							<FontAwesome5
+								name="calendar"
+								size={ICON_SIZE}
+								color="black"
+							/>
+						</View>
+						<View style={{ flex: 1 }}>
+							{makePromoPeriodText(deal.promoPeriod)}
+						</View>
+					</View>
 				</ThemedText>
+
+				{deal.notes && (
+					<>
+						<View style={styles.dividerLine} />
+						<ThemedText type="default">
+							<View style={styles.flexChild}>
+								<View style={{ flex: 0.08 }}>
+									<FontAwesome5
+										name="sticky-note"
+										size={ICON_SIZE}
+										color="black"
+									/>{" "}
+								</View>
+								<View style={{ flex: 1 }}>{deal.notes}</View>
+							</View>
+						</ThemedText>
+					</>
+				)}
 			</View>
 		</LinearGradient>
 	)
@@ -136,8 +175,7 @@ const styles = StyleSheet.create({
 		display: "flex",
 		flexDirection: "row",
 		justifyContent: "space-between",
-		padding: 10,
-		paddingRight: 25,
+		padding: 20,
 		borderRadius: 20,
 		margin: 10,
 		shadowColor: "#000",
@@ -147,7 +185,7 @@ const styles = StyleSheet.create({
 		elevation: 4,
 	},
 	dividerLine: {
-		borderBottomColor: "white",
+		borderBottomColor: "black",
 		borderBottomWidth: StyleSheet.hairlineWidth,
 		marginBottom: 10,
 		marginTop: 10,
@@ -163,5 +201,14 @@ const styles = StyleSheet.create({
 	},
 	flexOne: {
 		flex: 1,
+		display: "flex",
+		flexDirection: "column",
+	},
+	flexChild: {
+		flex: 1,
+		display: "flex",
+		flexDirection: "row",
+		alignItems: "center",
+		paddingBottom: 15,
 	},
 })

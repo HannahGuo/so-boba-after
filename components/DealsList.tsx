@@ -15,7 +15,6 @@ import { ActivityIndicator, StyleSheet, View } from "react-native"
 import { Colors } from "@/constants/Colors"
 import BobaDealCard from "./BobaDealCard"
 import StoreDealCard from "./StoreDealCard"
-import { ThemedText } from "./ThemedText"
 import { getNewDateWithNoTime } from "./helpers/dateHelpers"
 import { useIsDesktop, useIsMobileDevice } from "./helpers/deviceHelpers"
 
@@ -255,7 +254,7 @@ export default function DealsList() {
 							marginTop: 100,
 							padding: 20,
 					  }
-					: { padding: 20 }),
+					: { padding: 20, paddingBottom: 150 }),
 			}}
 		>
 			<View style={styles.dealsContainer}>
@@ -280,10 +279,8 @@ export default function DealsList() {
 					))}
 				</View>
 			</View>
-			<View style={styles.spacer} />
 			{filteredStoreDeals.length > 0 && (
 				<View style={styles.dealsContainer}>
-					<ThemedText type="subtitle">🏪 Store Deals</ThemedText>
 					<View style={styles.rowContainer}>
 						{storeDealsCols.map((row, index) => (
 							<View
@@ -291,7 +288,7 @@ export default function DealsList() {
 								style={{
 									display: "flex",
 									flexDirection: "column",
-									width: isMobileDeviceCheck ? "100%" : "44%",
+									width: isMobileDeviceCheck ? "100%" : "50%",
 								}}
 							>
 								{row.map((deal) => (
