@@ -1,13 +1,11 @@
 import React from "react"
 import { SafeAreaView, StyleSheet } from "react-native"
+import DateChooser from "./DateChooser"
 import { ThemedText } from "./ThemedText"
-import { useIsMobileDevice } from "./helpers/deviceHelpers"
 
 type HeaderPage = "home" | "add"
 
 export default function Header({ page }: { page: HeaderPage }) {
-	const isMobileCheck = useIsMobileDevice()
-
 	return (
 		<SafeAreaView style={styles.headerContainer}>
 			<ThemedText
@@ -16,6 +14,7 @@ export default function Header({ page }: { page: HeaderPage }) {
 			>
 				...so, boba after?
 			</ThemedText>
+			<DateChooser />
 		</SafeAreaView>
 	)
 }
@@ -24,6 +23,10 @@ const styles = StyleSheet.create({
 	headerContainer: {
 		width: "100%",
 		padding: 20,
+		display: "flex",
+		flexDirection: "row",
+		justifyContent: "space-between",
+		alignItems: "center",
 	},
 	titleContainer: {
 		marginTop: 10,

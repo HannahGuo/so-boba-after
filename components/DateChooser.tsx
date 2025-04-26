@@ -1,7 +1,6 @@
 import { Colors } from "@/constants/Colors"
 import { ShowDealsForDateContext } from "@/contexts/ShowDealsForDateContext"
 import DateTimePicker from "@react-native-community/datetimepicker"
-import Checkbox from "expo-checkbox"
 import React, { useContext, useState } from "react"
 import { Button, StyleSheet, View } from "react-native"
 import { ThemedText } from "./ThemedText"
@@ -17,32 +16,10 @@ export default function DateChooser() {
 		ShowDealsForDateContext,
 	)
 
-	const [showAllDeals, setShowAllDeals] = useState(false)
-
 	const [showDatePickerMobile, setShowDatePickerMobile] = useState(false)
 
 	return (
 		<View style={styles.dateChooserContainer}>
-			<View style={styles.checkboxRow}>
-				<View>
-					<ThemedText type="defaultBold">Show All Deals:</ThemedText>
-				</View>
-				<View>
-					<Checkbox
-						value={showAllDeals}
-						onValueChange={(val) => {
-							setShowAllDeals(val)
-							if (val) {
-								setShowDealsForDate(null)
-							} else {
-								setShowDealsForDate(getNewDateWithNoTime())
-							}
-						}}
-						color={Colors.shared.bobaBrownLight}
-					/>
-				</View>
-			</View>
-			<View style={styles.dividerLine} />
 			{showDealsForDate && (
 				<>
 					<ThemedText>Showing deals for</ThemedText>
@@ -64,7 +41,6 @@ export default function DateChooser() {
 									setShowDealsForDate(getNewDateWithNoTime())
 								}
 							}}
-							disabled={showAllDeals}
 						/>
 					) : (
 						<>
@@ -90,16 +66,12 @@ export default function DateChooser() {
 										}
 										setShowDatePickerMobile(false)
 									}}
-									disabled={showAllDeals}
 								/>
 							)}
 						</>
 					)}
-					<ThemedText style={{ marginTop: 8, marginLeft: 10 }}>
-						(which is {getRelativeDateString(showDealsForDate)})
-					</ThemedText>
-					<ThemedText style={{ marginTop: 8 }}>
-						in <ThemedText type="defaultBold">Waterloo</ThemedText>
+					<ThemedText>
+						({getRelativeDateString(showDealsForDate)})
 					</ThemedText>
 				</>
 			)}
@@ -110,27 +82,38 @@ export default function DateChooser() {
 const styles = StyleSheet.create({
 	dateChooserContainer: {
 		display: "flex",
-		flexDirection: "column",
+		flexDirection: "row",
 		alignItems: "center",
 		rowGap: 4,
-		width: 300,
-		marginRight: 10,
-		top: -8,
+		marginRight: 30,
+		backgroundColor: "white",
+		borderRadius: 20,
+		shadowColor: "black",
+		shadowOffset: { width: 0, height: 4 },
+		shadowRadius: 4,
+		shadowOpacity: 0.25,
+		paddingVertical: 4,
+		paddingHorizontal: 20,
+		height: 38,
 	},
 	underlineOnHover: {
 		textDecorationLine: "underline",
 		cursor: "pointer",
 	},
 	dateInput: {
-		backgroundColor: "white",
+		backgroundColor: "#FFD8B8",
 		borderRadius: 10,
-		padding: 6,
+		borderWidth: 0,
 		paddingLeft: 12,
-		fontFamily: "CourierPrime",
+		paddingRight: 8,
+		marginLeft: 8,
+		marginRight: 8,
+		width: 140,
 		fontSize: 18,
 		borderColor: "white",
 		boxShadow: "none",
-		width: 150,
+		fontFamily: "Fredoka",
+		textDecorationLine: "underline",
 	},
 	checkboxRow: {
 		display: "flex",

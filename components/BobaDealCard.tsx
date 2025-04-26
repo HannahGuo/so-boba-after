@@ -77,7 +77,10 @@ export default function BobaDealCard({
 	return (
 		<LinearGradient
 			colors={["white", "white"]}
-			style={styles.dealContainer}
+			style={{
+				...styles.dealContainer,
+				shadowColor: chooseBobaColor(deal.drinks[0].name)[0],
+			}}
 			locations={[0, 0.05]}
 			start={{ x: 0.5, y: 0 }}
 			end={{ x: 0.5, y: 1 }}
@@ -178,9 +181,9 @@ const styles = StyleSheet.create({
 		padding: 20,
 		borderRadius: 20,
 		margin: 10,
-		shadowColor: "#000",
-		shadowOffset: { width: 0, height: 4 },
-		shadowOpacity: 0.25,
+		// shadowColor: "#000",
+		shadowOffset: { width: 0, height: 2 },
+		// shadowOpacity: 0.25,
 		shadowRadius: 4,
 		elevation: 4,
 	},
