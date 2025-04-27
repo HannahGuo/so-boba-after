@@ -1,11 +1,4 @@
-<p align="center">
-   <img src="./assets/images/boba.svg">
-</p>
-
-https://github.com/user-attachments/assets/5a946dc0-3f22-4a4c-9927-3759e7e7e1e5
-
-_Hosted at https://so-boba-after.web.app/_
-
+https://so-boba-after.web.app/
 
 A web and mobile app to track boba discounts! Currently (hyper) optimised for my friends and I to use in Waterloo, but aiming to have support for other cities.
 
