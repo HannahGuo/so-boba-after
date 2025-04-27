@@ -149,7 +149,6 @@ export function makeDrinkList(drinks: Drink[]): Drink[] {
 
 	// TODO: hardcoding 2 for now
 	if (Object.keys(drinkNumToList).length === 2) {
-		console.log({ drinkNumToList })
 		if (drinkArraysEqual(drinkNumToList[0], drinkNumToList[1])) {
 			// this is a "2 for X" deal
 			return drinkNumToList[0]
