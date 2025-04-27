@@ -51,13 +51,12 @@ export default function Home() {
 								<Header page="home" />
 								<DealsList />
 							</View>
-
-							<Image
-								source={require("../assets/images/waves-background.png")}
-								style={styles.backgroundImage}
-								resizeMode="cover"
-							/>
 						</ScrollView>
+						<Image
+							source={require("../assets/images/waves-background.png")}
+							style={styles.backgroundImage}
+							resizeMode="stretch"
+						/>
 
 						{/* <SortAndFilterBar /> */}
 					</SortAndFilterContext.Provider>
@@ -81,8 +80,8 @@ const styles = StyleSheet.create({
 	backgroundImage: {
 		position: "absolute",
 		bottom: 0,
-		width: screenWidth,
-		height: "100%",
-		zIndex: 1,
+		width: "100%",
+		height: 982,
+		zIndex: -1,
 	},
 })

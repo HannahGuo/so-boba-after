@@ -19,6 +19,7 @@ import {
 	makePromoPeriodText,
 	makeStoreAddress,
 } from "./helpers/dealHelpers"
+import { useIsMobileDevice } from "./helpers/deviceHelpers"
 type BobaDealProps = {
 	deal: BobaDeal
 	store: Store | undefined
@@ -71,6 +72,7 @@ export default function BobaDealCard({
 	storeDeals,
 }: BobaDealProps) {
 	const drinksList = useMemo(() => makeDrinkList(deal.drinks), [deal.drinks])
+	const isMobileDevice = useIsMobileDevice()
 
 	const ICON_SIZE = 24
 
@@ -80,12 +82,19 @@ export default function BobaDealCard({
 			style={{
 				...styles.dealContainer,
 				shadowColor: chooseBobaColor(deal.drinks[0].name)[0],
+				flexDirection: isMobileDevice ? "column" : "row",
 			}}
 			locations={[0, 0.05]}
 			start={{ x: 0.5, y: 0 }}
 			end={{ x: 0.5, y: 1 }}
 		>
-			<View style={styles.flexOne}>
+			<View
+				style={{
+					...(!isMobileDevice
+						? styles.flexOne
+						: { marginBottom: 10 }),
+				}}
+			>
 				{/* TODO: yeah i want to do seperate columns but im lazy rn */}
 				{isDealExpired(deal) && (
 					<ThemedText type="subtitle" style={{ color: "red" }}>
@@ -99,7 +108,7 @@ export default function BobaDealCard({
 						return (
 							<>
 								<ThemedText
-									key={deal.id + drink.name}
+									key={deal.dealID + drink.name}
 									style={styles.drinkItem}
 								>
 									<View
@@ -121,10 +130,17 @@ export default function BobaDealCard({
 					})}
 				</View>
 			</View>
-			<View style={styles.flexOne}>
+			{isMobileDevice && <View style={styles.dividerLine} />}
+
+			<View style={{ ...(!isMobileDevice ? styles.flexOne : {}) }}>
 				<ThemedText type="default">
 					<View style={styles.flexChild}>
-						<View style={{ flex: 0.08 }}>
+						<View
+							style={{
+								flex: 0.08,
+								marginRight: isMobileDevice ? 10 : 0,
+							}}
+						>
 							<Octicons
 								name="home"
 								size={ICON_SIZE}
@@ -138,7 +154,12 @@ export default function BobaDealCard({
 				</ThemedText>
 				<ThemedText type="default">
 					<View style={styles.flexChild}>
-						<View style={{ flex: 0.08 }}>
+						<View
+							style={{
+								flex: 0.08,
+								marginRight: isMobileDevice ? 10 : 0,
+							}}
+						>
 							<FontAwesome5
 								name="calendar"
 								size={ICON_SIZE}
@@ -153,10 +174,15 @@ export default function BobaDealCard({
 
 				{deal.notes && (
 					<>
-						<View style={styles.dividerLine} />
+						{!isMobileDevice && <View style={styles.dividerLine} />}
 						<ThemedText type="default">
 							<View style={styles.flexChild}>
-								<View style={{ flex: 0.08 }}>
+								<View
+									style={{
+										flex: 0.08,
+										marginRight: isMobileDevice ? 10 : 0,
+									}}
+								>
 									<FontAwesome5
 										name="sticky-note"
 										size={ICON_SIZE}
@@ -176,7 +202,6 @@ export default function BobaDealCard({
 const styles = StyleSheet.create({
 	dealContainer: {
 		display: "flex",
-		flexDirection: "row",
 		justifyContent: "space-between",
 		padding: 20,
 		borderRadius: 20,

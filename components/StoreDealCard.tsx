@@ -12,6 +12,7 @@ import {
 	makePromoPeriodText,
 	makeStoreAddress,
 } from "./helpers/dealHelpers"
+import { useIsMobileDevice } from "./helpers/deviceHelpers"
 
 type StoreDealProps = {
 	deal: StoreDeal
@@ -51,6 +52,8 @@ export default function StoreDealCard({ deal, store }: StoreDealProps) {
 	const notes = deal.condition.notes
 	const ICON_SIZE = 24
 
+	const isMobileDevice = useIsMobileDevice()
+
 	if (!store) {
 		return (
 			<ActivityIndicator size="small" color={Colors.shared.bobaBrown} />
@@ -60,7 +63,10 @@ export default function StoreDealCard({ deal, store }: StoreDealProps) {
 	return (
 		<LinearGradient
 			colors={["white", "white"]}
-			style={styles.dealContainer}
+			style={{
+				...styles.dealContainer,
+				flexDirection: isMobileDevice ? "column" : "row",
+			}}
 			locations={[0, 0.05]}
 			start={{ x: 0.5, y: 0 }}
 			end={{ x: 0.5, y: 1 }}
@@ -72,11 +78,23 @@ export default function StoreDealCard({ deal, store }: StoreDealProps) {
 				</ThemedText>
 				<View style={{ padding: 5 }} />
 				<ThemedText type="default">🎉 {makeDealText(deal)}</ThemedText>
+				{isMobileDevice && <View style={styles.dividerLine} />}
 			</View>
-			<View style={styles.flexOne}>
+			<View
+				style={{
+					...(!isMobileDevice
+						? styles.flexOne
+						: { marginBottom: 10 }),
+				}}
+			>
 				<ThemedText type="default">
 					<View style={styles.flexChild}>
-						<View style={{ flex: 0.08 }}>
+						<View
+							style={{
+								flex: 0.08,
+								marginRight: isMobileDevice ? 10 : 0,
+							}}
+						>
 							<Octicons
 								name="home"
 								size={ICON_SIZE}
@@ -90,7 +108,12 @@ export default function StoreDealCard({ deal, store }: StoreDealProps) {
 				</ThemedText>
 				<ThemedText type="default">
 					<View style={styles.flexChild}>
-						<View style={{ flex: 0.08 }}>
+						<View
+							style={{
+								flex: 0.08,
+								marginRight: isMobileDevice ? 10 : 0,
+							}}
+						>
 							<FontAwesome5
 								name="calendar"
 								size={ICON_SIZE}
@@ -118,7 +141,7 @@ const styles = StyleSheet.create({
 		filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))",
 	},
 	dividerLine: {
-		borderBottomColor: "white",
+		borderBottomColor: "black",
 		borderBottomWidth: StyleSheet.hairlineWidth,
 		marginBottom: 10,
 		marginTop: 10,

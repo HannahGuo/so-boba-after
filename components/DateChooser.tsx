@@ -9,7 +9,7 @@ import {
 	getRelativeDateString,
 	stringToDate,
 } from "./helpers/dateHelpers"
-import { isWeb } from "./helpers/deviceHelpers"
+import { isWeb, useIsMobileDevice } from "./helpers/deviceHelpers"
 
 export default function DateChooser() {
 	const { showDealsForDate, setShowDealsForDate } = useContext(
@@ -18,8 +18,16 @@ export default function DateChooser() {
 
 	const [showDatePickerMobile, setShowDatePickerMobile] = useState(false)
 
+	const isMobileDevice = useIsMobileDevice()
+
 	return (
-		<View style={styles.dateChooserContainer}>
+		<View
+			style={
+				isMobileDevice
+					? styles.mobileDateChooserContainer
+					: styles.dateChooserContainer
+			}
+		>
 			{showDealsForDate && (
 				<>
 					<ThemedText>Showing deals for</ThemedText>
@@ -95,6 +103,23 @@ const styles = StyleSheet.create({
 		paddingVertical: 4,
 		paddingHorizontal: 20,
 		height: 38,
+	},
+	mobileDateChooserContainer: {
+		display: "flex",
+		flexDirection: "column",
+		alignItems: "center",
+		width: "100%",
+		rowGap: 4,
+		backgroundColor: "white",
+		borderRadius: 20,
+		shadowColor: "black",
+		shadowOffset: { width: 0, height: 4 },
+		shadowRadius: 4,
+		shadowOpacity: 0.25,
+		paddingVertical: 10,
+		paddingHorizontal: 20,
+		marginHorizontal: 20,
+		marginTop: 16,
 	},
 	underlineOnHover: {
 		textDecorationLine: "underline",

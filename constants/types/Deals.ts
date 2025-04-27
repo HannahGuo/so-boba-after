@@ -62,14 +62,29 @@ export type Drink = {
 	drinkIndex: number // index of the drink in the deal
 }
 
-export type BobaDeal = {
-	id: string
+export type Deal = {
+	dealID: string
 	storeID: string
-	dealType: BobaDealType
-	discount: Discount
-	drinks: Drink[]
 	promoPeriod: PromoPeriod
-	notes: string
+	discount: Discount
+	notes?: string
+}
+
+export type BobaDeal = Deal & {
+	dealType: BobaDealType
+	drinks: Drink[]
+}
+
+export type StoreDeal = Deal & {
+	condition: Condition
+}
+
+export function isBobaDeal(deal: Deal): deal is BobaDeal {
+	return (deal as BobaDeal).dealType !== undefined
+}
+
+export function isStoreDeal(deal: Deal): deal is StoreDeal {
+	return (deal as StoreDeal).condition !== undefined
 }
 
 export type City = "waterloo" | "kitchener"
@@ -86,12 +101,4 @@ export type Condition = {
 	id: string
 	clause: string
 	notes?: string
-}
-
-export type StoreDeal = {
-	id: string
-	storeID: string
-	condition: Condition
-	promoPeriod: PromoPeriod
-	discount: Discount
 }
