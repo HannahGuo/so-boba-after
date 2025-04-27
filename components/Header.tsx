@@ -1,89 +1,26 @@
-import { Link } from "expo-router"
-import React, { useState } from "react"
-import {
-	ImageBackground,
-	Pressable,
-	SafeAreaView,
-	StyleSheet,
-	View,
-} from "react-native"
+import React from "react"
+import { SafeAreaView, StyleSheet } from "react-native"
 import DateChooser from "./DateChooser"
 import { ThemedText } from "./ThemedText"
-import { isWeb, useIsDesktop, useIsMobileDevice } from "./helpers/deviceHelpers"
+import { useIsMobileDevice } from "./helpers/deviceHelpers"
 
 type HeaderPage = "home" | "add"
 
 export default function Header({ page }: { page: HeaderPage }) {
-	const [hover, setHover] = useState(false)
-
-	const isMobileCheck = useIsMobileDevice()
-	const isWebCheck = isWeb()
-	const isDesktopCheck = useIsDesktop()
-
 	return (
-		<SafeAreaView style={styles.headerContainer}>
-			<ImageBackground
-				source={require("../assets/images/bobaHeaderLeft.png")}
-				style={
-					isWebCheck ? styles.headerImageLeft : styles.headerMobile
-				}
-			/>
-			<View style={styles.titleContainer}>
-				<ThemedText
-					type="title"
-					style={
-						isMobileCheck && {
-							fontSize: 48,
-						}
-					}
-				>
-					...so, boba after?
-				</ThemedText>
-			</View>
-			{isDesktopCheck && (
-				<ImageBackground
-					source={require("../assets/images/bobaHeaderRight.png")}
-					style={styles.headerImageRight}
-				/>
-			)}
-
-			<View style={styles.rightContainer}>
-				{!isMobileCheck && (
-					<>
-						<div style={{ height: "fit-content" }}>
-							<Pressable
-								style={{ marginRight: 60 }}
-								onHoverIn={() => setHover(true)}
-								onHoverOut={() => setHover(false)}
-							>
-								{page === "home" && (
-									<Link href="/add">
-										<ThemedText
-											style={
-												hover && styles.underlineOnHover
-											}
-										>
-											Add a deal [+]
-										</ThemedText>
-									</Link>
-								)}
-								{page === "add" && (
-									<Link href="/">
-										<ThemedText
-											style={
-												hover && styles.underlineOnHover
-											}
-										>
-											Back to home
-										</ThemedText>
-									</Link>
-								)}
-							</Pressable>
-						</div>
-						{page === "home" && <DateChooser />}
-					</>
-				)}
-			</View>
+		<SafeAreaView
+			style={{
+				...styles.headerContainer,
+				flexDirection: useIsMobileDevice() ? "column" : "row",
+			}}
+		>
+			<ThemedText
+				type="title"
+				style={!useIsMobileDevice() && { paddingLeft: 40 }}
+			>
+				...so, boba after?
+			</ThemedText>
+			<DateChooser />
 		</SafeAreaView>
 	)
 }
@@ -91,20 +28,14 @@ export default function Header({ page }: { page: HeaderPage }) {
 const styles = StyleSheet.create({
 	headerContainer: {
 		width: "100%",
+		paddingTop: 20,
+		display: "flex",
+		justifyContent: "space-between",
+		alignItems: "center",
 	},
 	titleContainer: {
 		marginTop: 10,
 		marginLeft: 20,
-	},
-	headerImageLeft: {
-		position: "absolute",
-		top: -40,
-		left: -20,
-	},
-	headerImageRight: {
-		position: "absolute",
-		top: 0,
-		left: "68%",
 	},
 	headerMobile: {
 		position: "absolute",

@@ -10,8 +10,7 @@ import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet"
 import { Picker } from "@react-native-picker/picker"
 import { collection, getDocs } from "firebase/firestore"
 import React, { useContext, useEffect } from "react"
-import { StyleSheet, View } from "react-native"
-import DateChooser from "./DateChooser"
+import { ImageBackground, StyleSheet, View } from "react-native"
 import { ThemedText } from "./ThemedText"
 import { isWeb, useIsDesktop, useIsMobileDevice } from "./helpers/deviceHelpers"
 
@@ -50,151 +49,150 @@ export default function SortAndFilterBar() {
 			enableDynamicSizing={true}
 			animateOnMount={false}
 			enableOverDrag={false}
-			backgroundStyle={{
-				backgroundColor: Colors.shared.bobaBrown,
-			}}
 			handleIndicatorStyle={{
 				backgroundColor: "white",
 			}}
+			backgroundStyle={{
+				backgroundColor: isMobileDeviceCheck
+					? Colors.shared.bobaBrown
+					: "rgba(0,0,0,0)",
+			}}
 			handleComponent={isDesktopCheck ? null : undefined}
 		>
-			<BottomSheetView
-				style={
-					!isMobileDeviceCheck
-						? styles.container
-						: styles.mobileContainer
-				}
+			<ImageBackground
+				source={require("../assets/images/footer.png")}
+				style={{
+					width: "100%",
+					height: "auto",
+					position: "absolute",
+					right: 0,
+					top: 0,
+					backgroundColor: "rgba(0,0,0,0) !important",
+				}}
+				resizeMode="stretch"
 			>
-				<View style={!isMobileDeviceCheck && styles.pickerRow}>
-					{isMobileDeviceCheck && (
-						<View
-							style={{
-								display: "flex",
-								flexDirection: "column",
-								width: "100%",
-								alignItems: "center",
-								justifyContent: "center",
-							}}
-						>
-							<DateChooser />
-							<View style={styles.dividerLine} />
+				<BottomSheetView
+					style={
+						!isMobileDeviceCheck
+							? styles.container
+							: styles.mobileContainer
+					}
+				>
+					<View style={!isMobileDeviceCheck && styles.pickerRow}>
+						<ThemedText style={styles.pickerTitle}>
+							Set Sort Order:
+						</ThemedText>
+						<View>
+							<Picker
+								style={{
+									...styles.picker,
+									...(isWeb()
+										? { color: "black" }
+										: { color: "white" }),
+								}}
+								selectedValue={sortType}
+								onValueChange={(itemValue: SortType) =>
+									setSortType(itemValue)
+								}
+								dropdownIconColor="white"
+								prompt="Select Sort Method"
+							>
+								<Picker.Item
+									label="Store Name (A-Z)"
+									value="storeName"
+								/>
+								<Picker.Item
+									label="Expiry Date"
+									value="expiry"
+								/>
+								<Picker.Item label="Price" value="price" />
+							</Picker>
 						</View>
-					)}
-					<ThemedText style={styles.pickerTitle}>
-						Set Sort Order:
-					</ThemedText>
-					<View>
-						<Picker
-							style={{
-								...styles.picker,
-								...(isWeb()
-									? { color: "black" }
-									: { color: "white" }),
-							}}
-							selectedValue={sortType}
-							onValueChange={(itemValue: SortType) =>
-								setSortType(itemValue)
-							}
-							dropdownIconColor="white"
-							prompt="Select Sort Method"
-						>
-							<Picker.Item
-								label="Store Name (A-Z)"
-								value="storeName"
-							/>
-							<Picker.Item label="Expiry Date" value="expiry" />
-							<Picker.Item label="Price" value="price" />
-						</Picker>
 					</View>
-				</View>
-				<View style={!isMobileDeviceCheck && styles.pickerRow}>
-					<ThemedText style={styles.pickerTitle}>
-						Filter by Drink Number:
-					</ThemedText>
-					<View>
-						<Picker
-							style={{
-								...styles.picker,
-								...(isWeb()
-									? { color: "black" }
-									: { color: "white" }),
-							}}
-							selectedValue={numberOfDrinks}
-							onValueChange={(itemValue: NumberOfDrinks) =>
-								setNumberOfDrinks(itemValue)
-							}
-							dropdownIconColor="white"
-							prompt="Filter by Drink Number"
-						>
-							<Picker.Item label="Any" value="any" />
-							<Picker.Item label="1 Drink" value="one" />
-							<Picker.Item label="2 Drinks" value="two" />
-						</Picker>
+					<View style={!isMobileDeviceCheck && styles.pickerRow}>
+						<ThemedText style={styles.pickerTitle}>
+							Filter by Drink Number:
+						</ThemedText>
+						<View>
+							<Picker
+								style={{
+									...styles.picker,
+									...(isWeb()
+										? { color: "black" }
+										: { color: "white" }),
+								}}
+								selectedValue={numberOfDrinks}
+								onValueChange={(itemValue: NumberOfDrinks) =>
+									setNumberOfDrinks(itemValue)
+								}
+								dropdownIconColor="white"
+								prompt="Filter by Drink Number"
+							>
+								<Picker.Item label="Any" value="any" />
+								<Picker.Item label="1 Drink" value="one" />
+								<Picker.Item label="2 Drinks" value="two" />
+							</Picker>
+						</View>
 					</View>
-				</View>
-				<View style={!isMobileDeviceCheck && styles.pickerRow}>
-					<ThemedText style={styles.pickerTitle}>
-						Filter by Store:
-					</ThemedText>
-					<Picker
-						style={styles.picker}
-						selectedValue={storeName}
-						onValueChange={(itemValue) => setStoreName(itemValue)}
-						placeholder="Select a store"
-					>
-						{["any", ...storesList].map((store) => {
-							if (typeof store === "string") {
+					<View style={!isMobileDeviceCheck && styles.pickerRow}>
+						<ThemedText style={styles.pickerTitle}>
+							Filter by Store:
+						</ThemedText>
+						<Picker
+							style={styles.picker}
+							selectedValue={storeName}
+							onValueChange={(itemValue) =>
+								setStoreName(itemValue)
+							}
+							placeholder="Select a store"
+						>
+							{["any", ...storesList].map((store) => {
+								if (typeof store === "string") {
+									return (
+										<Picker.Item
+											label={store}
+											value={store}
+											key={store}
+										/>
+									)
+								}
 								return (
 									<Picker.Item
-										label={store}
-										value={store}
-										key={store}
+										label={store.name}
+										value={store.name}
+										key={store.name}
 									/>
 								)
-							}
-							return (
-								<Picker.Item
-									label={store.name}
-									value={store.name}
-									key={store.name}
-								/>
-							)
-						})}
-					</Picker>
-				</View>
-				<View
-					style={{
-						display: "flex",
-						flexDirection: "row",
-						justifyContent: "center",
-						alignItems: "center",
-						paddingTop: -10,
-					}}
-				>
-					<ThemedText>Made with 🧋 by </ThemedText>
-					<ThemedText
-						type="link"
-						onPress={() => {
-							window.open("https://github.com/HannahGuo")
-						}}
-					>
-						Hannah
-					</ThemedText>
-				</View>
-			</BottomSheetView>
+							})}
+						</Picker>
+					</View>
+					<View style={{ ...styles.pickerRow, marginBottom: 8 }}>
+						<ThemedText>
+							Made with 🧋 by{" "}
+							<a
+								href="https://github.com/HannahGuo"
+								rel="noreferrer"
+							>
+								Hannah
+							</a>
+						</ThemedText>
+					</View>
+				</BottomSheetView>
+			</ImageBackground>
 		</BottomSheet>
 	)
 }
 
 const styles = StyleSheet.create({
 	container: {
-		backgroundColor: Colors.shared.bobaBrown,
 		width: "100%",
 		justifyContent: "space-evenly",
 		alignContent: "center",
 		display: "flex",
 		flexDirection: "row",
-		padding: 14,
+		padding: 8,
+		height: 90,
+		alignItems: "flex-end",
 	},
 	mobileContainer: {
 		backgroundColor: Colors.shared.bobaBrown,
@@ -212,7 +210,7 @@ const styles = StyleSheet.create({
 		justifyContent: "space-between",
 	},
 	picker: {
-		fontFamily: "CourierPrime",
+		fontFamily: "Fredoka",
 		fontSize: 18,
 		borderRadius: 10,
 		borderColor: "white",

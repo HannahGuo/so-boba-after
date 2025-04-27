@@ -5,7 +5,7 @@
 export const Colors = {
 	light: {
 		text: "white",
-		background: "#FFEFD7",
+		background: "#FBEDE3",
 		primaryColor: "#DEB26F",
 		tabIconDefault: "white",
 	},
@@ -13,7 +13,7 @@ export const Colors = {
 	// TODO: make these different
 	dark: {
 		text: "white",
-		background: "#FFEFD7",
+		background: "#FBEDE3",
 		primaryColor: "#DEB26F",
 		tabIconDefault: "white",
 	},

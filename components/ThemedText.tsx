@@ -42,36 +42,45 @@ export function ThemedText({
 	)
 }
 
+const sharedStyles = {
+	fontFamily: "Fredoka",
+	color: "black",
+}
+
 const styles = StyleSheet.create({
 	default: {
 		fontSize: 18,
-		fontFamily: "CourierPrime",
+		...sharedStyles,
 	},
 	defaultBold: {
 		fontSize: 18,
-		fontFamily: "CourierPrimeBold",
+		fontWeight: "500",
+		...sharedStyles,
 	},
 	title: {
-		fontSize: 80,
-		fontFamily: "LondrinaSolid",
+		fontSize: 48,
+		fontWeight: "500",
+		...sharedStyles,
 	},
 	subtitle: {
-		fontSize: 36,
-		fontFamily: "LondrinaSolid",
+		fontSize: 32,
+		fontWeight: "500",
+		...sharedStyles,
 	},
 	subsubtitle: {
 		fontSize: 28,
-		fontFamily: "LondrinaSolid",
+		fontWeight: "500",
+		...sharedStyles,
 	},
 	link: {
 		color: "white",
 		fontSize: 18,
-		fontFamily: "CourierPrime",
+		fontFamily: "Fredoka",
 		textDecorationLine: "underline",
 		marginTop: 3,
 	},
 	tiny: {
 		fontSize: 12,
-		fontFamily: "CourierPrime",
+		...sharedStyles,
 	},
 })

@@ -1,6 +1,9 @@
 import {
 	BobaDeal,
 	compareDiscounts,
+	Deal,
+	isBobaDeal,
+	isStoreDeal,
 	Store,
 	StoreDeal,
 	weekdayMap,
@@ -14,10 +17,9 @@ import { ActivityIndicator, StyleSheet, View } from "react-native"
 
 import { Colors } from "@/constants/Colors"
 import BobaDealCard from "./BobaDealCard"
-import StoreDealCard from "./StoreDealCard"
-import { ThemedText } from "./ThemedText"
 import { getNewDateWithNoTime } from "./helpers/dateHelpers"
 import { useIsDesktop, useIsMobileDevice } from "./helpers/deviceHelpers"
+import StoreDealCard from "./StoreDealCard"
 
 const getStoreFromID = async (id: string): Promise<Store> => {
 	const querySnapshot = await getDoc(doc(db, "stores", id))
@@ -205,7 +207,9 @@ export default function DealsList() {
 		return true
 	})
 
-	filteredBobaDeals.sort((a, b) => {
+	const allDeals = [...filteredBobaDeals, ...filteredStoreDeals]
+
+	allDeals.sort((a, b) => {
 		switch (sortType) {
 			case "storeName":
 				const storeA = storeIDToObjMap.get(a.storeID)
@@ -225,41 +229,25 @@ export default function DealsList() {
 		}
 	})
 
-	// 3 columns on desktop, 1 column on mobile
-	const COLUMN_COUNT = isDesktopCheck ? 3 : 1
+	// 2 columns on desktop, 1 column on mobile
+	const COLUMN_COUNT = isDesktopCheck ? 2 : 1
 
-	const bobaDealsCols: BobaDeal[][] = Array.from(
+	const bobaDealsCols: Deal[][] = Array.from(
 		{ length: COLUMN_COUNT },
 		() => [],
 	)
-	for (let i = 0; i < filteredBobaDeals.length; i++) {
+	for (let i = 0; i < allDeals.length; i++) {
 		const columnIndex = i % COLUMN_COUNT
-		bobaDealsCols[columnIndex].push(filteredBobaDeals[i])
-	}
-
-	const storeDealsCols: StoreDeal[][] = Array.from(
-		{ length: COLUMN_COUNT },
-		() => [],
-	)
-	for (let i = 0; i < filteredStoreDeals.length; i++) {
-		const columnIndex = i % COLUMN_COUNT
-		storeDealsCols[columnIndex].push(filteredStoreDeals[i])
+		bobaDealsCols[columnIndex].push(allDeals[i])
 	}
 
 	return (
 		<View
 			style={{
 				...styles.allDealsContainer,
-				...(!isDesktopCheck
-					? {
-							marginTop: 100,
-							padding: 20,
-					  }
-					: { padding: 40, marginTop: 60 }),
 			}}
 		>
 			<View style={styles.dealsContainer}>
-				<ThemedText type="subtitle">🧋 Boba Deals</ThemedText>
 				<View style={styles.rowContainer}>
 					{bobaDealsCols.map((row, index) => (
 						<View
@@ -267,48 +255,43 @@ export default function DealsList() {
 							style={{
 								display: "flex",
 								flexDirection: "column",
-								width: isMobileDeviceCheck ? "100%" : "29%",
+								width: isMobileDeviceCheck ? "100%" : "50%",
 							}}
 						>
-							{row.map((deal) => (
-								<BobaDealCard
-									key={deal.id}
-									deal={deal}
-									store={storeIDToObjMap.get(deal.storeID)}
-								/>
-							))}
+							{row.map((deal) => {
+								if (isBobaDeal(deal)) {
+									return (
+										<BobaDealCard
+											key={deal.dealID}
+											deal={deal}
+											store={storeIDToObjMap.get(
+												deal.storeID,
+											)}
+										/>
+									)
+								} else if (isStoreDeal(deal)) {
+									const store = storeIDToObjMap.get(
+										deal.storeID,
+									)
+									if (store) {
+										return (
+											<StoreDealCard
+												key={deal.dealID}
+												deal={deal}
+												store={store}
+											/>
+										)
+									}
+								} else {
+									console.error(
+										"Deal is neither BobaDeal nor StoreDeal",
+									)
+								}
+							})}
 						</View>
 					))}
 				</View>
 			</View>
-			<View style={styles.spacer} />
-			{filteredStoreDeals.length > 0 && (
-				<View style={styles.dealsContainer}>
-					<ThemedText type="subtitle">🏪 Store Deals</ThemedText>
-					<View style={styles.rowContainer}>
-						{storeDealsCols.map((row, index) => (
-							<View
-								key={index}
-								style={{
-									display: "flex",
-									flexDirection: "column",
-									width: isMobileDeviceCheck ? "100%" : "29%",
-								}}
-							>
-								{row.map((deal) => (
-									<StoreDealCard
-										key={deal.id}
-										deal={deal}
-										store={storeIDToObjMap.get(
-											deal.storeID,
-										)}
-									/>
-								))}
-							</View>
-						))}
-					</View>
-				</View>
-			)}
 		</View>
 	)
 }
@@ -321,6 +304,7 @@ const styles = StyleSheet.create({
 	},
 	allDealsContainer: {
 		display: "flex",
+		padding: 20,
 	},
 	listContainer: {
 		display: "flex",

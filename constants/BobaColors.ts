@@ -34,7 +34,7 @@ export const BobaColors: Record<string, KeywordTier> = {
 		secondary: [],
 	},
 	pink: {
-		primary: ["strawberry milk"],
+		primary: ["strawberry milk", "pink", "rose", "lychee"],
 		secondary: [],
 	},
 	brown: {
