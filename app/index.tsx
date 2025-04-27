@@ -2,6 +2,7 @@ import DealsList from "@/components/DealsList"
 import Header from "@/components/Header"
 import { getNewDateWithNoTime } from "@/components/helpers/dateHelpers"
 import { isWeb } from "@/components/helpers/deviceHelpers"
+import SortAndFilterBar from "@/components/SortAndFilterBar"
 import { Colors } from "@/constants/Colors"
 import { ShowDealsForDateContext } from "@/contexts/ShowDealsForDateContext"
 import {
@@ -10,7 +11,7 @@ import {
 	SortType,
 } from "@/contexts/SortAndFilterContext"
 import { useEffect, useState } from "react"
-import { Dimensions, Image, ScrollView, StyleSheet, View } from "react-native"
+import { Dimensions, ScrollView, StyleSheet, View } from "react-native"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
 
 const { width: screenWidth } = Dimensions.get("window")
@@ -52,13 +53,8 @@ export default function Home() {
 								<DealsList />
 							</View>
 						</ScrollView>
-						<Image
-							source={require("../assets/images/waves-background.png")}
-							style={styles.backgroundImage}
-							resizeMode="stretch"
-						/>
 
-						{/* <SortAndFilterBar /> */}
+						<SortAndFilterBar />
 					</SortAndFilterContext.Provider>
 				</ShowDealsForDateContext.Provider>
 			</View>

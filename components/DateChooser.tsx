@@ -108,7 +108,6 @@ const styles = StyleSheet.create({
 		display: "flex",
 		flexDirection: "column",
 		alignItems: "center",
-		width: "100%",
 		rowGap: 4,
 		backgroundColor: "white",
 		borderRadius: 20,
